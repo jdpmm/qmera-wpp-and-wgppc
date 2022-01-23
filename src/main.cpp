@@ -13,8 +13,6 @@ void init (std::ifstream *file) {
             start_lexer(line_content, current_line);
         current_line++;
     }
-
-    parser();
 }
 
 int main (int argc, char* argv[]) {
@@ -24,5 +22,9 @@ int main (int argc, char* argv[]) {
     if ( !file.good() ) file_doesnt_exist(argv[1]);
 
     init(&file);
+    parser();
+
+    std::string lastep = "./final.sh " + std::string(argv[1]);
+    system(lastep.c_str());
     return 0;
 }

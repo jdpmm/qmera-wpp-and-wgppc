@@ -3,8 +3,7 @@
 #ifndef WG___ERR_REPORT_H
 #define WG___ERR_REPORT_H
 
-#include <cstdio>
-#include <cstdlib>
+#include <iostream>
 
 void file_expected () {
     printf("Filename expected as argument\n");
@@ -13,6 +12,16 @@ void file_expected () {
 
 void file_doesnt_exist (char* filename) {
     printf("%s does not exist", filename);
+    exit(1);
+}
+
+void no_make_sense () {
+    printf("This line does not make sense\n");
+    exit(1);
+}
+
+void token_expected (const std::string &token) {
+    printf("Token expected: %s\n", token.c_str());
     exit(1);
 }
 
