@@ -10,7 +10,15 @@ char check_exit (std::vector<token> *list) {
     if ( list->size() <= 2 )             no_make_sense();
     if ( list->at(1).type == NUMBER ) return 'n';
 
-    token_expected("NUMBER");
+    no_make_sense();
+    return '-';
+}
+
+char check_wout (std::vector<token> *list) {
+    if ( list->size() <= 2 )             no_make_sense();
+    if ( list->at(1).type == STRING )    return 's';
+
+    no_make_sense();
     return '-';
 }
 

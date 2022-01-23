@@ -25,4 +25,9 @@ void token_expected (const std::string &token) {
     exit(1);
 }
 
+void delimiter_expected () {
+    printf("Delimiter expected\n");
+    exit(1);
+}
+
 #endif

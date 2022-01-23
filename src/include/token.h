@@ -11,6 +11,8 @@ enum TokenType {
     EXIT_FUNC,     // exit function, to exit sure: exit 0;
     NUMBER,        // any number
     SEMI_COLON,    // ";" symbol
+    STRING,        // string to be printed
+    WOUT_FUNC,     // to print strings and values
 };
 
 typedef struct Token {

@@ -50,6 +50,17 @@ void parser () {
             char type = check_exit(currntLine);
             if ( type == 'n' ) asm_exit_by_number(currntLine, currnTemp);
         }
+
+        if ( currntLine->at(0).type == WOUT_FUNC ) {
+            char type = check_wout(currntLine);
+            if ( type == 's' ) {
+                std::string labelString = set_string_in_data_segment(currntLine->at(1).value_as_token, dataSegment);
+                asm_wout_string(labelString, currnTemp);
+            }
+        }
+
+
+
     }
 
     fclose(dataSegment);
