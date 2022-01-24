@@ -6,6 +6,7 @@ Every assembly code will be saved at `./src/out`
 ## Done
 - [x] Search tokens
 - [x] Many instructions at the same line (; is the delimiter)
+- [x] Check semi colon at the end of every line
 
 ## TODO
 - [ ] Exit operation
