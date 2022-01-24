@@ -39,13 +39,14 @@ void parser () {
     FILE* codeSegment = fopen("code.s", "w");
     FILE* dataSegment = fopen("data.s", "w");
     init_data_segment(dataSegment);
+    char type;
 
     size_t currenTemp_idx = make_function_template("main", 0);
     for (auto & tokenHead : tokenHeads) {
         std::vector<token> *currntLine = &tokenHead;
         temp* currnTemp = get_temp(currenTemp_idx);
         print_line(currntLine, currnTemp->def_name);
-        char type = '-';
+        type = '-';
 
         if ( currntLine->at(0).type == EXIT_FUNC ) {
             type = check_exit(currntLine);
@@ -59,6 +60,7 @@ void parser () {
                 std::string labelString = set_string_in_data_segment(currntLine->at(1).value_as_token, dataSegment);
                 asm_wout_string(labelString, currnTemp);
             }
+            if ( type == 'v' ) asm_wout_variable(currntLine->at(1).value_as_token, currnTemp);
         }
 
         if ( currntLine->at(0).type == INT_RW ) {

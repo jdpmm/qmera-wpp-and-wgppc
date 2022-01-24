@@ -16,7 +16,7 @@ void init (std::ifstream *file) {
 }
 
 int main (int argc, char* argv[]) {
-    if ( argc == 0 )file_expected();
+    if ( argc == 0 ) file_expected();
 
     std::ifstream file (argv[1]);
     if ( !file.good() ) file_doesnt_exist(argv[1]);

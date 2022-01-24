@@ -8,7 +8,8 @@
 
 enum varType {
     INTEGER,
-    CHARACTER
+    CHARACTER,
+    ANY_TYPE
 };
 
 typedef struct {
@@ -36,12 +37,12 @@ void push_variable (const std::string &name, varType type, unsigned int poStack,
 variable* get_variable (const std::string &name, varType type, const std::string &defname) {
     variable* findvar = nullptr;
     for (auto & variable : variables) {
-        printf("-> %s\n", variable.name.c_str());
         if ( variable.name == name && variable.belongs_to == defname )
             findvar = &variable;
     }
 
-    if ( findvar->type == type ) return findvar;
+    if ( findvar && type == ANY_TYPE )      return findvar;
+    if ( findvar && findvar->type == type ) return findvar;
     else {
         // TODO: check another types
         if ( type == INTEGER ) no_right_type_variable("INTEGER");

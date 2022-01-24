@@ -18,6 +18,7 @@ char check_exit (std::vector<token> *list) {
 char check_wout (std::vector<token> *list) {
     if ( list->size() <= 2 )               tokens_lost();
     if ( list->at(1).type == STRING )   return 's';
+    if ( list->at(1).type == VAR_NAME ) return 'v';
 
     nonsense();
     return '-';

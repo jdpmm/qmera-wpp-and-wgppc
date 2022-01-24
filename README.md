@@ -8,10 +8,18 @@ Every assembly code will be saved at `./src/out`
 - [x] Search tokens
 - [x] Many instructions at the same line (; is the delimiter)
 - [x] Check semi colon at the end of every line
+- [ ] Variables
+  - [x] Integer variables, set their values
+
+- [ ] Print functions
+  - [x] Print values of integer variables
+
+- [ ] Exit function
+  - [x] Exit operation by one integer variable
 
 ## TODO
 
-- [ ] Exit operation
+- [ ] Exit function
 - [ ] Functions to print
 - [ ] Integer variables
 - [ ] Character variables

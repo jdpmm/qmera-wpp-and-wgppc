@@ -19,7 +19,7 @@ void init_data_segment (FILE* dtS) {
     fprintf(dtS, "\t.globl main\n");
     fprintf(dtS, "\t.type main, @function\n");
     fprintf(dtS, "\t.printnum:\n");
-    fprintf(dtS, "\t\t.string \"%%d\"\n");
+    fprintf(dtS, "\t\t.string \"%%d\\n\"\n");
     fprintf(dtS, "\t\t.text\n");
 }
 
@@ -57,6 +57,21 @@ void asm_wout_string (const std::string &namelabel, temp *Temp) {
                   "\tmovl $0, %eax\n";
 }
 
+void asm_wout_variable (const std::string &namevar, temp* Temp) {
+    variable* thisvar = get_variable(namevar, ANY_TYPE, Temp->def_name);
+    unsigned int idxStack = thisvar->poStack;
+
+    if ( thisvar->type == INTEGER ) {
+        Temp->code += "\tmovl -" + std::to_string(idxStack) + "(%rbp), %eax\n"
+                      "\tmovl %eax, %esi\n"
+                      "\tleaq .printnum(%rip), %rax\n"
+                      "\tmovq %rax, %rdi\n"
+                      "\tmovl $0, %eax\n"
+                      "\tcall printf@PLT\n"
+                      "\tmovl $0, %eax\n";
+    }
+}
+
 void asm_make_int_by_number (std::vector<token> *list, temp *Temp) {
     Temp->code += "\tsubq $4, %rsp\n"
                   "\tmovl $" + list->at(3).value_as_token + ", -" + std::to_string(Temp->bytes4) + "(%rbp)\n";
@@ -64,6 +79,7 @@ void asm_make_int_by_number (std::vector<token> *list, temp *Temp) {
     push_variable(list->at(1).value_as_token, INTEGER, Temp->bytes4, Temp->def_name);
     Temp->bytes4 += 4;
 }
+
 
 
 #endif
