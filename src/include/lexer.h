@@ -59,6 +59,22 @@ void searching_tokens (const std::string &line, int line_code, size_t idxHeadTok
             idx += token.size() - 1;
             token = "";
         }
+        if ( token == "ARITH" ) {
+            push_token(idxHeadToken, ARITH_CALL, token, line_code);
+            token = "";
+        }
+        if ( token == "(" ) {
+            push_token(idxHeadToken, L_PAR, token, line_code);
+            token = "";
+        }
+        if ( token == ")" ) {
+            push_token(idxHeadToken, R_PAR, token, line_code);
+            token = "";
+        }
+        if ( token == "add" || token == "sub" || token == "mul" || token == "div" || token == "mod" || token == "pow" ) {
+            push_token(idxHeadToken, MATH_OP, token, line_code);
+            token = "";
+        }
 
         idx++;
     }

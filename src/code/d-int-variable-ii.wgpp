@@ -1,7 +1,0 @@
-int $var1$ = 16;
-int $var2$ = $var1$;
-
-wout $var1$;
-wout $var2$;
-
-exit 0;

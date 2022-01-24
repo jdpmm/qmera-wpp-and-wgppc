@@ -10,6 +10,7 @@ Every assembly code will be saved at `./src/out`
 - [x] Check semi colon at the end of every line
 - [ ] Variables
   - [x] Integer variables, set their values
+  - [x] Copy value among variables with the same data type
 
 - [ ] Print functions
   - [x] Print values of integer variables
@@ -20,6 +21,8 @@ Every assembly code will be saved at `./src/out`
 ## TODO
 
 - [ ] Exit function
+- [ ] Negative numbers
+- [ ] Power operation
 - [ ] Functions to print
 - [ ] Integer variables
 - [ ] Character variables

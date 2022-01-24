@@ -16,6 +16,10 @@ enum TokenType {
     INT_RW,        // int reserved word, to make an integer variable
     VAR_NAME,      // ...
     EQUALS_S,      // equals symbol '='
+    ARITH_CALL,    // calling to arithmetic function
+    MATH_OP,       // mathematical operator
+    L_PAR,         // left parenthesis
+    R_PAR,         // right parenthesis
 };
 
 typedef struct Token {
