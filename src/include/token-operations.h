@@ -66,8 +66,8 @@ void parser () {
         if ( currntLine->at(0).type == INT_RW ) {
             type = check_int_declaration(currntLine);
             if ( type == 'n' ) asm_make_int_by_number(currntLine, currnTemp);
+            if ( type == 'v' ) asm_make_int_by_int(currntLine, currnTemp);
         }
-
     }
 
     fclose(dataSegment);

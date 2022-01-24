@@ -61,15 +61,15 @@ void asm_wout_variable (const std::string &namevar, temp* Temp) {
     variable* thisvar = get_variable(namevar, ANY_TYPE, Temp->def_name);
     unsigned int idxStack = thisvar->poStack;
 
-    if ( thisvar->type == INTEGER ) {
-        Temp->code += "\tmovl -" + std::to_string(idxStack) + "(%rbp), %eax\n"
-                      "\tmovl %eax, %esi\n"
-                      "\tleaq .printnum(%rip), %rax\n"
-                      "\tmovq %rax, %rdi\n"
-                      "\tmovl $0, %eax\n"
-                      "\tcall printf@PLT\n"
-                      "\tmovl $0, %eax\n";
-    }
+    Temp->code += "\tmovl -" + std::to_string(idxStack) + "(%rbp), %eax\n"
+                  "\tmovl %eax, %esi\n";
+
+    if ( thisvar->type == INTEGER ) Temp->code += "\tleaq .printnum(%rip), %rax\n";
+
+    Temp->code += "\tmovq %rax, %rdi\n"
+                  "\tmovl $0, %eax\n"
+                  "\tcall printf@PLT\n"
+                  "\tmovl $0, %eax\n";
 }
 
 void asm_make_int_by_number (std::vector<token> *list, temp *Temp) {
@@ -80,6 +80,18 @@ void asm_make_int_by_number (std::vector<token> *list, temp *Temp) {
     Temp->bytes4 += 4;
 }
 
+void asm_make_int_by_int (std::vector<token> *list, temp *Temp) {
+    variable* thisvar = get_variable(list->at(3).value_as_token, ANY_TYPE, Temp->def_name);
+    unsigned int posStack = thisvar->poStack;
+    Temp->code += "\tsubq $4, %rsp\n";
 
+    if ( thisvar->type == INTEGER ) {
+        Temp->code += "\tmovl -" + std::to_string(posStack) + "(%rbp), %eax\n"
+                      "\tmovl %eax, -" + std::to_string(Temp->bytes4) + "(%rbp)\n";
+    }
+
+    push_variable(list->at(1).value_as_token, INTEGER, Temp->bytes4, Temp->def_name);
+    Temp->bytes4 += 4;
+}
 
 #endif

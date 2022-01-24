@@ -6,16 +6,24 @@
 #include <iostream>
 
 void file_expected () {
+    /** This error will be thrown when there isn't a second argument in the execution
+     * of the program (C++ executable) **/
     printf("Filename expected as argument\n");
     exit(1);
 }
 
 void file_doesnt_exist (char* filename) {
+    /** This error will be thrown then the file given as second parameter in the C++ execution file
+     * does not exist **/
     printf("%s does not exist", filename);
     exit(1);
 }
 
 void tokens_lost () {
+    /** This error will be thrown when a token is not in the list, and that token
+     * is so useful to the operation, something like:
+     * (C++) cout << ;
+     * Token lost: string **/
     printf("Some tokens were lost\n");
     exit(1);
 }
@@ -26,16 +34,23 @@ void token_expected (const std::string &token) {
 }
 
 void delimiter_expected () {
+    /** This error will be thrown when there is a number or string and the lexer gotta
+     * save all data, but this data never end, so the delimiter expected is the end of itself,
+     * this function is used on "util.h" **/
     printf("Delimiter expected\n");
     exit(1);
 }
 
 void nonsense () {
+    /** This error will be thrown when there is a line when were found some tokens
+     * but these tokens don't make sense together **/
     printf("This line doesn't make sense\n");
     exit(1);
 }
 
 void invalid_name (const std::string &name) {
+    /** This error will thrown when the lexer found a name of one variable or function
+     * and the name contains characters not valid into an ID **/
     printf("Invalid character: %s\n", name.c_str());
     printf("The names only could have:\n");
     printf("  - [A-Z]\n");
@@ -47,11 +62,14 @@ void invalid_name (const std::string &name) {
 }
 
 void var_doesnt_exits (const std::string &name, const std::string &defname) {
+    /** This error will be thrown when, well the function name is so descriptive :D  **/
     printf("%s does not exist in %s function\n", name.c_str(), defname.c_str());
     exit(1);
 }
 
 void no_right_type_variable (const std::string &needed) {
+    /** This error will be thrown when a variable is been used in a specific operation
+     * but the type variable expected for that operation is not the correct **/
     printf("%s type of variable needed\n", needed.c_str());
     exit(1);
 }
