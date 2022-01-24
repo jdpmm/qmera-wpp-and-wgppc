@@ -34,7 +34,7 @@ void searching_tokens (const std::string &line, int line_code, size_t idxHeadTok
             token = "";
         }
         if ( token[0] == '"' ) {
-            token = str_until_(line, idx, '"');
+            token = get_whole_string(line, idx);
             token += '"';
             push_token(idxHeadToken, STRING, token, line_code);
             idx += token.size() - 1;
@@ -42,6 +42,21 @@ void searching_tokens (const std::string &line, int line_code, size_t idxHeadTok
         }
         if ( token == "wout" ) {
             push_token(idxHeadToken, WOUT_FUNC, token, line_code);
+            token = "";
+        }
+        if ( token == "int" ) {
+            push_token(idxHeadToken, INT_RW, token, line_code);
+            token = "";
+        }
+        if ( token == "=" ) {
+            push_token(idxHeadToken, EQUALS_S, token, line_code);
+            token = "";
+        }
+        if ( token[0] == '$' ) {
+            token = get_name_of(line,  idx, '$');
+            push_token(idxHeadToken, VAR_NAME, token, line_code);
+
+            idx += token.size() - 1;
             token = "";
         }
 
@@ -77,7 +92,7 @@ void start_lexer (const std::string &line, int line_code) {
         if ( line[idx] == '#' )
             if ( skip_comment(line, &idx) ) return;
         if ( line[idx] == '"' ) {
-            std::string str = str_until_(line, idx, '"');
+            std::string str = get_whole_string(line, idx);
             clean_line += str;
             idx += str.size();
         }

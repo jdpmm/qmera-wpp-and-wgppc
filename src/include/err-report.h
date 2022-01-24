@@ -15,8 +15,8 @@ void file_doesnt_exist (char* filename) {
     exit(1);
 }
 
-void no_make_sense () {
-    printf("This line does not make sense\n");
+void tokens_lost () {
+    printf("Some tokens were lost\n");
     exit(1);
 }
 
@@ -27,6 +27,32 @@ void token_expected (const std::string &token) {
 
 void delimiter_expected () {
     printf("Delimiter expected\n");
+    exit(1);
+}
+
+void nonsense () {
+    printf("This line doesn't make sense\n");
+    exit(1);
+}
+
+void invalid_name (const std::string &name) {
+    printf("Invalid character: %s\n", name.c_str());
+    printf("The names only could have:\n");
+    printf("  - [A-Z]\n");
+    printf("  - [a-z]\n");
+    printf("  - [0-9]\n");
+    printf("  -   _\n");
+
+    exit(1);
+}
+
+void var_doesnt_exits (const std::string &name, const std::string &defname) {
+    printf("%s does not exist in %s function\n", name.c_str(), defname.c_str());
+    exit(1);
+}
+
+void no_right_type_variable (const std::string &needed) {
+    printf("%s type of variable needed\n", needed.c_str());
     exit(1);
 }
 

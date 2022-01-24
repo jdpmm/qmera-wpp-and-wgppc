@@ -23,4 +23,32 @@ typedef struct {
 } variable;
 std::vector<variable> variables;
 
+void push_variable (const std::string &name, varType type, unsigned int poStack, const std::string &funcname) {
+    variable var;
+    var.name = name;
+    var.type = type;
+    var.belongs_to = funcname;
+    var.poStack = poStack;
+
+    variables.push_back(var);
+}
+
+variable* get_variable (const std::string &name, varType type, const std::string &defname) {
+    variable* findvar = nullptr;
+    for (auto & variable : variables) {
+        printf("-> %s\n", variable.name.c_str());
+        if ( variable.name == name && variable.belongs_to == defname )
+            findvar = &variable;
+    }
+
+    if ( findvar->type == type ) return findvar;
+    else {
+        // TODO: check another types
+        if ( type == INTEGER ) no_right_type_variable("INTEGER");
+    }
+
+    var_doesnt_exits(name, defname);
+    return nullptr;
+}
+
 #endif

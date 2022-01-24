@@ -4,6 +4,7 @@
 #define WG___GENERATE_H
 
 #include "assembly-help.h"
+#include "variables.h"
 
 /** To print strings we need definite it in the data section, so to not repeat
  * strings we'll have a vector to save the name of every string declared before
@@ -42,11 +43,27 @@ void asm_exit_by_number (std::vector<token> *list, temp* Temp) {
                   "\tint $0x80\n";
 }
 
+void asm_exit_by_integer_variable (const std::string &namevar, temp *Temp) {
+    unsigned int poStackvar = get_variable(namevar, INTEGER, Temp->def_name)->poStack;
+    Temp->code += "\tmovl $1, %eax\n"
+                  "\tmovl -" + std::to_string(poStackvar) + "(%rbp), %ebx\n"
+                  "\tint $0x80\n";
+}
+
 void asm_wout_string (const std::string &namelabel, temp *Temp) {
     Temp->code += "\tleaq " + namelabel + "(%rip), %rax\n"
                   "\tmovq %rax, %rdi\n"
                   "\tcall puts@PLT\n"
                   "\tmovl $0, %eax\n";
 }
+
+void asm_make_int_by_number (std::vector<token> *list, temp *Temp) {
+    Temp->code += "\tsubq $4, %rsp\n"
+                  "\tmovl $" + list->at(3).value_as_token + ", -" + std::to_string(Temp->bytes4) + "(%rbp)\n";
+
+    push_variable(list->at(1).value_as_token, INTEGER, Temp->bytes4, Temp->def_name);
+    Temp->bytes4 += 4;
+}
+
 
 #endif

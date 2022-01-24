@@ -45,21 +45,26 @@ void parser () {
         std::vector<token> *currntLine = &tokenHead;
         temp* currnTemp = get_temp(currenTemp_idx);
         print_line(currntLine, currnTemp->def_name);
+        char type = '-';
 
         if ( currntLine->at(0).type == EXIT_FUNC ) {
-            char type = check_exit(currntLine);
+            type = check_exit(currntLine);
             if ( type == 'n' ) asm_exit_by_number(currntLine, currnTemp);
+            if ( type == 'v' ) asm_exit_by_integer_variable(currntLine->at(1).value_as_token, currnTemp);
         }
 
         if ( currntLine->at(0).type == WOUT_FUNC ) {
-            char type = check_wout(currntLine);
+            type = check_wout(currntLine);
             if ( type == 's' ) {
                 std::string labelString = set_string_in_data_segment(currntLine->at(1).value_as_token, dataSegment);
                 asm_wout_string(labelString, currnTemp);
             }
         }
 
-
+        if ( currntLine->at(0).type == INT_RW ) {
+            type = check_int_declaration(currntLine);
+            if ( type == 'n' ) asm_make_int_by_number(currntLine, currnTemp);
+        }
 
     }
 

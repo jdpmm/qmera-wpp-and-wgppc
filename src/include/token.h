@@ -13,6 +13,9 @@ enum TokenType {
     SEMI_COLON,    // ";" symbol
     STRING,        // string to be printed
     WOUT_FUNC,     // to print strings and values
+    INT_RW,        // int reserved word, to make an integer variable
+    VAR_NAME,      // ...
+    EQUALS_S,      // equals symbol '='
 };
 
 typedef struct Token {

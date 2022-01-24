@@ -1,0 +1,2 @@
+int $namevar$ = 5;
+exit $namevar$;
