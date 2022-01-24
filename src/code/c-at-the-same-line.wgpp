@@ -1,0 +1,1 @@
+wout "line 1"; wout "line 1"; wout "line 1 as well"; wout "Good bye :D"; exit 0;

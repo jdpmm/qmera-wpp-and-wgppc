@@ -8,6 +8,12 @@
 	.lbp1:
 		.string "hola como estas"
 		.text
+	.lbp2:
+		.string "Another thing"
+		.text
+	.lbp3:
+		.string "Always there will be a new line at the end"
+		.text
 main:
 	pushq %rbp
 	movq %rsp, %rbp
@@ -40,6 +46,14 @@ main:
 	call puts@PLT
 	movl $0, %eax
 	leaq .lbp1(%rip), %rax
+	movq %rax, %rdi
+	call puts@PLT
+	movl $0, %eax
+	leaq .lbp2(%rip), %rax
+	movq %rax, %rdi
+	call puts@PLT
+	movl $0, %eax
+	leaq .lbp3(%rip), %rax
 	movq %rax, %rdi
 	call puts@PLT
 	movl $0, %eax

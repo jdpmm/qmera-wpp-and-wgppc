@@ -6,5 +6,7 @@ wout "hola como estas";
 wout "hola como estas";
 wout "hola como estas";
 wout "hola como estas";
+wout "Another thing";
+wout "Always there will be a new line at the end";
 
 exit 0;

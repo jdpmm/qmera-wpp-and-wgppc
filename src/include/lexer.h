@@ -83,10 +83,19 @@ void start_lexer (const std::string &line, int line_code) {
         }
 
         clean_line += line[idx];
+        if ( line[idx] == ';' && line[idx + 1] != '\0' ) {
+            size_t idx_head = make_head_token();
+            searching_tokens(clean_line, line_code, idx_head);
+            clean_line = "";
+        }
         idx++;
     }
 
     if ( clean_line != "#" ) {
+        if ( clean_line[clean_line.size() - 1] != ';' ) {
+            printf("Semicolon expected at %d line\n", line_code);
+            exit(1);
+        }
         size_t idx_head = make_head_token();
         searching_tokens(clean_line, line_code, idx_head);
     }
