@@ -66,11 +66,19 @@ void parser () {
         }
 
         if ( currntLine->at(0).type == INT_RW ) {
-            type = check_int_declaration(currntLine);
+            type = check_int_declaration(currntLine, currnTemp->def_name);
             if ( type == 'n' ) asm_make_int_by_number(currntLine, currnTemp);
             if ( type == 'v' ) asm_make_int_by_int(currntLine, currnTemp);
             if ( type == 'm' ) asm_make_int_by_arith(currntLine, currnTemp);
         }
+
+        if ( currntLine->at(0).type == CHG_CALL ) {
+            type = check_chg(currntLine, currnTemp->def_name);
+            if ( type == 'n' ) wgpp_chg_int_by_number(currntLine, currnTemp);
+            if ( type == 'v' ) wgpp_chg_int_by_int(currntLine, currnTemp);
+            if ( type == 'm' ) wgpp_chg_int_by_arithmetic(currntLine, currnTemp);
+        }
+
     }
 
     fclose(dataSegment);

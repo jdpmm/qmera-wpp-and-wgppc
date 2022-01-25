@@ -75,4 +75,10 @@ void no_right_type_variable (const std::string &needed, const std::string &name_
     exit(1);
 }
 
+void trying_to_overwrite_variable () {
+    printf("You are trying to change the value of this variable (wgdi) syntax\n");
+    printf("If you want to change the value of one variable use CHG function instead\n");
+    exit(1);
+}
+
 #endif

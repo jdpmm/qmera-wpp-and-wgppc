@@ -13,6 +13,12 @@ unsigned int labelCount = 1;
 std::vector<std::string> labels;
 const std::string labelTemp = ".lbp";
 
+/** ------------------------------------------------------------------------------------------------
+ * WG++ functions:                                                                                 |
+ * These functions has been declared to make the necessary code in assembly to some operations     |
+ * like arithmetic or change the value of one variable.                                            |
+ * The WG++ functions are the tokens which whose value is a word with all letters are capitalized  |
+ * ------------------------------------------------------------------------------------------------| */
 void wgpp_arith_function (std::vector<token> *op, temp* Temp, size_t from) {
     /** WGPP arith function:
      * The syntax of this function is:
@@ -99,6 +105,24 @@ void wgpp_arith_function (std::vector<token> *op, temp* Temp, size_t from) {
     }
 }
 
+void wgpp_chg_int_by_number (std::vector<token> *list, temp *Temp) {
+    unsigned int poStack = get_variable(list->at(1).value_as_token, INTEGER, Temp->def_name)->poStack;
+    Temp->code += "\tmovl $" + list->at(2).value_as_token + ", -" + std::to_string(poStack) + "(%rbp)\n";
+}
+
+void wgpp_chg_int_by_int (std::vector<token> *list, temp* Temp) {
+    unsigned int poStack_tochage = get_variable(list->at(1).value_as_token, INTEGER, Temp->def_name)->poStack;
+    unsigned int poStack_savesvalue = get_variable(list->at(2).value_as_token, INTEGER, Temp->def_name)->poStack;
+
+    Temp->code += "\tmovl -" + std::to_string(poStack_savesvalue) + "(%rbp), %eax\n"
+                  "\tmovl %eax, -" + std::to_string(poStack_tochage) + "(%rbp)\n";
+}
+
+void wgpp_chg_int_by_arithmetic (std::vector<token> *list, temp *Temp) {
+    unsigned int poStack = get_variable(list->at(1).value_as_token, INTEGER, Temp->def_name)->poStack;
+    wgpp_arith_function(list, Temp, 4);
+    Temp->code += "\tmovl %r14d, -" + std::to_string(poStack) + "(%rbp)\n";
+}
 
 /** ------------------------------------------------------------------------------------------------
  * Data space:                                                                                     |

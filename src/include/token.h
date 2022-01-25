@@ -20,6 +20,7 @@ enum TokenType {
     MATH_OP,       // mathematical operator
     L_PAR,         // left parenthesis
     R_PAR,         // right parenthesis
+    CHG_CALL,      // Calling to change value function
 };
 
 typedef struct Token {

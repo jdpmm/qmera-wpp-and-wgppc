@@ -52,4 +52,11 @@ variable* get_variable (const std::string &name, varType type, const std::string
     return nullptr;
 }
 
+variable* get_variable_without_error (const std::string &name, varType type, const std::string &defname) {
+    for (auto & variable : variables)
+        if ( variable.name == name && variable.type == type && variable.belongs_to == defname )
+            return &variable;
+    return nullptr;
+}
+
 #endif

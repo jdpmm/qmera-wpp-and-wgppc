@@ -82,6 +82,10 @@ void searching_tokens (const std::string &line, int line_code, size_t idxHeadTok
             push_token(idxHeadToken, MATH_OP, token, line_code);
             token = "";
         }
+        if ( token == "CHG" ) {
+            push_token(idxHeadToken, CHG_CALL, token, line_code);
+            token = "";
+        }
 
         idx++;
     }

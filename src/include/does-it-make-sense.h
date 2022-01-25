@@ -5,6 +5,7 @@
 
 #include "token.h"
 #include "err-report.h"
+#include "variables.h"
 
 char check_exit (std::vector<token> *list) {
     /** The exit operation could have three modes:
@@ -35,17 +36,33 @@ char check_wout (std::vector<token> *list) {
     return '-';
 }
 
-char check_int_declaration (std::vector<token> *list) {
+char check_int_declaration (std::vector<token> *list, const std::string &defname) {
     /** Integer variables declaration can have three modes:
      * - Create an integer with a constant value
      * - Copy the value of another integer variable
      * - The value will be given by an arithmetic operation **/
+    variable* var = get_variable_without_error(list->at(1).value_as_token, INTEGER, defname);
+    if ( var ) trying_to_overwrite_variable();
+
     if ( list->size() <= 4 ) tokens_lost();
     if ( list->at(1).type != VAR_NAME ) token_expected("NAME VARIABLE");
     if ( list->at(2).type != EQUALS_S ) token_expected("EQUALS SYMBOL");
     if ( list->at(3).type == NUMBER ) return 'n';
     if ( list->at(3).type == VAR_NAME ) return 'v';
     if ( list->at(3).type == ARITH_CALL ) return 'm';
+
+    nonsense();
+    return '-';
+}
+
+char check_chg (std::vector<token> *list, const std::string &defname) {
+    /** CHG operation, enable change the value of one value
+     * - The variable and the new value must has the same datatype! **/
+    if ( list->size() <= 3 ) tokens_lost();
+    if ( list->at(1).type != VAR_NAME ) token_expected("VARIABLE NAME");
+    if ( list->at(2).type == NUMBER ) return 'n';
+    if ( list->at(2).type == VAR_NAME ) return 'v';
+    if ( list->at(2).type == ARITH_CALL ) return 'm';
 
     nonsense();
     return '-';
