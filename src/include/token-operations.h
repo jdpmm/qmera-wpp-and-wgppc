@@ -52,6 +52,7 @@ void parser () {
             type = check_exit(currntLine);
             if ( type == 'n' ) asm_exit_by_number(currntLine, currnTemp);
             if ( type == 'v' ) asm_exit_by_integer_variable(currntLine->at(1).value_as_token, currnTemp);
+            if ( type == 'm' ) asm_exit_by_arithmetic_op(currntLine, currnTemp);
         }
 
         if ( currntLine->at(0).type == WOUT_FUNC ) {
@@ -61,6 +62,7 @@ void parser () {
                 asm_wout_string(labelString, currnTemp);
             }
             if ( type == 'v' ) asm_wout_variable(currntLine->at(1).value_as_token, currnTemp);
+            if ( type == 'm' ) asm_wout_arithmetic_op(currntLine, currnTemp);
         }
 
         if ( currntLine->at(0).type == INT_RW ) {

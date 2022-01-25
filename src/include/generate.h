@@ -119,6 +119,13 @@ void asm_exit_by_integer_variable (const std::string &namevar, temp *Temp) {
                   "\tint $0x80\n";
 }
 
+void asm_exit_by_arithmetic_op (std::vector<token> *list, temp *Temp) {
+    wgpp_arith_function(list, Temp, 3);
+    Temp->code += "\tmovl $1, %eax\n"
+                  "\tmovl %r14d, %ebx\n"
+                   "\tint $0x80\n";
+}
+
 void asm_wout_string (const std::string &namelabel, temp *Temp) {
     Temp->code += "\tleaq " + namelabel + "(%rip), %rax\n"
                   "\tmovq %rax, %rdi\n"
@@ -134,8 +141,18 @@ void asm_wout_variable (const std::string &namevar, temp* Temp) {
                   "\tmovl %eax, %esi\n";
 
     if ( thisvar->type == INTEGER ) Temp->code += "\tleaq .printnum(%rip), %rax\n";
-
     Temp->code += "\tmovq %rax, %rdi\n"
+                  "\tmovl $0, %eax\n"
+                  "\tcall printf@PLT\n"
+                  "\tmovl $0, %eax\n";
+}
+
+void asm_wout_arithmetic_op (std::vector<token> *list, temp *Temp) {
+    wgpp_arith_function(list, Temp, 3);
+    Temp->code += "\tmovl %r14d, %eax\n"
+                  "\tmovl %eax, %esi\n"
+                  "\tleaq .printnum(%rip), %rax\n"
+                  "\tmovq %rax, %rdi\n"
                   "\tmovl $0, %eax\n"
                   "\tcall printf@PLT\n"
                   "\tmovl $0, %eax\n";

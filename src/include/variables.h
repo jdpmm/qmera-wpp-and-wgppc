@@ -45,7 +45,7 @@ variable* get_variable (const std::string &name, varType type, const std::string
     if ( findvar && findvar->type == type ) return findvar;
     else {
         // TODO: check another types
-        if ( type == INTEGER ) no_right_type_variable("INTEGER");
+        if ( type == INTEGER ) no_right_type_variable("INTEGER", name);
     }
 
     var_doesnt_exits(name, defname);

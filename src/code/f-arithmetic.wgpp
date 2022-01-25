@@ -10,5 +10,6 @@ wout $su_b$;
 wout $mu_l$;
 wout $di_v$;
 wout $mo_d$;
+wout ARITH($ad_d$ add $su_b$ add $mu_l$ add $di_v$ add $mo_d$);
 
-exit $mo_d$;
+exit ARITH($ad_d$ sub $su_b$ sub $mu_l$ sub $di_v$ sub $mo_d$);

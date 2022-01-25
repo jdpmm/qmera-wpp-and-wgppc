@@ -76,8 +76,27 @@ main:
 	movl $0, %eax
 	call printf@PLT
 	movl $0, %eax
+	movl $0, %r14d
+	movl -4(%rbp), %r14d
+	addl -8(%rbp), %r14d
+	addl -12(%rbp), %r14d
+	addl -16(%rbp), %r14d
+	addl -20(%rbp), %r14d
+	movl %r14d, %eax
+	movl %eax, %esi
+	leaq .printnum(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
+	movl $0, %r14d
+	movl -4(%rbp), %r14d
+	subl -8(%rbp), %r14d
+	subl -12(%rbp), %r14d
+	subl -16(%rbp), %r14d
+	subl -20(%rbp), %r14d
 	movl $1, %eax
-	movl $0, %ebx
+	movl %r14d, %ebx
 	int $0x80
 	leave
 	ret

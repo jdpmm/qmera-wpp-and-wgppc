@@ -67,10 +67,11 @@ void var_doesnt_exits (const std::string &name, const std::string &defname) {
     exit(1);
 }
 
-void no_right_type_variable (const std::string &needed) {
+void no_right_type_variable (const std::string &needed, const std::string &name_used) {
     /** This error will be thrown when a variable is been used in a specific operation
      * but the type variable expected for that operation is not the correct **/
     printf("%s type of variable needed\n", needed.c_str());
+    printf("Reference to: %s\n", name_used.c_str());
     exit(1);
 }
 

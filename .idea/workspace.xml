@@ -14,13 +14,15 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8699336-817d-4a4e-a3e7-5b3920cfdd02" name="Changes" comment="I forgot the examples...!">
+    <list default="true" id="b8699336-817d-4a4e-a3e7-5b3920cfdd02" name="Changes" comment="Negative numbers!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/code/a-exit.wgpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/code/a-exit.wgpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/lexer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/out/a-exit.wgpp.s" beforeDir="false" afterPath="$PROJECT_DIR$/src/out/a-exit.wgpp.s" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/code/f-arithmetic.wgpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/code/f-arithmetic.wgpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/does-it-make-sense.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/does-it-make-sense.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/err-report.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/err-report.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/generate.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/generate.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/token-operations.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/token-operations.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/variables.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/variables.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/out/f-arithmetic.wgpp.s" beforeDir="false" afterPath="$PROJECT_DIR$/src/out/f-arithmetic.wgpp.s" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +83,9 @@
       <workItem from="1643044318957" duration="59000" />
       <workItem from="1643044390430" duration="13312000" />
       <workItem from="1643077284428" duration="231000" />
-      <workItem from="1643077530341" duration="3400000" />
+      <workItem from="1643077530341" duration="3448000" />
+      <workItem from="1643098385939" duration="17000" />
+      <workItem from="1643098415890" duration="1081000" />
     </task>
     <task id="LOCAL-00001" summary="print values of integer variables: done!">
       <created>1643045498227</created>
@@ -111,7 +115,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643065375514</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Negative numbers!">
+      <created>1643081585491</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1643081585491</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -133,6 +144,7 @@
     <MESSAGE value="Copy value between integer variables: done!" />
     <MESSAGE value="Arithmetic (1/?) maybe 2" />
     <MESSAGE value="I forgot the examples...!" />
-    <option name="LAST_COMMIT_MESSAGE" value="I forgot the examples...!" />
+    <MESSAGE value="Negative numbers!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Negative numbers!" />
   </component>
 </project>
