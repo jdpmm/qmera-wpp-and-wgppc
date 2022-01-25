@@ -3,13 +3,13 @@
 	.globl main
 	.type main, @function
 	.printnum:
-		.string "%d"
+		.string "%d\n"
 		.text
 main:
 	pushq %rbp
 	movq %rsp, %rbp
 	movl $1, %eax
-	movl $0, %ebx
+	movl $-1, %ebx
 	int $0x80
 	leave
 	ret

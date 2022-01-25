@@ -33,6 +33,13 @@ void searching_tokens (const std::string &line, int line_code, size_t idxHeadTok
             idx += token.size() - 1;
             token = "";
         }
+        if ( token[0] == '-' && std::isdigit(token[1]) ) {
+            token = get_whole_number(line, idx);
+            token.insert(token.begin(), '-');
+            push_token(idxHeadToken, NUMBER, token, line_code);
+            idx += token.size() - 2;
+            token = "";
+        }
         if ( token[0] == '"' ) {
             token = get_whole_string(line, idx);
             token += '"';

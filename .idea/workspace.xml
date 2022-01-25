@@ -14,15 +14,13 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8699336-817d-4a4e-a3e7-5b3920cfdd02" name="Changes" comment="Copy value between integer variables: done!">
+    <list default="true" id="b8699336-817d-4a4e-a3e7-5b3920cfdd02" name="Changes" comment="I forgot the examples...!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/code/d-int-variable-ii.wgpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/does-it-make-sense.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/does-it-make-sense.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/generate.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/generate.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/code/a-exit.wgpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/code/a-exit.wgpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/include/lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/lexer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/token-operations.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/token-operations.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/token.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/out/a-exit.wgpp.s" beforeDir="false" afterPath="$PROJECT_DIR$/src/out/a-exit.wgpp.s" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,7 +79,9 @@
       <updated>1643044190985</updated>
       <workItem from="1643044194521" duration="42000" />
       <workItem from="1643044318957" duration="59000" />
-      <workItem from="1643044390430" duration="12773000" />
+      <workItem from="1643044390430" duration="13312000" />
+      <workItem from="1643077284428" duration="231000" />
+      <workItem from="1643077530341" duration="3400000" />
     </task>
     <task id="LOCAL-00001" summary="print values of integer variables: done!">
       <created>1643045498227</created>
@@ -97,7 +97,21 @@
       <option name="project" value="LOCAL" />
       <updated>1643048900272</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Arithmetic (1/?) maybe 2">
+      <created>1643065247973</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1643065247973</updated>
+    </task>
+    <task id="LOCAL-00004" summary="I forgot the examples...!">
+      <created>1643065375514</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1643065375514</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -117,6 +131,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="print values of integer variables: done!" />
     <MESSAGE value="Copy value between integer variables: done!" />
-    <option name="LAST_COMMIT_MESSAGE" value="Copy value between integer variables: done!" />
+    <MESSAGE value="Arithmetic (1/?) maybe 2" />
+    <MESSAGE value="I forgot the examples...!" />
+    <option name="LAST_COMMIT_MESSAGE" value="I forgot the examples...!" />
   </component>
 </project>

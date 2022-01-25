@@ -3,33 +3,26 @@
 This is the continuation of my first ["programming language"](https://github.com/jdpmm/wgdi) which is interpreted, but i wanna go beyond it, and make a better programming language, so this is my compiled programming language.
 Every assembly code will be saved at `./src/out`
 
-## Done
-
+## Done/Semi-done (if that exists)
 - [x] Search tokens
 - [x] Many instructions at the same line (; is the delimiter)
-- [x] Check semi colon at the end of every line
-- [ ] Variables
-  - [x] Integer variables, set their values
-  - [x] Copy value among variables with the same data type
-
-- [ ] Print functions
-  - [x] Print values of integer variables
-
-- [ ] Exit function
-  - [x] Exit operation by one integer variable
+- [x] Check semicolon at the end of every line
+- [x] Integer variable by number `int $x$ = 4;`
+- [x] Integer by arithmetic operation `int $y$ = ARITH(4 add 12);`
+- [x] Negative numbers
 
 ## TODO
-
-- [ ] Exit function
-- [ ] Negative numbers
-- [ ] Power operation
-- [ ] Functions to print
+- [ ] `exit` function (2/?)
+- [ ] `wout` function (2/?)
+- [ ] Functions to print (1/2)
+- [ ] Copy values among variables with if it's possible (1/?)
+- [ ] Arithmetic (1/2)
 - [ ] Integer variables
 - [ ] Character variables
 - [ ] Execution arguments
 - [ ] Pointer variables
 - [ ] Stdin
-- [ ] Arithmetic
+- [ ] A lot of another stuffs!!!
 
 ## References
 
