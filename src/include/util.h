@@ -2,6 +2,8 @@
  * - Created by jdpmm on 22-01-2022 **/
 #ifndef WG___UTIL_H
 #define WG___UTIL_H
+
+#include "variables.h"
 #include <iostream>
 
 std::string get_whole_number (std::string src, size_t from) {
@@ -34,14 +36,14 @@ bool valid_char (char chr) {
 }
 
 
-std::string get_name_of (const std::string &src, size_t from, char delimiter) {
+std::string get_name_of (const std::string &src, size_t from, char delimiter, bool validchr) {
     std::string name;
     name.push_back(delimiter);
     from++;
 
     do {
         if ( from >= src.size() ) delimiter_expected();
-        if ( !valid_char(src[from]) ) invalid_name(name);
+        if ( !valid_char(src[from]) && validchr ) invalid_name(name);
         name += src[from];
         from++;
     } while ( src[from] != delimiter );

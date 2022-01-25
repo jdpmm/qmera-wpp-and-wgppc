@@ -81,4 +81,9 @@ void trying_to_overwrite_variable () {
     exit(1);
 }
 
+void printf_err () {
+    printf("Printf only can take 5 arguments\n");
+    exit(1);
+}
+
 #endif

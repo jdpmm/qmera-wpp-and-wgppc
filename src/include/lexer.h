@@ -60,7 +60,7 @@ void searching_tokens (const std::string &line, int line_code, size_t idxHeadTok
             token = "";
         }
         if ( token[0] == '$' ) {
-            token = get_name_of(line,  idx, '$');
+            token = get_name_of(line,  idx, '$', true);
             push_token(idxHeadToken, VAR_NAME, token, line_code);
 
             idx += token.size() - 1;
@@ -84,6 +84,10 @@ void searching_tokens (const std::string &line, int line_code, size_t idxHeadTok
         }
         if ( token == "CHG" ) {
             push_token(idxHeadToken, CHG_CALL, token, line_code);
+            token = "";
+        }
+        if ( token == "printf" ) {
+            push_token(idxHeadToken, PRINTF_FUNC, token, line_code);
             token = "";
         }
 

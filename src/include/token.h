@@ -21,6 +21,7 @@ enum TokenType {
     L_PAR,         // left parenthesis
     R_PAR,         // right parenthesis
     CHG_CALL,      // Calling to change value function
+    PRINTF_FUNC,   // printf function like printf of C
 };
 
 typedef struct Token {

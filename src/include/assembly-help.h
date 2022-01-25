@@ -8,6 +8,6 @@
 
 /** These register are used as arguments to functions, every one of them will be used when there is
  * a function either by GNU Assembly like printf function, or any function declared on wg++ **/
-static std::string args_r32b[6] = {"%%edi", "%%esi", "%%edx", "%%ecx", "%%r8d", "%%r9d"};
+const std::string args_r32b[5] = {"%esi", "%edx", "%ecx", "%r8d", "%r9d"};
 
 #endif

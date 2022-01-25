@@ -56,7 +56,8 @@ char check_int_declaration (std::vector<token> *list, const std::string &defname
 }
 
 char check_chg (std::vector<token> *list, const std::string &defname) {
-    /** CHG operation, enable change the value of one value
+    /** CHG operation:
+     * Allow you change the value of one variable
      * - The variable and the new value must has the same datatype! **/
     if ( list->size() <= 3 ) tokens_lost();
     if ( list->at(1).type != VAR_NAME ) token_expected("VARIABLE NAME");
@@ -66,6 +67,14 @@ char check_chg (std::vector<token> *list, const std::string &defname) {
 
     nonsense();
     return '-';
+}
+
+void check_printf (std::vector<token> *list) {
+    /** printf:
+     * Allow you print 5 variables at the same time with text in itself, like printf C function
+     * - The unique next token after "printf" token must be a string **/
+    if ( list->size() <= 2 ) tokens_lost();
+    if ( list->at(1).type != STRING ) token_expected("STRING");
 }
 
 #endif

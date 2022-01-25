@@ -79,6 +79,11 @@ void parser () {
             if ( type == 'm' ) wgpp_chg_int_by_arithmetic(currntLine, currnTemp);
         }
 
+        if ( currntLine->at(0).type == PRINTF_FUNC ) {
+            check_printf(currntLine);
+            asm_printf_function(currntLine, currnTemp, dataSegment);
+        }
+
     }
 
     fclose(dataSegment);

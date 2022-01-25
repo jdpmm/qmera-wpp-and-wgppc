@@ -5,6 +5,7 @@
 
 #include "assembly-help.h"
 #include "variables.h"
+#include "util.h"
 
 /** To print strings we need definite them in the data section, so to not repeat
  * strings we'll have a vector to save the name of every string declared before.
@@ -248,6 +249,58 @@ void asm_make_int_by_arith (std::vector<token> *list, temp *Temp) {
 
     push_variable(list->at(1).value_as_token, INTEGER, Temp->bytes4, Temp->def_name);
     Temp->bytes4 += 4;
+}
+
+/** ------------------------------------------------------------------------------------------------
+ * printf function:                                                                                |
+ * This function has been declared to set the values in the printf function, the maximum number of |
+ * variables into this function is 5. the syntax is:                                               |
+ * printf "str $variable$ dwefrgt $anothervar$ ...";                                               |
+ * ------------------------------------------------------------------------------------------------| */
+void asm_printf_function (std::vector<token> *list, temp *Temp, FILE *dataS) {
+    std::string str_to_asm;
+    std::string format_str = list->at(1).value_as_token;
+    size_t idx = 0;
+    std::string var_name;
+    variable* thisvar = nullptr;
+    std::vector<variable> vars;
+
+    while ( format_str[idx] != '\0' ) {
+        // TODO: with another types
+        if ( format_str[idx] == '$' ) {
+            var_name = get_name_of(format_str, idx, '$', false);
+            thisvar = get_variable(var_name, ANY_TYPE, Temp->def_name);
+        }
+        if ( thisvar ) {
+            if ( thisvar->type == INTEGER ) {
+                str_to_asm += "%d";
+                idx += var_name.size();
+            }
+
+            vars.push_back(*thisvar);
+            thisvar = nullptr;
+        }
+        if ( format_str[idx] == '%' ) {
+            str_to_asm += "%%";
+            idx++;
+        }
+
+        str_to_asm += format_str[idx];
+        idx++;
+    }
+    thisvar = nullptr;
+    free(thisvar);
+
+    if ( vars.size() >= 6 ) printf_err();
+    std::string labelprint = set_string_in_data_segment(str_to_asm, dataS);
+    for (size_t i = 0; i < vars.size(); ++i)
+        Temp->code += "\tmovl -" + std::to_string(vars.at(i).poStack) + "(%rbp), " + args_r32b[i] + "\n";
+
+    Temp->code += "\tleaq " + labelprint + "(%rip), %rax\n"
+                  "\tmovq %rax, %rdi\n"
+                  "\tmovl $0, %eax\n"
+                  "\tcall printf@PLT\n"
+                  "\tmovl $0, %eax\n";
 }
 
 #endif

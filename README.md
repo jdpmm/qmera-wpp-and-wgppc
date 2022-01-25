@@ -10,13 +10,14 @@ Every assembly code will be saved at `./src/out`
 - [x] Integer variable by number `int $x$ = 4;`
 - [x] Integer by arithmetic operation `int $y$ = ARITH(4 add 12);`
 - [x] Negative numbers
+- [x] Functions to print `wout and printf` (2/2)
 
 ## TODO
 - [ ] `exit` function (3/?)
 - [ ] `wout` function (3/?)
 - [ ] `CHG` function (3/?)
-- [ ] Functions to print `wout and printf` (1/2)
-- [ ] Copy values among variables with if it's possible (1/?)
+- [ ] `printf` function (1/?)
+- [ ] Copy values among variables (1/?)
 - [ ] Arithmetic (1/2)
 - [ ] Integer variables
 - [ ] Character variables
