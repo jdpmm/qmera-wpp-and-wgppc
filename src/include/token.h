@@ -22,6 +22,7 @@ enum TokenType {
     R_PAR,         // right parenthesis
     CHG_CALL,      // Calling to change value function
     PRINTF_FUNC,   // printf function like printf of C
+    INT_OP,        // integer operation: inc (++), dec (--) and neg (n * -1)
 };
 
 typedef struct Token {

@@ -303,4 +303,21 @@ void asm_printf_function (std::vector<token> *list, temp *Temp, FILE *dataS) {
                   "\tmovl $0, %eax\n";
 }
 
+/** ------------------------------------------------------------------------------------------------
+ * integer operartions:                                                                            |
+ * These functions has been declarated to make the three basics operations with integer variables: |
+ * - INC                                                                                           |
+ * - DEC                                                                                           |
+ * - NEG                                                                                           |
+ * ------------------------------------------------------------------------------------------------| */
+void asm_integer_operation (std::vector<token> *list, temp *Temp) {
+    unsigned int idxStack = get_variable(list->at(1).value_as_token, INTEGER, Temp->def_name)->poStack;
+    if ( list->at(0).value_as_token == "INC" )
+        Temp->code += "\tincl -" + std::to_string(idxStack) + "(%rbp)\n";
+    else if ( list->at(0).value_as_token == "DEC" ) 
+        Temp->code += "\tdecl -" + std::to_string(idxStack) + "(%rbp)\n";
+    else
+        Temp->code += "\tnegl -" + std::to_string(idxStack) + "(%rbp)\n";
+}
+
 #endif

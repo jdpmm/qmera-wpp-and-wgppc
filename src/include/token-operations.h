@@ -84,6 +84,11 @@ void parser () {
             asm_printf_function(currntLine, currnTemp, dataSegment);
         }
 
+        if ( currntLine->at(0).type == INT_OP ) {
+            check_int_op(currntLine);
+            asm_integer_operation(currntLine, currnTemp);
+        }
+
     }
 
     fclose(dataSegment);

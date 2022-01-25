@@ -1,0 +1,13 @@
+int $unique$ = 3;
+printf "Original value. $unique$\n";
+
+INC $unique$;
+printf "INC operation: $unique$\n";
+
+DEC $unique$;
+printf "DEC operation: $unique$\n";
+
+NEG $unique$;
+printf "NEG opration $unique$\n";
+
+exit 0;

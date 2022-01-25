@@ -90,6 +90,10 @@ void searching_tokens (const std::string &line, int line_code, size_t idxHeadTok
             push_token(idxHeadToken, PRINTF_FUNC, token, line_code);
             token = "";
         }
+        if ( token == "INC" || token == "DEC" || token == "NEG" ) {
+            push_token(idxHeadToken, INT_OP, token, line_code);
+            token = "";
+        }
 
         idx++;
     }

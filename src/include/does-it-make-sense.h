@@ -77,4 +77,13 @@ void check_printf (std::vector<token> *list) {
     if ( list->at(1).type != STRING ) token_expected("STRING");
 }
 
+void check_int_op (std::vector<token> *list) {
+    /** Integer operations:
+     * It's the same than "--" or "++" in some high level programming languages
+     * but in this case isn't with these symbols, also i added a new operation
+     * which is "neg" and is: n = n * - 1; :D **/
+    if ( list->size() <= 2 ) tokens_lost();
+    if ( list->at(1).type != VAR_NAME  ) token_expected("INTEGER VARIABLE");
+}
+
 #endif

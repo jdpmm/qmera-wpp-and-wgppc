@@ -14,18 +14,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8699336-817d-4a4e-a3e7-5b3920cfdd02" name="Changes" comment="`CHG` function (3/?): done!">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/assembly-help.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/assembly-help.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/does-it-make-sense.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/does-it-make-sense.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/err-report.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/err-report.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/generate.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/generate.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/lexer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/token-operations.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/token-operations.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/token.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/util.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/util.h" afterDir="false" />
-    </list>
+    <list default="true" id="b8699336-817d-4a4e-a3e7-5b3920cfdd02" name="Changes" comment="`printf` function (1/?)" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -97,7 +86,7 @@
       <workItem from="1643098385939" duration="17000" />
       <workItem from="1643098415890" duration="6915000" />
       <workItem from="1643118010435" duration="61000" />
-      <workItem from="1643118086331" duration="2541000" />
+      <workItem from="1643118086331" duration="2658000" />
     </task>
     <task id="LOCAL-00001" summary="print values of integer variables: done!">
       <created>1643045498227</created>
@@ -155,7 +144,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643105120428</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="`printf` function (1/?)">
+      <created>1643120652781</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1643120652781</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -181,6 +177,7 @@
     <MESSAGE value="Arithmetic operations in `wout` and `exit` functions enable :D" />
     <MESSAGE value="docs..." />
     <MESSAGE value="`CHG` function (3/?): done!" />
-    <option name="LAST_COMMIT_MESSAGE" value="`CHG` function (3/?): done!" />
+    <MESSAGE value="`printf` function (1/?)" />
+    <option name="LAST_COMMIT_MESSAGE" value="`printf` function (1/?)" />
   </component>
 </project>
