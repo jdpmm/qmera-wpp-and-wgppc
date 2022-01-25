@@ -24,7 +24,8 @@ char check_wout (std::vector<token> *list) {
     /** Wout operation (wg++ output, yeah, like "cout" by C++)
      * This operation at this moment can have three modes:
      * - Print a simple string
-     * - Print a variable value **/
+     * - Print a variable value
+     * - Print an arithmetic operation **/
     if ( list->size() <= 2 ) tokens_lost();
     if ( list->at(1).type == STRING ) return 's';
     if ( list->at(1).type == VAR_NAME ) return 'v';

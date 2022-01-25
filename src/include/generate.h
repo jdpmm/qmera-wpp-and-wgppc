@@ -6,9 +6,9 @@
 #include "assembly-help.h"
 #include "variables.h"
 
-/** To print strings we need definite it in the data section, so to not repeat
- * strings we'll have a vector to save the name of every string declared before
- * to not repeat it and don't spend memory foolishly **/
+/** To print strings we need definite them in the data section, so to not repeat
+ * strings we'll have a vector to save the name of every string declared before.
+ * it causes don't spend memory foolishly **/
 unsigned int labelCount = 1;
 std::vector<std::string> labels;
 const std::string labelTemp = ".lbp";
@@ -17,14 +17,27 @@ void wgpp_arith_function (std::vector<token> *op, temp* Temp, size_t from) {
     /** WGPP arith function:
      * The syntax of this function is:
      * ARITH ( n/v math_op n/v sub n/v ... )
-     * where n/v could be a integer number or an integer variable.
-     * from parameter indicates where is the first n/v token in the list **/
+     * where n/v could be an integer number or an integer variable.
+     * "from" parameter indicates where is the first n/v token in the list **/
     Temp->code += "\tmovl $0, %r14d\n";
     variable* thisvariable;
     std::string value_number;
     int idx_type = 0;
     char type_operation = '-';
 
+    /** While the token isn't a ")" token means still don't end the operation
+     * idx_type variable indicates if the current token (indicate by from) must be a n/v or a mathematical operator since
+     * if idx_type is odd means the current token must be a mathematical operator because:
+     * op = {..., ARIRH, (, n/v, add ..., ), ...}
+     *                       ^
+     *                       |
+     *                       At the start "from" starts here and for per token "from" variable and "idx_type" increases
+     *                       their value by 1, so at the start:
+     *                          - idx_type = 0 -> It means the token is a n/v since 0 is even
+     *                       but in the next iteration 1 isn't even so the current token must be a mathematical operator and the process
+     *                       is repeated until found ")" token.
+     * When idx_type is even we must set the value of the number or integer variable.
+     * When idx_type is odd we must set the value of the mathematical operation. **/
     while ( op->at(from).type != R_PAR ) {
         if ( !(idx_type % 2) ) {
             thisvariable = nullptr;
@@ -46,6 +59,11 @@ void wgpp_arith_function (std::vector<token> *op, temp* Temp, size_t from) {
             if ( op->at(from).value_as_token == "mod" ) type_operation = 'o';
         }
 
+        /** If idx_type is 0 it means this is the first iteration, when is the first iteration
+         * the current token is a n/v so we must set that value as the main value for the operation:
+         * 4 add 5 sub 1
+         * \
+         *  This value will be the base for whole operation **/
         if ( idx_type == 0 ) {
             if ( thisvariable ) Temp->code += "\tmovl -" + std::to_string(thisvariable->poStack) + "(%rbp), %r14d\n";
             else                Temp->code += "\tmovl $" + value_number + ", %r14d\n";
@@ -82,6 +100,11 @@ void wgpp_arith_function (std::vector<token> *op, temp* Temp, size_t from) {
 }
 
 
+/** ------------------------------------------------------------------------------------------------
+ * Data space:                                                                                     |
+ * These functions has been declared to write directly on the dataSegment file or on the           |
+ * codeSegment file.                                                                               |
+ * ------------------------------------------------------------------------------------------------| */
 void init_data_segment (FILE* dtS) {
     fprintf(dtS, ".text\n");
     fprintf(dtS, ".section .rodata\n");
@@ -106,6 +129,10 @@ std::string set_string_in_data_segment (const std::string &src, FILE *dtS) {
     return labelTemp + std::to_string(labelCount - 1);
 }
 
+/** ------------------------------------------------------------------------------------------------
+ * exit function:                                                                                  |
+ * These functions has been declared to set a exit operation in assembly code                      |
+ * ------------------------------------------------------------------------------------------------| */
 void asm_exit_by_number (std::vector<token> *list, temp* Temp) {
     Temp->code += "\tmovl $1, %eax\n"
                   "\tmovl $" + list->at(1).value_as_token + ", %ebx\n"
@@ -126,6 +153,11 @@ void asm_exit_by_arithmetic_op (std::vector<token> *list, temp *Temp) {
                    "\tint $0x80\n";
 }
 
+/** ------------------------------------------------------------------------------------------------
+ * wout function:                                                                                  |
+ * These functions has been declared to set the necessary code in assembly to be able              |
+ * of print any datatype on wg++ programming language                                              |
+ * ------------------------------------------------------------------------------------------------| */
 void asm_wout_string (const std::string &namelabel, temp *Temp) {
     Temp->code += "\tleaq " + namelabel + "(%rip), %rax\n"
                   "\tmovq %rax, %rdi\n"
@@ -158,6 +190,11 @@ void asm_wout_arithmetic_op (std::vector<token> *list, temp *Temp) {
                   "\tmovl $0, %eax\n";
 }
 
+/** ------------------------------------------------------------------------------------------------
+ * integer declaration:                                                                            |
+ * These functions has been declared to the creation of integer variables with assembly code       |
+ * these integer variables are of 32 bits.                                                         |
+ * ------------------------------------------------------------------------------------------------| */
 void asm_make_int_by_number (std::vector<token> *list, temp *Temp) {
     Temp->code += "\tsubq $4, %rsp\n"
                   "\tmovl $" + list->at(3).value_as_token + ", -" + std::to_string(Temp->bytes4) + "(%rbp)\n";

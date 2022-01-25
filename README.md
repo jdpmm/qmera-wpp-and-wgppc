@@ -12,9 +12,9 @@ Every assembly code will be saved at `./src/out`
 - [x] Negative numbers
 
 ## TODO
-- [ ] `exit` function (2/?)
-- [ ] `wout` function (2/?)
-- [ ] Functions to print (1/2)
+- [ ] `exit` function (3/?)
+- [ ] `wout` function (3/?)
+- [ ] Functions to print `wout and printf` (1/2)
 - [ ] Copy values among variables with if it's possible (1/?)
 - [ ] Arithmetic (1/2)
 - [ ] Integer variables
