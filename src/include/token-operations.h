@@ -68,7 +68,7 @@ void parser () {
         if ( currntLine->at(0).type == INT_RW ) {
             type = check_int_declaration(currntLine, currnTemp->def_name);
             if ( type == 'n' ) asm_make_int_by_number(currntLine, currnTemp);
-            if ( type == 'v' ) asm_make_int_by_int(currntLine, currnTemp);
+            if ( type == 'v' ) asm_make_int_by_var(currntLine, currnTemp);
             if ( type == 'm' ) asm_make_int_by_arith(currntLine, currnTemp);
         }
 
@@ -92,6 +92,7 @@ void parser () {
         if ( currntLine->at(0).type == CHR_RW ) {
             type = check_chr_declaration(currntLine);
             if ( type == 'c' ) asm_make_chr_by_character(currntLine, currnTemp);
+            if ( type == 'v' ) asm_make_chr_by_var(currntLine, currnTemp);
         }
 
     }

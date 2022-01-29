@@ -14,28 +14,14 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8699336-817d-4a4e-a3e7-5b3920cfdd02" name="Changes" comment="`printf` function (1/?)">
+    <list default="true" id="b8699336-817d-4a4e-a3e7-5b3920cfdd02" name="Changes" comment="guess who is back! character declarations: done!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/code/i-int-operations.wgpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/code/i-int-operations.wgpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/final.sh" beforeDir="false" afterPath="$PROJECT_DIR$/src/sh/final.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/assembly-help.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/assembly-help.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/code/j-character-variables.wgpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/code/j-character-variables.wgpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/include/does-it-make-sense.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/does-it-make-sense.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/err-report.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/err-report.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/include/generate.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/generate.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/lexer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/template.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/template.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/include/token-operations.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/token-operations.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/token.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/util.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/util.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/include/variables.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/variables.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/out/a-exit.wgpp.s" beforeDir="false" afterPath="$PROJECT_DIR$/src/out/a-exit.wgpp.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/out/b-wout.wgpp.s" beforeDir="false" afterPath="$PROJECT_DIR$/src/out/b-wout.wgpp.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/out/c-at-the-same-line.wgpp.s" beforeDir="false" afterPath="$PROJECT_DIR$/src/out/c-at-the-same-line.wgpp.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/out/f-arithmetic.wgpp.s" beforeDir="false" afterPath="$PROJECT_DIR$/src/out/f-arithmetic.wgpp.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/out/i-int-operations.wgpp.s" beforeDir="false" afterPath="$PROJECT_DIR$/src/out/i-int-operations.wgpp.s" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/out/j-character-variables.wgpp.s" beforeDir="false" afterPath="$PROJECT_DIR$/src/out/j-character-variables.wgpp.s" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -124,7 +110,7 @@
       <workItem from="1643476013559" duration="87000" />
       <workItem from="1643476117913" duration="6815000" />
       <workItem from="1643485567266" duration="126000" />
-      <workItem from="1643485704063" duration="6511000" />
+      <workItem from="1643485704063" duration="10143000" />
     </task>
     <task id="LOCAL-00001" summary="print values of integer variables: done!">
       <created>1643045498227</created>
@@ -189,7 +175,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643120652781</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="guess who is back! character declarations: done!">
+      <created>1643493305387</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1643493305387</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -216,6 +209,7 @@
     <MESSAGE value="docs..." />
     <MESSAGE value="`CHG` function (3/?): done!" />
     <MESSAGE value="`printf` function (1/?)" />
-    <option name="LAST_COMMIT_MESSAGE" value="`printf` function (1/?)" />
+    <MESSAGE value="guess who is back! character declarations: done!" />
+    <option name="LAST_COMMIT_MESSAGE" value="guess who is back! character declarations: done!" />
   </component>
 </project>

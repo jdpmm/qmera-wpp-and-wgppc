@@ -92,6 +92,7 @@ char check_chr_declaration (std::vector<token> *list) {
     if ( list->at(1).type != VAR_NAME ) token_expected("NAME VARIABLE");
     if ( list->at(2).type != EQUALS_S ) token_expected("EQUALS SYMBOL");
     if ( list->at(3).type == CHR_VAL ) return 'c';
+    if ( list->at(3).type == VAR_NAME ) return 'v';
 
     nonsense();
     return '-';

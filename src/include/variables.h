@@ -46,6 +46,7 @@ variable* get_variable (const std::string &name, varType type, const std::string
     else {
         // TODO: check another types
         if ( type == INTEGER ) no_right_type_variable("INTEGER", name);
+        if ( type == CHARACTER ) no_right_type_variable("CHARACTER", name);
     }
 
     var_doesnt_exits(name, defname);

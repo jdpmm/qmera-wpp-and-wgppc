@@ -235,14 +235,15 @@ void asm_make_int_by_number (std::vector<token> *list, temp *Temp) {
     Temp->bytesR += 4;
 }
 
-void asm_make_int_by_int (std::vector<token> *list, temp *Temp) {
+void asm_make_int_by_var (std::vector<token> *list, temp *Temp) {
     variable* thisvar = get_variable(list->at(3).value_as_token, ANY_TYPE, Temp->def_name);
     unsigned int posStack = thisvar->poStack;
     Temp->code += "\tsubq $4, %rsp\n";
 
-    if ( thisvar->type == INTEGER ) {
+    // TODO: check this
+    if ( thisvar->type == INTEGER || thisvar->type == CHARACTER ) {
         Temp->code += "\tmovl -" + std::to_string(posStack) + "(%rbp), %eax\n"
-                                                              "\tmovl %eax, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
+                      "\tmovl %eax, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
     }
 
     push_variable(list->at(1).value_as_token, INTEGER, Temp->bytesR, Temp->def_name);
@@ -281,6 +282,10 @@ void asm_printf_function (std::vector<token> *list, temp *Temp, FILE *dataS) {
         if ( thisvar ) {
             if ( thisvar->type == INTEGER ) {
                 str_to_asm += "%d";
+                idx += var_name.size();
+            }
+            if ( thisvar->type == CHARACTER ) {
+                str_to_asm += "%c";
                 idx += var_name.size();
             }
 
@@ -338,5 +343,17 @@ void asm_make_chr_by_character (std::vector<token> *list, temp *Temp) {
     push_variable(list->at(1).value_as_token, CHARACTER, Temp->bytesR, Temp->def_name);
     Temp->bytesR += 4;
 }
+
+void asm_make_chr_by_var (std::vector<token> *list, temp *Temp) {
+    unsigned int poStack = get_variable(list->at(3).value_as_token, ANY_TYPE, Temp->def_name)->poStack;
+    Temp->code += "\tsubq $4, %rsp\n"
+                  "\tmovl -" + std::to_string(poStack) + "(%rbp), %eax\n"
+                  "\tmovl %eax, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
+
+    push_variable(list->at(1).value_as_token, CHARACTER, Temp->bytesR, Temp->def_name);
+    Temp->bytesR += 4;
+}
+
+
 
 #endif

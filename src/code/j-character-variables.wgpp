@@ -1,4 +1,10 @@
-chr $char$ = '4';
-wout $char$;
+chr $char$ = 'b';
+int $integer$ = 98;
+printf "$integer$ is equals to $char$ in ascii code\n";
+
+chr $char2$ = $char$;
+int $integer2$ = $char$;
+wout $char2$;
+wout $integer2$;
 
 exit 0;
