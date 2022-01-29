@@ -1,7 +1,7 @@
 /** This file has been created to report any error while the compiling process
  * - Created by jdpmm on 22-01-2022 **/
-#ifndef WG___ERR_REPORT_H
-#define WG___ERR_REPORT_H
+#ifndef WGPP_ERR_REPORT_H
+#define WGPP_ERR_REPORT_H
 
 #include <iostream>
 

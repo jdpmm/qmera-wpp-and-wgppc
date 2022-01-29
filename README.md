@@ -3,7 +3,7 @@
 This is the continuation of my first ["programming language"](https://github.com/jdpmm/wgdi) which is interpreted, but i wanna go beyond it, and make a better programming language, so this is my compiled programming language.
 Every assembly code will be saved at `./src/out`
 
-## Done/Semi-done (if that exists)
+## Done
 - [x] Search tokens
 - [x] Many instructions at the same line (; is the delimiter)
 - [x] Check semicolon at the end of every line
@@ -17,11 +17,11 @@ Every assembly code will be saved at `./src/out`
 - [ ] `wout` function (3/?)
 - [ ] `CHG` function (3/?)
 - [ ] `printf` function (1/?)
-- [ ] Integer oprations (1/?)
+- [ ] Integer operations (1/?)
 - [ ] Copy values among variables (1/?)
 - [ ] Arithmetic (1/2)
 - [ ] Integer variables
-- [ ] Character variables
+- [ ] Character variables (1/?)
 - [ ] Execution arguments
 - [ ] Pointer variables
 - [ ] Stdin

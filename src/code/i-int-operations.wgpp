@@ -8,6 +8,6 @@ DEC $unique$;
 printf "DEC operation: $unique$\n";
 
 NEG $unique$;
-printf "NEG opration $unique$\n";
+printf "NEG operation $unique$\n";
 
 exit 0;

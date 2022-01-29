@@ -15,13 +15,14 @@
 		.string "DEC operation: %d\n"
 		.text
 	.lbp4:
-		.string "NEG opration %d\n"
+		.string "NEG operation %d\n"
 		.text
 main:
 	pushq %rbp
 	movq %rsp, %rbp
 	subq $4, %rsp
 	movl $3, -4(%rbp)
+    movl $'4', %eax
 	movl -4(%rbp), %esi
 	leaq .lbp1(%rip), %rax
 	movq %rax, %rdi

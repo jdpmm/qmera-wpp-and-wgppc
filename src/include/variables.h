@@ -1,8 +1,9 @@
 /** This file has been created to know everything about the variables created in the program
  * - Created by jdpmm on 23-01-2022 **/
-#ifndef WG___VARIABLES_H
-#define WG___VARIABLES_H
+#ifndef WGPP_VARIABLES_H
+#define WGPP_VARIABLES_H
 
+#include "err-report.h"
 #include <iostream>
 #include <vector>
 
@@ -12,7 +13,7 @@ enum varType {
     ANY_TYPE
 };
 
-typedef struct {
+typedef struct VAR {
     /** name      : ...
      * poStack    : Index in the assembly stack
      * type       : ...
@@ -24,8 +25,7 @@ typedef struct {
 } variable;
 std::vector<variable> variables;
 
-void push_variable (const std::string &name, varType type, unsigned int poStack, const std::string &funcname) {
-    variable var;
+void push_variable (const std::string &name, varType type, unsigned int poStack, const std::string &funcname) { variable var;
     var.name = name;
     var.type = type;
     var.belongs_to = funcname;

@@ -1,7 +1,7 @@
 /** This file has been created to check the syntax in the code
  * - Created by jdpmm on 23-01-2022 **/
-#ifndef WG___DOES_IT_MAKE_SENSE_H
-#define WG___DOES_IT_MAKE_SENSE_H
+#ifndef WGPP_DOES_IT_MAKE_SENSE_H
+#define WGPP_DOES_IT_MAKE_SENSE_H
 
 #include "token.h"
 #include "err-report.h"
@@ -84,6 +84,17 @@ void check_int_op (std::vector<token> *list) {
      * which is "neg" and is: n = n * - 1; :D **/
     if ( list->size() <= 2 ) tokens_lost();
     if ( list->at(1).type != VAR_NAME  ) token_expected("INTEGER VARIABLE");
+}
+
+char check_chr_declaration (std::vector<token> *list) {
+    // chr $f$ = 5;
+    if ( list->size() <= 4 ) tokens_lost();
+    if ( list->at(1).type != VAR_NAME ) token_expected("NAME VARIABLE");
+    if ( list->at(2).type != EQUALS_S ) token_expected("EQUALS SYMBOL");
+    if ( list->at(3).type == CHR_VAL ) return 'c';
+
+    nonsense();
+    return '-';
 }
 
 #endif

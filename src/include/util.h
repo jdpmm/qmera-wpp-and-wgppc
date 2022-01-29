@@ -1,9 +1,10 @@
 /** This file has been created to make some useful operations
  * - Created by jdpmm on 22-01-2022 **/
-#ifndef WG___UTIL_H
-#define WG___UTIL_H
+#ifndef WGPP_UTIL_H
+#define WGPP_UTIL_H
 
 #include "variables.h"
+#include "err-report.h"
 #include <iostream>
 
 std::string get_whole_number (std::string src, size_t from) {
@@ -24,6 +25,17 @@ std::string get_whole_string (const std::string &src, size_t from) {
         from++;
     } while ( src[from] != '"' );
     return r;
+}
+
+std::string get_character_value (const std::string &src, size_t from) {
+    std::string chr;
+    chr.push_back('\'');
+    chr.push_back(src[from + 1]);
+
+    if ( src[from + 2] != '\'' ) token_expected("SINGLE QUOTE");
+    chr.push_back('\'');
+
+    return chr;
 }
 
 bool valid_char (char chr) {

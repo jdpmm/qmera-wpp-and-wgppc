@@ -1,8 +1,8 @@
 /** This file has been created to save all tokens found it and save the parser
  * function, a very useful function
  * - Created to jdpmm on 22-01-2022 **/
-#ifndef WG___TOKEN_OPERATIONS_H
-#define WG___TOKEN_OPERATIONS_H
+#ifndef WGPP_TOKEN_OPERATIONS_H
+#define WGPP_TOKEN_OPERATIONS_H
 
 #include "token.h"
 #include "template.h"
@@ -87,6 +87,11 @@ void parser () {
         if ( currntLine->at(0).type == INT_OP ) {
             check_int_op(currntLine);
             asm_integer_operation(currntLine, currnTemp);
+        }
+
+        if ( currntLine->at(0).type == CHR_RW ) {
+            type = check_chr_declaration(currntLine);
+            if ( type == 'c' ) asm_make_chr_by_character(currntLine, currnTemp);
         }
 
     }

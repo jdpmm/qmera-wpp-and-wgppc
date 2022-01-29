@@ -1,8 +1,8 @@
 /** This file has been created to clean and analyze every line in the wgpp code, also
  * search tokens and push them, but that process is job of another file
  * - Created by jdpmm on 22-01-2022 **/
-#ifndef WG___LEXER_H
-#define WG___LEXER_H
+#ifndef WGPP_LEXER_H
+#define WGPP_LEXER_H
 
 #include "token-operations.h"
 #include "util.h"
@@ -10,7 +10,7 @@
 
 /* A comment could be in a several lines, so we need to know if one comment was opened in N line
  * and was closed in M line */
-bool comment_declared = false;
+static bool comment_declared = false;
 
 void searching_tokens (const std::string &line, int line_code, size_t idxHeadToken) {
     size_t idx = 0;
@@ -93,6 +93,17 @@ void searching_tokens (const std::string &line, int line_code, size_t idxHeadTok
         if ( token == "INC" || token == "DEC" || token == "NEG" ) {
             push_token(idxHeadToken, INT_OP, token, line_code);
             token = "";
+        }
+        if ( token == "chr" ) {
+            push_token(idxHeadToken, CHR_RW, token, line_code);
+            token = "";
+        }
+        if ( token == "'" ) {
+            token = get_character_value(line, idx);
+            push_token(idxHeadToken, CHR_VAL, token, line_code);
+
+            token = "";
+            idx += 2;
         }
 
         idx++;

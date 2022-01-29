@@ -9,7 +9,7 @@ main:
 	pushq %rbp
 	movq %rsp, %rbp
 	movl $1, %eax
-	movl $-1, %ebx
+	movl $0, %ebx
 	int $0x80
 	leave
 	ret

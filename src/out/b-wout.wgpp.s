@@ -3,7 +3,7 @@
 	.globl main
 	.type main, @function
 	.printnum:
-		.string "%d"
+		.string "%d\n"
 		.text
 	.lbp1:
 		.string "hola como estas"

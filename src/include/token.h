@@ -1,8 +1,8 @@
 /** This file has been created to save all token types and know how it works and
  * how can be used
  * - Created by jdpmm on 22-01-2022 **/
-#ifndef WG___TOKEN_H
-#define WG___TOKEN_H
+#ifndef WGPP_TOKEN_H
+#define WGPP_TOKEN_H
 
 #include <iostream>
 #include <vector>
@@ -23,6 +23,8 @@ enum TokenType {
     CHG_CALL,      // Calling to change value function
     PRINTF_FUNC,   // printf function like printf of C
     INT_OP,        // integer operation: inc (++), dec (--) and neg (n * -1)
+    CHR_RW,        // reserved word to create a character variable
+    CHR_VAL,       // character value: 'c'
 };
 
 typedef struct Token {

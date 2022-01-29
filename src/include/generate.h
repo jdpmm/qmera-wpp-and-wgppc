@@ -1,18 +1,20 @@
 /** This file has been created to parser all tokens into assembly code (GNU Assembly)
  * - Created by jpdmm on 23-01-2022 **/
-#ifndef WG___GENERATE_H
-#define WG___GENERATE_H
+#ifndef WGPP_GENERATE_H
+#define WGPP_GENERATE_H
 
 #include "assembly-help.h"
+#include "token.h"
+#include "template.h"
 #include "variables.h"
 #include "util.h"
 
 /** To print strings we need definite them in the data section, so to not repeat
  * strings we'll have a vector to save the name of every string declared before.
  * it causes don't spend memory foolishly **/
-unsigned int labelCount = 1;
-std::vector<std::string> labels;
-const std::string labelTemp = ".lbp";
+static unsigned int labelCount = 1;
+static std::vector<std::string> labels;
+static const std::string labelTemp = ".lbp";
 
 /** ------------------------------------------------------------------------------------------------
  * WG++ functions:                                                                                 |
@@ -116,7 +118,7 @@ void wgpp_chg_int_by_int (std::vector<token> *list, temp* Temp) {
     unsigned int poStack_savesvalue = get_variable(list->at(2).value_as_token, INTEGER, Temp->def_name)->poStack;
 
     Temp->code += "\tmovl -" + std::to_string(poStack_savesvalue) + "(%rbp), %eax\n"
-                  "\tmovl %eax, -" + std::to_string(poStack_tochage) + "(%rbp)\n";
+                                                                    "\tmovl %eax, -" + std::to_string(poStack_tochage) + "(%rbp)\n";
 }
 
 void wgpp_chg_int_by_arithmetic (std::vector<token> *list, temp *Temp) {
@@ -137,6 +139,9 @@ void init_data_segment (FILE* dtS) {
     fprintf(dtS, "\t.type main, @function\n");
     fprintf(dtS, "\t.printnum:\n");
     fprintf(dtS, "\t\t.string \"%%d\\n\"\n");
+    fprintf(dtS, "\t\t.text\n");
+    fprintf(dtS, "\t.printchr:\n");
+    fprintf(dtS, "\t\t.string \"%%c\\n\"\n");
     fprintf(dtS, "\t\t.text\n");
 }
 
@@ -161,21 +166,21 @@ std::string set_string_in_data_segment (const std::string &src, FILE *dtS) {
 void asm_exit_by_number (std::vector<token> *list, temp* Temp) {
     Temp->code += "\tmovl $1, %eax\n"
                   "\tmovl $" + list->at(1).value_as_token + ", %ebx\n"
-                  "\tint $0x80\n";
+                                                            "\tint $0x80\n";
 }
 
 void asm_exit_by_integer_variable (const std::string &namevar, temp *Temp) {
     unsigned int poStackvar = get_variable(namevar, INTEGER, Temp->def_name)->poStack;
     Temp->code += "\tmovl $1, %eax\n"
                   "\tmovl -" + std::to_string(poStackvar) + "(%rbp), %ebx\n"
-                  "\tint $0x80\n";
+                                                            "\tint $0x80\n";
 }
 
 void asm_exit_by_arithmetic_op (std::vector<token> *list, temp *Temp) {
     wgpp_arith_function(list, Temp, 3);
     Temp->code += "\tmovl $1, %eax\n"
                   "\tmovl %r14d, %ebx\n"
-                   "\tint $0x80\n";
+                  "\tint $0x80\n";
 }
 
 /** ------------------------------------------------------------------------------------------------
@@ -185,9 +190,9 @@ void asm_exit_by_arithmetic_op (std::vector<token> *list, temp *Temp) {
  * ------------------------------------------------------------------------------------------------| */
 void asm_wout_string (const std::string &namelabel, temp *Temp) {
     Temp->code += "\tleaq " + namelabel + "(%rip), %rax\n"
-                  "\tmovq %rax, %rdi\n"
-                  "\tcall puts@PLT\n"
-                  "\tmovl $0, %eax\n";
+                                          "\tmovq %rax, %rdi\n"
+                                          "\tcall puts@PLT\n"
+                                          "\tmovl $0, %eax\n";
 }
 
 void asm_wout_variable (const std::string &namevar, temp* Temp) {
@@ -195,9 +200,11 @@ void asm_wout_variable (const std::string &namevar, temp* Temp) {
     unsigned int idxStack = thisvar->poStack;
 
     Temp->code += "\tmovl -" + std::to_string(idxStack) + "(%rbp), %eax\n"
-                  "\tmovl %eax, %esi\n";
+                                                          "\tmovl %eax, %esi\n";
 
     if ( thisvar->type == INTEGER ) Temp->code += "\tleaq .printnum(%rip), %rax\n";
+    if ( thisvar->type == CHARACTER ) Temp->code += "\tleaq .printchr(%rip), %rax\n";
+
     Temp->code += "\tmovq %rax, %rdi\n"
                   "\tmovl $0, %eax\n"
                   "\tcall printf@PLT\n"
@@ -222,10 +229,10 @@ void asm_wout_arithmetic_op (std::vector<token> *list, temp *Temp) {
  * ------------------------------------------------------------------------------------------------| */
 void asm_make_int_by_number (std::vector<token> *list, temp *Temp) {
     Temp->code += "\tsubq $4, %rsp\n"
-                  "\tmovl $" + list->at(3).value_as_token + ", -" + std::to_string(Temp->bytes4) + "(%rbp)\n";
+                  "\tmovl $" + list->at(3).value_as_token + ", -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
 
-    push_variable(list->at(1).value_as_token, INTEGER, Temp->bytes4, Temp->def_name);
-    Temp->bytes4 += 4;
+    push_variable(list->at(1).value_as_token, INTEGER, Temp->bytesR, Temp->def_name);
+    Temp->bytesR += 4;
 }
 
 void asm_make_int_by_int (std::vector<token> *list, temp *Temp) {
@@ -235,20 +242,20 @@ void asm_make_int_by_int (std::vector<token> *list, temp *Temp) {
 
     if ( thisvar->type == INTEGER ) {
         Temp->code += "\tmovl -" + std::to_string(posStack) + "(%rbp), %eax\n"
-                      "\tmovl %eax, -" + std::to_string(Temp->bytes4) + "(%rbp)\n";
+                                                              "\tmovl %eax, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
     }
 
-    push_variable(list->at(1).value_as_token, INTEGER, Temp->bytes4, Temp->def_name);
-    Temp->bytes4 += 4;
+    push_variable(list->at(1).value_as_token, INTEGER, Temp->bytesR, Temp->def_name);
+    Temp->bytesR += 4;
 }
 
 void asm_make_int_by_arith (std::vector<token> *list, temp *Temp) {
     wgpp_arith_function(list, Temp, 5);
     Temp->code += "\tsubq $4, %rsp\n";
-    Temp->code += "\tmovl %r14d, -" + std::to_string(Temp->bytes4) + "(%rbp)\n";
+    Temp->code += "\tmovl %r14d, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
 
-    push_variable(list->at(1).value_as_token, INTEGER, Temp->bytes4, Temp->def_name);
-    Temp->bytes4 += 4;
+    push_variable(list->at(1).value_as_token, INTEGER, Temp->bytesR, Temp->def_name);
+    Temp->bytesR += 4;
 }
 
 /** ------------------------------------------------------------------------------------------------
@@ -297,14 +304,14 @@ void asm_printf_function (std::vector<token> *list, temp *Temp, FILE *dataS) {
         Temp->code += "\tmovl -" + std::to_string(vars.at(i).poStack) + "(%rbp), " + args_r32b[i] + "\n";
 
     Temp->code += "\tleaq " + labelprint + "(%rip), %rax\n"
-                  "\tmovq %rax, %rdi\n"
-                  "\tmovl $0, %eax\n"
-                  "\tcall printf@PLT\n"
-                  "\tmovl $0, %eax\n";
+                                           "\tmovq %rax, %rdi\n"
+                                           "\tmovl $0, %eax\n"
+                                           "\tcall printf@PLT\n"
+                                           "\tmovl $0, %eax\n";
 }
 
 /** ------------------------------------------------------------------------------------------------
- * integer operartions:                                                                            |
+ * integer operations:                                                                             |
  * These functions has been declarated to make the three basics operations with integer variables: |
  * - INC                                                                                           |
  * - DEC                                                                                           |
@@ -314,10 +321,22 @@ void asm_integer_operation (std::vector<token> *list, temp *Temp) {
     unsigned int idxStack = get_variable(list->at(1).value_as_token, INTEGER, Temp->def_name)->poStack;
     if ( list->at(0).value_as_token == "INC" )
         Temp->code += "\tincl -" + std::to_string(idxStack) + "(%rbp)\n";
-    else if ( list->at(0).value_as_token == "DEC" ) 
+    else if ( list->at(0).value_as_token == "DEC" )
         Temp->code += "\tdecl -" + std::to_string(idxStack) + "(%rbp)\n";
     else
         Temp->code += "\tnegl -" + std::to_string(idxStack) + "(%rbp)\n";
+}
+
+/** ------------------------------------------------------------------------------------------------
+ * character declaration:                                                                          |
+ * These functions has been declared to the creation of character variables with assembly code     |
+ * ------------------------------------------------------------------------------------------------| */
+void asm_make_chr_by_character (std::vector<token> *list, temp *Temp) {
+    Temp->code += "\tsubq $4, %rsp\n"
+                  "\tmovl $" + list->at(3).value_as_token + ", -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
+
+    push_variable(list->at(1).value_as_token, CHARACTER, Temp->bytesR, Temp->def_name);
+    Temp->bytesR += 4;
 }
 
 #endif

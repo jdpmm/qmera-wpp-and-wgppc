@@ -1,5 +1,6 @@
 #include "include/err-report.h"
 #include "include/lexer.h"
+#include "include/token-operations.h"
 #include <iostream>
 #include <fstream>
 
@@ -24,7 +25,7 @@ int main (int argc, char* argv[]) {
     init(&file);
     parser();
 
-    std::string lastep = "./final.sh " + std::string(argv[1]);
+    std::string lastep = "./sh/final.sh " + std::string(argv[1]);
     system(lastep.c_str());
     return 0;
 }

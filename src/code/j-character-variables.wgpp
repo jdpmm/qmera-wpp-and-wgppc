@@ -1,0 +1,4 @@
+chr $char$ = '4';
+wout $char$;
+
+exit 0;
