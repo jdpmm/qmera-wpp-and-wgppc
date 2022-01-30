@@ -16,6 +16,7 @@ void init (std::ifstream *file) {
     }
 }
 
+
 int main (int argc, char* argv[]) {
     if ( argc == 0 ) file_expected();
 

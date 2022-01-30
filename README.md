@@ -17,7 +17,7 @@ Every assembly code will be saved at `./src/out`
 ## TODO
 - [ ] `exit` function (3/?)
 - [ ] `wout` function (4/?)
-- [ ] `CHG` function (3/?)
+- [ ] `CHG` function (5/?)
 - [ ] `printf` function (2/?)
 - [ ] Integer operations (1/?)
 - [ ] Copy values among variables (2/?)
