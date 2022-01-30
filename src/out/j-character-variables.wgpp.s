@@ -15,23 +15,40 @@ main:
 	pushq %rbp
 	movq %rsp, %rbp
 	subq $4, %rsp
-	movl $'b', -4(%rbp)
+	movb $'b', -1(%rbp)
 	subq $4, %rsp
 	movl $98, -8(%rbp)
 	movl -8(%rbp), %esi
-	movl -4(%rbp), %edx
+	movsbl -1(%rbp), %edx
 	leaq .lbp1(%rip), %rax
 	movq %rax, %rdi
 	movl $0, %eax
 	call printf@PLT
 	movl $0, %eax
 	subq $4, %rsp
-	movl -4(%rbp), %eax
-	movl %eax, -12(%rbp)
+	movb -1(%rbp), %al
+	movb %al, -9(%rbp)
 	subq $4, %rsp
-	movl -4(%rbp), %eax
+	movl -1(%rbp), %eax
 	movl %eax, -16(%rbp)
-	movl -12(%rbp), %eax
+	movl -9(%rbp), %eax
+	movl %eax, %esi
+	leaq .printchr(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
+	movl -16(%rbp), %eax
+	movl %eax, %esi
+	leaq .printnum(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
+	movb $'j', -9(%rbp)
+	movb -9(%rbp), %al
+	movb %al, -16(%rbp)
+	movl -9(%rbp), %eax
 	movl %eax, %esi
 	leaq .printchr(%rip), %rax
 	movq %rax, %rdi

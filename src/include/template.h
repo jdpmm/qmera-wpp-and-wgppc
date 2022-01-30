@@ -17,11 +17,13 @@ typedef struct Temp {
     TemplateType type;
 
     /* For function templates:
-     * def_name : The name of function...
-     * bytesR   : Bytes reserved into the stack to save variables
-     * np       : How many parameters take the function */
+     * def_name   : The name of function...
+     * bytesR     : Bytes reserved into the stack to save variables
+     * nv_created : N variables created
+     * np         : How many parameters take the function */
     std::string def_name;
     unsigned int bytesR;
+    int nv_created;
     int np;
 } temp;
 std::vector<temp> templates;
@@ -29,7 +31,8 @@ std::vector<temp> templates;
 size_t make_function_template (std::string defname, int nparam) {
     temp newt;
     newt.type = DEF;
-    newt.bytesR = 4;
+    newt.bytesR = 0;
+    newt.nv_created = 0;
     newt.def_name = std::move(defname);
     newt.np = nparam;
 
@@ -51,6 +54,19 @@ void set_parameters_in_function (size_t idxTemp, const std::vector<variable> &ty
 
 inline temp* get_temp (size_t idx) {
     return &templates.at(idx);
+}
+
+void get_poStack_for_this_one (temp *Temp, const std::string &type) {
+    if ( (Temp->bytesR % 4) == 0 ) {
+        if ( type == "i" ) Temp->bytesR += 4;
+        if ( type == "c" ) Temp->bytesR += 1;
+    }
+    else {
+        if ( type == "c" ) Temp->bytesR += 1;
+        if ( type == "i" ) Temp->bytesR = 4 * Temp->nv_created + 4;
+    }
+
+    Temp->nv_created++;
 }
 
 #endif

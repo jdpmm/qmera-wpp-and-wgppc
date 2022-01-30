@@ -40,8 +40,9 @@ char check_int_declaration (std::vector<token> *list, const std::string &defname
     /** Integer variables declaration can have three modes:
      * - Create an integer with a constant value
      * - Copy the value of another integer variable
-     * - The value will be given by an arithmetic operation **/
-    variable* var = get_variable_without_error(list->at(1).value_as_token, INTEGER, defname);
+     * - The value will be given by an arithmetic operation
+     * - Copy the ascii position of one character variable **/
+    variable* var = get_variable_without_error(list->at(1).value_as_token, ANY_TYPE, defname);
     if ( var ) trying_to_overwrite_variable();
 
     if ( list->size() <= 4 ) tokens_lost();
@@ -55,15 +56,32 @@ char check_int_declaration (std::vector<token> *list, const std::string &defname
     return '-';
 }
 
-char check_chg (std::vector<token> *list, const std::string &defname) {
+char check_chg (std::vector<token> *list, const std::string &defname, varType *thisT) {
     /** CHG operation:
      * Allow you change the value of one variable
-     * - The variable and the new value must has the same datatype! **/
+     * - The variable and the new value must has the same datatype!
+     *
+     * CHG function works to many variables types, so the returned value will
+     * always mean the same thing with any variable type.
+     *
+     * c -> constant
+     * v -> Another variable
+     * m -> Math operation (only for integer variables) **/
     if ( list->size() <= 3 ) tokens_lost();
     if ( list->at(1).type != VAR_NAME ) token_expected("VARIABLE NAME");
-    if ( list->at(2).type == NUMBER ) return 'n';
-    if ( list->at(2).type == VAR_NAME ) return 'v';
-    if ( list->at(2).type == ARITH_CALL ) return 'm';
+
+    variable* thisv = get_variable(list->at(1).value_as_token, ANY_TYPE, defname);
+    if ( thisv->type == INTEGER ) {
+        *thisT = INTEGER;
+        if ( list->at(2).type == NUMBER ) return 'c';
+        if ( list->at(2).type == VAR_NAME ) return 'v';
+        if ( list->at(2).type == ARITH_CALL ) return 'm';
+    }
+    if ( thisv->type == CHARACTER ) {
+        *thisT = CHARACTER;
+        if ( list->at(2).type == CHR_VAL ) return 'c';
+        if ( list->at(2).type == VAR_NAME ) return 'v';
+    }
 
     nonsense();
     return '-';
@@ -83,11 +101,16 @@ void check_int_op (std::vector<token> *list) {
      * but in this case isn't with these symbols, also i added a new operation
      * which is "neg" and is: n = n * - 1; :D **/
     if ( list->size() <= 2 ) tokens_lost();
-    if ( list->at(1).type != VAR_NAME  ) token_expected("INTEGER VARIABLE");
+    if ( list->at(1).type != VAR_NAME ) token_expected("INTEGER VARIABLE");
 }
 
-char check_chr_declaration (std::vector<token> *list) {
-    // chr $f$ = 5;
+char check_chr_declaration (std::vector<token> *list, const std::string &defname) {
+    /** Character declaration:
+     * The only way to declare a character variable is setting a constant
+     * value and copying another the value of character variable **/
+    variable* var = get_variable_without_error(list->at(1).value_as_token, ANY_TYPE, defname);
+    if ( var ) trying_to_overwrite_variable();
+
     if ( list->size() <= 4 ) tokens_lost();
     if ( list->at(1).type != VAR_NAME ) token_expected("NAME VARIABLE");
     if ( list->at(2).type != EQUALS_S ) token_expected("EQUALS SYMBOL");

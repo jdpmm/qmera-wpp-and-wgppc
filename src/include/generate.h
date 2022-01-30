@@ -9,11 +9,12 @@
 #include "variables.h"
 #include "util.h"
 
+
 /** To print strings we need definite them in the data section, so to not repeat
- * strings we'll have a vector to save the name of every string declared before.
- * it causes don't spend memory foolishly **/
-static unsigned int labelCount = 1;
-static std::vector<std::string> labels;
+* strings we'll have a vector to save the name of every string declared before.
+* it causes don't spend memory foolishly **/
+unsigned int labelCount = 1;
+std::vector<std::string> labels;
 static const std::string labelTemp = ".lbp";
 
 /** ------------------------------------------------------------------------------------------------
@@ -108,23 +109,67 @@ void wgpp_arith_function (std::vector<token> *op, temp* Temp, size_t from) {
     }
 }
 
-void wgpp_chg_int_by_number (std::vector<token> *list, temp *Temp) {
-    unsigned int poStack = get_variable(list->at(1).value_as_token, INTEGER, Temp->def_name)->poStack;
-    Temp->code += "\tmovl $" + list->at(2).value_as_token + ", -" + std::to_string(poStack) + "(%rbp)\n";
+void wgpp_chg_function (std::vector<token> *list, temp *Temp, varType var_type, char chg_type) {
+    // TODO: Make it with another types
+    variable* vto_change = nullptr;
+    if ( var_type == INTEGER || var_type == CHARACTER ) {
+        vto_change = get_variable(list->at(1).value_as_token, var_type, Temp->def_name);
+    }
+
+    if ( var_type == INTEGER ) {
+        /** CHG function with integers:
+         * An integer variable could be changed by:
+         * - 'c' -> constant   == CHG $v$ 4;             -> v = 4
+         * - 'v' -> variable   == CHG $y$ $v$;           -> y = v
+         * - 'm' -> arithmetic == CHG $d$ ARITH(3 add 3) -> d = 6 **/
+        if ( chg_type == 'c' ) {
+            Temp->code += "\tmovl $" + list->at(2).value_as_token + ", -" + std::to_string(vto_change->poStack) + "(%rbp)\n";
+        }
+        if ( chg_type == 'v' ) {
+            variable* vto_copy = get_variable(list->at(2).value_as_token, ANY_TYPE, Temp->def_name);
+            if ( vto_copy->type == INTEGER ) {
+                Temp->code += "\tmovl -" + std::to_string(vto_copy->poStack) + "(%rbp), %eax\n"
+                              "\tmovl %eax, -" + std::to_string(vto_change->poStack) + "(%rbp)\n";
+            }
+            if ( vto_copy->type == CHARACTER ) {
+                Temp->code += "\tmovb -" + std::to_string(vto_copy->poStack) + "(%rbp), %al\n"
+                              "\tmovb %al, -" + std::to_string(vto_change->poStack) + "(%rbp)\n";
+            }
+        }
+        if ( chg_type == 'm' ) {
+            wgpp_arith_function(list, Temp, 4);
+            Temp->code += "\tmovl %r14d, -" + std::to_string(vto_change->poStack) + "(%rbp)\n";
+        }
+    }
+
+    else if ( var_type == CHARACTER ) {
+        if ( chg_type == 'c' ) {
+            Temp->code += "\tmovb $" + list->at(2).value_as_token + ", -" + std::to_string(vto_change->poStack) + "(%rbp)\n";
+        }
+        if ( chg_type == 'v' ) {
+            variable* vto_copy = get_variable(list->at(2).value_as_token, ANY_TYPE, Temp->def_name);
+            if ( vto_copy->type == CHARACTER ) {
+                Temp->code += "\tmovb -" + std::to_string(vto_copy->poStack) + "(%rbp), %al\n"
+                              "\tmovb %al, -" + std::to_string(vto_change->poStack) + "(%rbp)\n";
+            }
+        }
+
+    }
+
+
+
+
+
 }
 
-void wgpp_chg_int_by_int (std::vector<token> *list, temp* Temp) {
-    unsigned int poStack_tochage = get_variable(list->at(1).value_as_token, INTEGER, Temp->def_name)->poStack;
-    unsigned int poStack_savesvalue = get_variable(list->at(2).value_as_token, INTEGER, Temp->def_name)->poStack;
-
-    Temp->code += "\tmovl -" + std::to_string(poStack_savesvalue) + "(%rbp), %eax\n"
-                                                                    "\tmovl %eax, -" + std::to_string(poStack_tochage) + "(%rbp)\n";
-}
-
-void wgpp_chg_int_by_arithmetic (std::vector<token> *list, temp *Temp) {
-    unsigned int poStack = get_variable(list->at(1).value_as_token, INTEGER, Temp->def_name)->poStack;
-    wgpp_arith_function(list, Temp, 4);
-    Temp->code += "\tmovl %r14d, -" + std::to_string(poStack) + "(%rbp)\n";
+void wgpp_integer_operation (std::vector<token> *list, temp *Temp) {
+    unsigned int idxStack = get_variable(list->at(1).value_as_token, INTEGER, Temp->def_name)->poStack;
+    if ( list->at(0).value_as_token == "INC" )
+        Temp->code += "\tincl -" + std::to_string(idxStack) + "(%rbp)\n";
+    else if ( list->at(0).value_as_token == "DEC" )
+        Temp->code += "\tdecl -" + std::to_string(idxStack) + "(%rbp)\n";
+    else
+        Temp->code += "\tnegl -" + std::to_string(idxStack) + "(%rbp)\n";
 }
 
 /** ------------------------------------------------------------------------------------------------
@@ -228,35 +273,34 @@ void asm_wout_arithmetic_op (std::vector<token> *list, temp *Temp) {
  * these integer variables are of 32 bits.                                                         |
  * ------------------------------------------------------------------------------------------------| */
 void asm_make_int_by_number (std::vector<token> *list, temp *Temp) {
+    get_poStack_for_this_one(Temp, "i");
     Temp->code += "\tsubq $4, %rsp\n"
                   "\tmovl $" + list->at(3).value_as_token + ", -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
 
     push_variable(list->at(1).value_as_token, INTEGER, Temp->bytesR, Temp->def_name);
-    Temp->bytesR += 4;
 }
 
 void asm_make_int_by_var (std::vector<token> *list, temp *Temp) {
+    get_poStack_for_this_one(Temp, "i");
     variable* thisvar = get_variable(list->at(3).value_as_token, ANY_TYPE, Temp->def_name);
     unsigned int posStack = thisvar->poStack;
     Temp->code += "\tsubq $4, %rsp\n";
 
-    // TODO: check this
     if ( thisvar->type == INTEGER || thisvar->type == CHARACTER ) {
         Temp->code += "\tmovl -" + std::to_string(posStack) + "(%rbp), %eax\n"
                       "\tmovl %eax, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
     }
 
     push_variable(list->at(1).value_as_token, INTEGER, Temp->bytesR, Temp->def_name);
-    Temp->bytesR += 4;
 }
 
 void asm_make_int_by_arith (std::vector<token> *list, temp *Temp) {
+    get_poStack_for_this_one(Temp, "i");
     wgpp_arith_function(list, Temp, 5);
     Temp->code += "\tsubq $4, %rsp\n";
     Temp->code += "\tmovl %r14d, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
 
     push_variable(list->at(1).value_as_token, INTEGER, Temp->bytesR, Temp->def_name);
-    Temp->bytesR += 4;
 }
 
 /** ------------------------------------------------------------------------------------------------
@@ -305,8 +349,12 @@ void asm_printf_function (std::vector<token> *list, temp *Temp, FILE *dataS) {
 
     if ( vars.size() >= 6 ) printf_err();
     std::string labelprint = set_string_in_data_segment(str_to_asm, dataS);
-    for (size_t i = 0; i < vars.size(); ++i)
-        Temp->code += "\tmovl -" + std::to_string(vars.at(i).poStack) + "(%rbp), " + args_r32b[i] + "\n";
+    for (size_t i = 0; i < vars.size(); ++i) {
+        if ( vars.at(i).type == INTEGER )
+            Temp->code += "\tmovl -" + std::to_string(vars.at(i).poStack) + "(%rbp), " + args_r32b[i] + "\n";
+        if ( vars.at(i).type == CHARACTER )
+            Temp->code += "\tmovsbl -" + std::to_string(vars.at(i).poStack) + "(%rbp), " + args_r32b[i] + "\n";
+    }
 
     Temp->code += "\tleaq " + labelprint + "(%rip), %rax\n"
                                            "\tmovq %rax, %rdi\n"
@@ -316,44 +364,26 @@ void asm_printf_function (std::vector<token> *list, temp *Temp, FILE *dataS) {
 }
 
 /** ------------------------------------------------------------------------------------------------
- * integer operations:                                                                             |
- * These functions has been declarated to make the three basics operations with integer variables: |
- * - INC                                                                                           |
- * - DEC                                                                                           |
- * - NEG                                                                                           |
- * ------------------------------------------------------------------------------------------------| */
-void asm_integer_operation (std::vector<token> *list, temp *Temp) {
-    unsigned int idxStack = get_variable(list->at(1).value_as_token, INTEGER, Temp->def_name)->poStack;
-    if ( list->at(0).value_as_token == "INC" )
-        Temp->code += "\tincl -" + std::to_string(idxStack) + "(%rbp)\n";
-    else if ( list->at(0).value_as_token == "DEC" )
-        Temp->code += "\tdecl -" + std::to_string(idxStack) + "(%rbp)\n";
-    else
-        Temp->code += "\tnegl -" + std::to_string(idxStack) + "(%rbp)\n";
-}
-
-/** ------------------------------------------------------------------------------------------------
  * character declaration:                                                                          |
  * These functions has been declared to the creation of character variables with assembly code     |
  * ------------------------------------------------------------------------------------------------| */
 void asm_make_chr_by_character (std::vector<token> *list, temp *Temp) {
+    get_poStack_for_this_one(Temp, "c");
     Temp->code += "\tsubq $4, %rsp\n"
-                  "\tmovl $" + list->at(3).value_as_token + ", -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
+                  "\tmovb $" + list->at(3).value_as_token + ", -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
 
     push_variable(list->at(1).value_as_token, CHARACTER, Temp->bytesR, Temp->def_name);
-    Temp->bytesR += 4;
 }
 
 void asm_make_chr_by_var (std::vector<token> *list, temp *Temp) {
+    get_poStack_for_this_one(Temp, "c");
     unsigned int poStack = get_variable(list->at(3).value_as_token, ANY_TYPE, Temp->def_name)->poStack;
     Temp->code += "\tsubq $4, %rsp\n"
-                  "\tmovl -" + std::to_string(poStack) + "(%rbp), %eax\n"
-                  "\tmovl %eax, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
+                  "\tmovb -" + std::to_string(poStack) + "(%rbp), %al\n"
+                  "\tmovb %al, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
 
     push_variable(list->at(1).value_as_token, CHARACTER, Temp->bytesR, Temp->def_name);
-    Temp->bytesR += 4;
 }
-
 
 
 #endif

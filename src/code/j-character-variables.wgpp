@@ -7,4 +7,10 @@ int $integer2$ = $char$;
 wout $char2$;
 wout $integer2$;
 
+CHG $char2$ 'j';
+CHG $integer2$ $char2$;
+wout $char2$;
+wout $integer2$;
+
+
 exit 0;

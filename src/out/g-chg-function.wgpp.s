@@ -5,6 +5,9 @@
 	.printnum:
 		.string "%d\n"
 		.text
+	.printchr:
+		.string "%c\n"
+		.text
 main:
 	pushq %rbp
 	movq %rsp, %rbp

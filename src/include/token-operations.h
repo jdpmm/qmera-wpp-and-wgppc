@@ -73,10 +73,9 @@ void parser () {
         }
 
         if ( currntLine->at(0).type == CHG_CALL ) {
-            type = check_chg(currntLine, currnTemp->def_name);
-            if ( type == 'n' ) wgpp_chg_int_by_number(currntLine, currnTemp);
-            if ( type == 'v' ) wgpp_chg_int_by_int(currntLine, currnTemp);
-            if ( type == 'm' ) wgpp_chg_int_by_arithmetic(currntLine, currnTemp);
+            varType typeToChange;
+            type = check_chg(currntLine, currnTemp->def_name, &typeToChange);
+            wgpp_chg_function(currntLine, currnTemp, typeToChange, type);
         }
 
         if ( currntLine->at(0).type == PRINTF_FUNC ) {
@@ -86,11 +85,11 @@ void parser () {
 
         if ( currntLine->at(0).type == INT_OP ) {
             check_int_op(currntLine);
-            asm_integer_operation(currntLine, currnTemp);
+            wgpp_integer_operation(currntLine, currnTemp);
         }
 
         if ( currntLine->at(0).type == CHR_RW ) {
-            type = check_chr_declaration(currntLine);
+            type = check_chr_declaration(currntLine, currnTemp->def_name);
             if ( type == 'c' ) asm_make_chr_by_character(currntLine, currnTemp);
             if ( type == 'v' ) asm_make_chr_by_var(currntLine, currnTemp);
         }
