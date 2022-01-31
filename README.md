@@ -19,6 +19,8 @@ Every assembly code will be saved at `./src/out`
 - [ ] `wout` function (4/?)
 - [ ] `CHG` function (5/?)
 - [ ] `printf` function (2/?)
+- [ ] Functions (1/2)
+- [ ] `call` token (1/2)
 - [ ] Integer operations (1/?)
 - [ ] Copy values among variables (2/?)
 - [ ] Arithmetic (1/2)
