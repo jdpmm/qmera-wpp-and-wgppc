@@ -25,6 +25,12 @@ enum TokenType {
     INT_OP,        // integer operation: inc (++), dec (--) and neg (n * -1)
     CHR_RW,        // reserved word to create a character variable
     CHR_VAL,       // character value: 'c'
+    DEF_DEF,       // function definition
+    FIN_DEF,       // end of one function
+    CALL,          // go to one function
+    DEF_NAME,      // function name
+    VOID,          // to indicate if one function don't take arguments
+    COLON_2,       // it's used to indicate the arguments to one function, it'll always be with a call token
 };
 
 typedef struct Token {

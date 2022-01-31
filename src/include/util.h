@@ -64,4 +64,18 @@ std::string get_name_of (const std::string &src, size_t from, char delimiter, bo
     return name;
 }
 
+std::string get_name_func (const std::string &src, size_t from, char case_) {
+    std::string name;
+
+    do {
+        if ( from >= src.size() ) delimiter_expected();
+        if ( !valid_char(src[from]) ) invalid_name(name);
+
+        name += src[from];
+        from++;
+    } while ( src[from] != case_ );
+
+    return name;
+}
+
 #endif

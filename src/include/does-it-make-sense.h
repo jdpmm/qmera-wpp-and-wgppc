@@ -6,6 +6,7 @@
 #include "token.h"
 #include "err-report.h"
 #include "variables.h"
+#include "functions.h"
 
 char check_exit (std::vector<token> *list) {
     /** The exit operation could have three modes:
@@ -117,6 +118,42 @@ char check_chr_declaration (std::vector<token> *list, const std::string &defname
     if ( list->at(3).type == CHR_VAL ) return 'c';
     if ( list->at(3).type == VAR_NAME ) return 'v';
 
+    nonsense();
+    return '-';
+}
+
+char check_def_def (std::vector<token> *list) {
+    /** Function definition:
+     * A function definition looks like:
+     * def function_name ();    -> This function doesn't take arguments
+     * Give a few seconds to make another function types **/
+    if ( list->size() <= 4 ) tokens_lost();
+    size_t n_tokens = list->size();
+
+    if ( list->at(1).type != DEF_NAME ) token_expected("DEF NAME");
+    if ( list->at(2).type != L_PAR ) token_expected("LEFT PARENTHESIS");
+    if ( list->at(n_tokens - 2).type != R_PAR ) token_expected("RIGHT PARENTHESIS");
+    if ( list->at(n_tokens - 1).type != SEMI_COLON ) token_expected("SEMICOLON");
+
+    if ( list->at(3).type == R_PAR ) return 'w';
+    else {
+        if ( list->at(3).type == INT_RW ) return 'p';
+        if ( list->at(3).type == CHR_RW ) return 'p';
+    }
+
+    nonsense();
+    return '-';
+}
+
+char check_call (std::vector<token> *list) {
+    if ( list->size() <= 2 ) tokens_lost();
+    if ( list->at(1).type != DEF_NAME ) token_expected("DEF NAME");
+    if ( list->at(2).type != COLON_2 ) token_expected("ARGUMENTS INDICATOR");
+
+    func *this_def = find_a_function(list->at(1).value_as_token);
+    if ( this_def->n_parameters == 0 && list->at(3).type == VOID && list->at(4).type == SEMI_COLON ) return 'w';
+
+    // TODO: arguments in the function
     nonsense();
     return '-';
 }

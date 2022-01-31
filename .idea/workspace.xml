@@ -15,7 +15,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b8699336-817d-4a4e-a3e7-5b3920cfdd02" name="Changes" comment="Simple character variables: done!">
+      <change afterPath="$PROJECT_DIR$/src/include/functions.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/does-it-make-sense.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/does-it-make-sense.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/err-report.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/err-report.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/generate.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/generate.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/lexer.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/template.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/template.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/token-operations.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/token-operations.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/token.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/include/util.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/util.h" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +87,11 @@
     </key>
   </component>
   <component name="RunManager">
+    <configuration default="true" type="CLionExternalRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true">
+      <method v="2">
+        <option name="CLION.EXTERNAL.BUILD" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="wgpp" type="CMakeRunConfiguration" factoryName="Application" REDIRECT_INPUT="false" ELEVATE="false" USE_EXTERNAL_CONSOLE="false" PASS_PARENT_ENVS_2="true" PROJECT_NAME="wgpp" TARGET_NAME="wgpp" CONFIG_NAME="Debug" RUN_TARGET_PROJECT_NAME="wgpp" RUN_TARGET_NAME="wgpp">
       <method v="2">
         <option name="com.jetbrains.cidr.execution.CidrBuildBeforeRunTaskProvider$BuildBeforeRunTask" enabled="true" />
@@ -107,6 +123,8 @@
       <workItem from="1643485704063" duration="15394000" />
       <workItem from="1643560180797" duration="24000" />
       <workItem from="1643560217718" duration="9305000" />
+      <workItem from="1643595984883" duration="16000" />
+      <workItem from="1643596012390" duration="7478000" />
     </task>
     <task id="LOCAL-00001" summary="print values of integer variables: done!">
       <created>1643045498227</created>

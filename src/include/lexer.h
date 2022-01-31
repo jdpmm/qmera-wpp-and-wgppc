@@ -105,6 +105,36 @@ void searching_tokens (const std::string &line, int line_code, size_t idxHeadTok
             token = "";
             idx += 2;
         }
+        if ( token == "def" ) {
+            push_token(idxHeadToken, DEF_DEF, token, line_code);
+
+            token = get_name_func(line, ++idx, '(');
+            push_token(idxHeadToken, DEF_NAME, token, line_code);
+
+            idx += token.size() - 1;
+            token = "";
+        }
+        if ( token == "void" ) {
+            push_token(idxHeadToken, VOID, token, line_code);
+            token = "";
+        }
+        if ( token == "findef" ) {
+            push_token(idxHeadToken, FIN_DEF, token, line_code);
+            token = "";
+        }
+        if ( token == "call" ) {
+            push_token(idxHeadToken, CALL, token, line_code);
+
+            token = get_name_func(line, ++idx, ':');
+            push_token(idxHeadToken, DEF_NAME, token, line_code);
+
+            idx += token.size() - 1;
+            token = "";
+        }
+        if ( token == "::" ) {
+            push_token(idxHeadToken, COLON_2, token, line_code);
+            token = "";
+        }
 
         idx++;
     }

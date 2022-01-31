@@ -40,11 +40,13 @@ void parser () {
     FILE* dataSegment = fopen("data.s", "w");
     init_data_segment(dataSegment);
     char type;
+    std::vector<token> *currntLine;
+    temp* currnTemp;
 
     size_t currenTemp_idx = make_function_template("main", 0);
     for (auto & tokenHead : tokenHeads) {
-        std::vector<token> *currntLine = &tokenHead;
-        temp* currnTemp = get_temp(currenTemp_idx);
+        currntLine = &tokenHead;
+        currnTemp = get_temp(currenTemp_idx);
         print_line(currntLine, currnTemp->def_name);
         type = '-';
 
@@ -93,6 +95,24 @@ void parser () {
             if ( type == 'c' ) asm_make_chr_by_character(currntLine, currnTemp);
             if ( type == 'v' ) asm_make_chr_by_var(currntLine, currnTemp);
         }
+
+        if ( currntLine->at(0).type == DEF_DEF ) {
+            if ( check_def_def(currntLine) == 'w' ) {
+                currenTemp_idx = make_function_template(currntLine->at(1).value_as_token, 0);
+            }
+        }
+
+        if ( currntLine->at(0).type == FIN_DEF ) {
+            /** When a function ends we need return to the main function and the index
+             * of the main function template is the 0 **/
+            currenTemp_idx = 0;
+        }
+
+        if ( currntLine->at(0).type == CALL ) {
+            type = check_call(currntLine);
+            if ( type == 'w' ) asm_call_without_args(currntLine->at(1).value_as_token, currnTemp);
+        }
+
 
     }
 

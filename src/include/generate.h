@@ -389,5 +389,13 @@ void asm_make_chr_by_var (std::vector<token> *list, temp *Temp) {
     push_variable(list->at(1).value_as_token, CHARACTER, Temp->bytesR, Temp->def_name);
 }
 
+/** ------------------------------------------------------------------------------------------------
+ * calling wg++ functions:                                                                         |
+ * These functions has been declared to call wg++ functions and if the function takes parameters   |
+ * set the arguments in the call                                                                   |
+ * ------------------------------------------------------------------------------------------------| */
+ void asm_call_without_args (const std::string &defname, temp *Temp) {
+     Temp->code += "\tcall " + defname + "\n";
+ }
 
 #endif

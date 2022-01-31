@@ -1,0 +1,15 @@
+def namefunction ();
+    wout "Hey from one function";
+findef;
+
+call namefunction :: void;
+call namefunction :: void;
+call namefunction :: void;
+call namefunction :: void;
+call namefunction :: void;
+call namefunction :: void;
+call namefunction :: void;
+call namefunction :: void;
+call namefunction :: void;
+
+exit 0;

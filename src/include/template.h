@@ -6,6 +6,7 @@
 
 #include "assembly-help.h"
 #include "variables.h"
+#include "functions.h"
 
 enum TemplateType {
     DEF
@@ -43,6 +44,8 @@ size_t make_function_template (std::string defname, int nparam) {
                                 "\tleave\n"
                                 "\tret\n";
     templates.push_back(newt);
+
+    new_function(newt.def_name, newt.np);
     return templates.size() - 1;
 }
 

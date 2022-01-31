@@ -86,4 +86,15 @@ void printf_err () {
     exit(1);
 }
 
+void def_doesnt_exits (const std::string &name) {
+    printf("%s does not exist as function\n", name.c_str());
+    exit(1);
+}
+
+void trying_to_overwrite_function () {
+    printf("You are trying to overwrite that function\n");
+    printf("That function already exists\n");
+    exit(1);
+}
+
 #endif
