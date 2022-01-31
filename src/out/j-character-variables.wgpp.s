@@ -62,6 +62,16 @@ main:
 	movl $0, %eax
 	call printf@PLT
 	movl $0, %eax
+	subq $4, %rsp
+	movl -16(%rbp), %eax
+	movl %eax, -17(%rbp)
+	movl -17(%rbp), %eax
+	movl %eax, %esi
+	leaq .printchr(%rip), %rax
+	movq %rax, %rdi
+	movl $0, %eax
+	call printf@PLT
+	movl $0, %eax
 	movl $1, %eax
 	movl $0, %ebx
 	int $0x80

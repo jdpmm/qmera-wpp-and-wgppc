@@ -155,11 +155,6 @@ void wgpp_chg_function (std::vector<token> *list, temp *Temp, varType var_type, 
         }
 
     }
-
-
-
-
-
 }
 
 void wgpp_integer_operation (std::vector<token> *list, temp *Temp) {
@@ -282,11 +277,12 @@ void asm_make_int_by_number (std::vector<token> *list, temp *Temp) {
 
 void asm_make_int_by_var (std::vector<token> *list, temp *Temp) {
     get_poStack_for_this_one(Temp, "i");
-    variable* thisvar = get_variable(list->at(3).value_as_token, ANY_TYPE, Temp->def_name);
-    unsigned int posStack = thisvar->poStack;
+
+    variable* varto_copy = get_variable(list->at(3).value_as_token, ANY_TYPE, Temp->def_name);
+    unsigned int posStack = varto_copy->poStack;
     Temp->code += "\tsubq $4, %rsp\n";
 
-    if ( thisvar->type == INTEGER || thisvar->type == CHARACTER ) {
+    if ( varto_copy->type == INTEGER || varto_copy->type == CHARACTER ) {
         Temp->code += "\tmovl -" + std::to_string(posStack) + "(%rbp), %eax\n"
                       "\tmovl %eax, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
     }
@@ -377,10 +373,18 @@ void asm_make_chr_by_character (std::vector<token> *list, temp *Temp) {
 
 void asm_make_chr_by_var (std::vector<token> *list, temp *Temp) {
     get_poStack_for_this_one(Temp, "c");
-    unsigned int poStack = get_variable(list->at(3).value_as_token, ANY_TYPE, Temp->def_name)->poStack;
-    Temp->code += "\tsubq $4, %rsp\n"
-                  "\tmovb -" + std::to_string(poStack) + "(%rbp), %al\n"
-                  "\tmovb %al, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
+    variable *varto_copy = get_variable(list->at(3).value_as_token, ANY_TYPE, Temp->def_name);
+    unsigned int idxStack = varto_copy->poStack;
+    Temp->code += "\tsubq $4, %rsp\n";
+
+    if ( varto_copy->type == CHARACTER ) {
+        Temp->code += "\tmovb -" + std::to_string(idxStack) + "(%rbp), %al\n"
+                      "\tmovb %al, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
+    }
+    if ( varto_copy->type == INTEGER ) {
+        Temp->code += "\tmovl -" + std::to_string(idxStack) + "(%rbp), %eax\n"
+                      "\tmovl %eax, -" + std::to_string(Temp->bytesR) + "(%rbp)\n";
+    }
 
     push_variable(list->at(1).value_as_token, CHARACTER, Temp->bytesR, Temp->def_name);
 }

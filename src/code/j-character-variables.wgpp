@@ -12,5 +12,7 @@ CHG $integer2$ $char2$;
 wout $char2$;
 wout $integer2$;
 
+chr $char3$ = $integer2$;
+wout $char3$;
 
 exit 0;

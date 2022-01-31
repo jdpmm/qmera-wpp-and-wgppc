@@ -14,22 +14,8 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b8699336-817d-4a4e-a3e7-5b3920cfdd02" name="Changes" comment="working!!">
+    <list default="true" id="b8699336-817d-4a4e-a3e7-5b3920cfdd02" name="Changes" comment="Simple character variables: done!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/code/j-character-variables.wgpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/code/j-character-variables.wgpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/assembly-help.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/assembly-help.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/does-it-make-sense.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/does-it-make-sense.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/err-report.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/err-report.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/generate.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/generate.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/lexer.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/lexer.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/template.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/template.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/token-operations.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/token-operations.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/token.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/token.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/util.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/util.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/include/variables.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/include/variables.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/out/g-chg-function.wgpp.s" beforeDir="false" afterPath="$PROJECT_DIR$/src/out/g-chg-function.wgpp.s" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/out/j-character-variables.wgpp.s" beforeDir="false" afterPath="$PROJECT_DIR$/src/out/j-character-variables.wgpp.s" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,7 +106,7 @@
       <workItem from="1643485567266" duration="126000" />
       <workItem from="1643485704063" duration="15394000" />
       <workItem from="1643560180797" duration="24000" />
-      <workItem from="1643560217718" duration="9064000" />
+      <workItem from="1643560217718" duration="9305000" />
     </task>
     <task id="LOCAL-00001" summary="print values of integer variables: done!">
       <created>1643045498227</created>
@@ -199,7 +185,14 @@
       <option name="project" value="LOCAL" />
       <updated>1643497353712</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Simple character variables: done!">
+      <created>1643573485060</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1643573485060</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,6 +221,7 @@
     <MESSAGE value="`printf` function (1/?)" />
     <MESSAGE value="guess who is back! character declarations: done!" />
     <MESSAGE value="working!!" />
-    <option name="LAST_COMMIT_MESSAGE" value="working!!" />
+    <MESSAGE value="Simple character variables: done!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Simple character variables: done!" />
   </component>
 </project>
