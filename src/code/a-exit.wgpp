@@ -1,2 +1,1 @@
-# This is a comment #
-exit 0;
+exit -1;

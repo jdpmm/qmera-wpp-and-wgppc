@@ -1,0 +1,29 @@
+#! /bin/bash
+# Created by jdpmm on 12-02-2022
+
+if [ "$1" = "" ]; then
+    echo "How to requires an argument!"
+fi
+
+BOLD="\033[0;36m"
+RESET="\033[0m"
+echo ""
+
+if [[ "$1" = "exit" ]]; then
+    echo "WGPP: Exit function manual"
+    echo -e "Syntax: ${BOLD}exit ${RESET}X;"
+    echo "The exit funtion is used to quit a wg++ program, takes an argument (X) as exit status, X could be:"
+    echo "  - A simple number"
+    echo "  - A simple character"
+    echo "  - A integer/character variable"
+    echo "  - A arithmetic operation"
+    echo "  - The helper variable"
+    echo "  - Pointer value"
+fi
+
+if [[ "$1" = "character" ]]; then
+    echo "WGPP: Characters"
+    echo "The characters are a variable type, if you have coded before you know it"
+    echo "  - The character must be between '' characters"
+    echo "  - The only space character could be: ', n, t and 0"
+fi

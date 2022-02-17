@@ -1,0 +1,2 @@
+int $integer$ = -12;
+exit 0;

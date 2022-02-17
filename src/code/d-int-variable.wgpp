@@ -1,9 +1,0 @@
-int $namevar$ = 5;
-
-wout "Value variable:";
-wout $namevar$;
-wout $namevar$;
-
-wout "The code error will be:";
-wout $namevar$;
-exit $namevar$;

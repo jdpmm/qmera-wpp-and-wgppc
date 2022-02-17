@@ -1,12 +1,6 @@
-wout "hola como estas";
-wout "hola como estas";
-wout "hola como estas";
-wout "hola como estas";
-wout "hola como estas";
-wout "hola como estas";
-wout "hola como estas";
-wout "hola como estas";
-wout "Another thing";
-wout "Always there will be a new line at the end";
+wout "I don't know what think about that";
+wout "Maybe it's better...";
+wout "I deleted all C++ files, a big mistake";
+wout "Coding again all C++ files";
 
 exit 0;
