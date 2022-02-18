@@ -33,9 +33,8 @@ void TOKEN_parser () {
 
         if ( cToken.at(0).type == TType::EXIT_FUNC ) {
             type = SC_exit_funtion(cToken);
-            if ( type == 's' ) {
-                GEN_EXIT::exit_by_simple_value(cToken, cTemp);
-            }
+            if ( type == 's' ) GEN_EXIT::exit_by_simple_value(cToken, cTemp);
+            if ( type == 'i' ) GEN_EXIT::exit_by_variable_val(cToken, cTemp);
         }
 
         if ( cToken.at(0).type == TType::WOUT_FUNC ) {
@@ -47,6 +46,13 @@ void TOKEN_parser () {
             type = SC_int_defintion(cToken);
             if ( type == 'n' ) GEN_VARIABLES::INT_by_number(cToken, cTemp);
         }
+
+        if ( cToken.at(0).type == TType::CHR_RW ) {
+            type = SC_chr_defintion(cToken);
+            if ( type == 'c' ) GEN_VARIABLES::CHR_by_char(cToken, cTemp);
+        }
+
+
     }
 
     GEN_DATA::GEN_write_templates();

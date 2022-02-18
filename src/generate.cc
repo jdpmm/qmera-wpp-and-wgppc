@@ -57,6 +57,12 @@ void GEN_EXIT::exit_by_simple_value (std::vector<TOKEN> list, TEMP* temp) {
                   "\tsyscall\n";
 }
 
+void GEN_EXIT::exit_by_variable_val (std::vector<TOKEN> list, TEMP* temp) {
+    unsigned int poStack = VAR_get_variable(list.at(1).value_as_token, temp->namefunc).poStack;
+    temp->code += "\tmovq $60, %rax\n"
+                  "\tmovslq -" + std::to_string(poStack) + "(%rbp), %rdi\n"
+                  "\tsyscall\n";
+}
 
 /** GEN WOUT FUNCTION -------------------------------------------------------------------- |
  * These functions has been declared to set the necessary code in assembly to be able      |
@@ -78,6 +84,13 @@ void GEN_WOUT::wout_string (std::vector<TOKEN> list, TEMP* temp) {
 void GEN_VARIABLES::INT_by_number (std::vector<TOKEN> list, TEMP *temp) {
     TEMP_setpoStack(temp, TVar::INTEGER);
     VAR_make_variable(list.at(1).value_as_token, temp->namefunc, temp->rbytes, TVar::INTEGER);
+    temp->code += "\tsubq $4, %rsp\n"
+                  "\tmovl $" + list.at(3).value_as_token + ", -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+}
+
+void GEN_VARIABLES::CHR_by_char (std::vector<TOKEN> list, TEMP *temp) {
+    TEMP_setpoStack(temp, TVar::CHARACTER);
+    VAR_make_variable(list.at(1).value_as_token, temp->namefunc, temp->rbytes, TVar::CHARACTER);
     temp->code += "\tsubq $4, %rsp\n"
                   "\tmovl $" + list.at(3).value_as_token + ", -" + std::to_string(temp->rbytes) + "(%rbp)\n";
 }

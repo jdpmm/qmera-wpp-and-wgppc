@@ -15,5 +15,7 @@ void ERR_line_doesnt_make_sense       ();
 void ERR_tokens_expected              (std::string instructionType);
 void ERR_ilegal_character_definition (unsigned int intline);
 
-void ERR_overwrite_variable (const std::string &varname, const std::string funcname);
+void ERR_overwrite_variable    (const std::string &varname, const std::string &funcname);
+void ERR_variable_doesnt_exist (const std::string &varname, const std::string &funcname);
+
 #endif

@@ -54,8 +54,13 @@ void ERR_ilegal_character_definition (unsigned int intline) {
     exit(0);
 }
 
-void ERR_overwrite_variable (const std::string &varname, const std::string funcname) {
+void ERR_overwrite_variable (const std::string &varname, const std::string &funcname) {
     printf("wgpp: '%s' variable already has been declared on `%s` function\n", varname.c_str(), funcname.c_str());
     printf("  * If you wanna change the value of any variable use 'CHG'\n");
     exit(1);
+}
+
+void ERR_variable_doesnt_exist (const std::string &varname, const std::string &funcname) {
+    printf("wgpp: '%s' was not declraed on this scope (%s function)\n", varname.c_str(), funcname.c_str());
+    exit(0);
 }

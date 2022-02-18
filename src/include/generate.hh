@@ -19,6 +19,7 @@ public:
 class GEN_EXIT {
 public:
     static void exit_by_simple_value (std::vector<TOKEN> list, TEMP* temp);
+    static void exit_by_variable_val (std::vector<TOKEN> list, TEMP* temp);
 };
 
 class GEN_WOUT {
@@ -28,7 +29,8 @@ public:
 
 class GEN_VARIABLES {
 public:
-    static void INT_by_number (std::vector<TOKEN> lits, TEMP *temp);
+    static void INT_by_number (std::vector<TOKEN> list, TEMP *temp);
+    static void CHR_by_char   (std::vector<TOKEN> lits, TEMP *temp);
 };
 
 #endif

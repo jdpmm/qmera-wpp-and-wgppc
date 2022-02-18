@@ -9,6 +9,7 @@ enum class TType : unsigned int {
     SEMICOLON,
     WOUT_FUNC,
     INT_RW,
+    CHR_RW,
     STRING_V,
     CHARCTER_V,
     NUMBER_V,

@@ -18,3 +18,10 @@ std::size_t VAR_getIdxvar  (const std::string &varname, const std::string &func)
             return i;
     return -1;
 }
+
+VARIABLE VAR_get_variable (const std::string &varname, const std::string &func) {
+    std::size_t idx = VAR_getIdxvar(varname, func);
+    if ( (int) idx == -1 ) ERR_variable_doesnt_exist(varname, func);
+
+    return variables.at(idx);
+}

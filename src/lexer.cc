@@ -91,6 +91,10 @@ void search_tokens (const std::string &line, unsigned int intline) {
             TOKEN_push_token(idxVT, TType::EQUALS_S, token, intline);
             token = "";
         }
+        if ( token == "chr" ) {
+            TOKEN_push_token(idxVT, TType::CHR_RW, token, intline);
+            token = "";
+        }
 
         idx++;
     }

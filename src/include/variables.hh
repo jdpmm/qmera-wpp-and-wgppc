@@ -18,6 +18,7 @@ struct VARIABLE {
 extern std::vector<VARIABLE> variables;
 
 void VAR_make_variable    (const std::string &vn, const std::string &fb, unsigned int pS, TVar t);
-std::size_t VAR_getIdxvar  (const std::string &varname, const std::string &func);
+VARIABLE VAR_get_variable (const std::string &varname, const std::string &func);
+std::size_t VAR_getIdxvar (const std::string &varname, const std::string &func);
 
 #endif

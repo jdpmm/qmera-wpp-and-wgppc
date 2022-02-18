@@ -1,2 +1,7 @@
 int $integer$ = -12;
-exit 0;
+chr $character$ = 'j';
+chr $character2$ = 'd';
+chr $character3$ = 'p';
+int $integer2$ = 12;
+
+exit $integer2$;
