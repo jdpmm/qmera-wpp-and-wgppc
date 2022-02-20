@@ -58,6 +58,7 @@ void GEN_EXIT::exit_by_simple_value (std::vector<TOKEN> list, TEMP* temp) {
 }
 
 void GEN_EXIT::exit_by_variable_val (std::vector<TOKEN> list, TEMP* temp) {
+    // TODO: Check: movs__
     unsigned int poStack = VAR_get_variable(list.at(1).value_as_token, temp->namefunc).poStack;
     temp->code += "\tmovq $60, %rax\n"
                   "\tmovslq -" + std::to_string(poStack) + "(%rbp), %rdi\n"
@@ -76,6 +77,24 @@ void GEN_WOUT::wout_string (std::vector<TOKEN> list, TEMP* temp) {
                   "\tmovl $0, %eax\n";
 }
 
+void GEN_WOUT::wout_variable (std::vector<TOKEN> list, TEMP* temp) {
+    VARIABLE variable = VAR_get_variable(list.at(1).value_as_token, temp->namefunc);
+    if ( variable.type == TVar::INTEGER ) 
+        temp->code += "\tmovl -" + std::to_string(variable.poStack) + "(%rbp), %eax\n";
+    if ( variable.type == TVar::CHARACTER )
+        temp->code += "\tmovsbl -" + std::to_string(variable.poStack) + "(%rbp), %eax\n";
+
+    temp->code += "\tmovl %eax, %esi\n";
+    if ( variable.type == TVar::INTEGER )
+        temp->code += "\tleaq .printnum(%rip), %rax\n";
+    if ( variable.type == TVar::CHARACTER )
+        temp->code += "\tleaq .printchr(%rip), %rax\n";
+
+    temp->code += "\tmovq %rax, %rdi\n"
+                  "\tmovl $0, %eax\n"
+                  "\tcall printf@PLT\n"
+                  "\tmovl $0, %eax\n";
+}
 
 /** GEN VARIABLES -------------------------------------------------------------------------------------------------- |
  * These functions has been declared to set the necessary code to create variables in assembly programming language  |
@@ -86,11 +105,51 @@ void GEN_VARIABLES::INT_by_number (std::vector<TOKEN> list, TEMP *temp) {
     VAR_make_variable(list.at(1).value_as_token, temp->namefunc, temp->rbytes, TVar::INTEGER);
     temp->code += "\tsubq $4, %rsp\n"
                   "\tmovl $" + list.at(3).value_as_token + ", -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+    temp->int_created++;
+    temp->last_type = TVar::INTEGER;
 }
 
 void GEN_VARIABLES::CHR_by_char (std::vector<TOKEN> list, TEMP *temp) {
     TEMP_setpoStack(temp, TVar::CHARACTER);
     VAR_make_variable(list.at(1).value_as_token, temp->namefunc, temp->rbytes, TVar::CHARACTER);
     temp->code += "\tsubq $4, %rsp\n"
-                  "\tmovl $" + list.at(3).value_as_token + ", -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+                  "\tmovb $" + list.at(3).value_as_token + ", -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+    temp->char_created++;
+    temp->last_type = TVar::CHARACTER;
+}
+
+void GEN_VARIABLES::COPY_value_vTv (std::vector<TOKEN> list, TEMP *temp, TVar type) {
+    if ( type == TVar::INTEGER ) TEMP_setpoStack(temp, TVar::INTEGER);
+    else TEMP_setpoStack(temp, TVar::CHARACTER);
+
+    VARIABLE toCopy = VAR_get_variable(list.at(3).value_as_token, temp->namefunc);
+    temp->code += "\tsubq $4, %rsp\n";
+
+    if ( type == TVar::INTEGER ) {
+        if ( toCopy.type == TVar::INTEGER ) {
+            temp->code += "\tmovl - " + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
+                          "\tmovl %eax, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+        }
+        else {
+            temp->code += "\tmovsbl -" + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
+                          "\tmovl %eax, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+        }
+        temp->int_created++;
+        temp->last_type = TVar::INTEGER;
+    }
+    else {
+        if ( toCopy.type == TVar::INTEGER ) {
+            temp->code += "\tmovl -" + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
+                          "\tmovb %al, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+        }
+        else {
+            temp->code += "\tmovzbl -" + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
+                          "\tmovb %al, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+        }
+
+        temp->char_created++;
+        temp->last_type = TVar::CHARACTER;
+    }
+
+    VAR_make_variable(list.at(1).value_as_token, temp->namefunc, temp->rbytes, type);
 }

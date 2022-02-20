@@ -1,0 +1,29 @@
+chr $c1$ = 'j';
+chr $c2$ = 'd';
+chr $c3$ = 'p';
+chr $c4$ = 'm';
+chr $c5$ = 'm';
+chr $c6$ = '1';
+chr $c7$ = '6';
+chr $c8$ = '6';
+chr $c9$ = '9';
+int $i1$ = 16;
+
+chr $c10$ = '0';
+int $i2$  = -16;
+
+wout $c1$;
+wout $c2$;
+wout $c3$;
+wout $c4$;
+wout $c5$;
+wout $c6$;
+wout $c7$;
+wout $c8$;
+wout $c9$;
+wout $i1$;
+wout $c10$;
+wout $i2$;
+
+chr $nn$ = '\n';
+exit $nn$;

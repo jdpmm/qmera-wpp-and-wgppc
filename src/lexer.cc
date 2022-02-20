@@ -25,10 +25,8 @@ void lexer (const std::string &contents, unsigned int intline) {
     }
 
 
-    if ( !cLine.empty() ) {
-        if ( contents[idx_s - 1] != ';' ) ERR_semicolon_expected(intline);
+    if ( !cLine.empty() )
         search_tokens(cLine, intline);
-    }
 }
 
 void skip_comment (std::string line, std::size_t *idx) {
@@ -37,6 +35,7 @@ void skip_comment (std::string line, std::size_t *idx) {
         *idx += 1;
         if ( *idx > line.size() ) return;
     } while ( line[*idx] != '#' );
+
     comment_declared = false;
 }
 

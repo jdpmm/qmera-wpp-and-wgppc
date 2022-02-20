@@ -15,8 +15,11 @@ struct TEMP {
     /** For functions **/
     std::string namefunc;
     unsigned int rbytes;
-    int          variables_created;
+    int          rbytes_aux;
+    int          int_created;
     int          n_parameters;
+    int          char_created;
+    TVar         last_type;
 };
 extern std::vector<TEMP> templates;
 

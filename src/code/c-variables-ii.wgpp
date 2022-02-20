@@ -1,0 +1,22 @@
+chr $chr1$ = 'j';
+int $int1$ = 106;
+
+chr $chr2$ = $int1$;
+int $int2$ = $chr1$;
+
+int $int3$ = $int2$;
+chr $chr3$ = $chr2$;
+
+wout $chr1$;
+wout $int1$;
+wout $chr2$;
+wout $int2$;
+wout $chr3$;
+wout $int3$;
+
+int $simpleI$ = -16;
+chr $simpleC$ = 's';
+wout $simpleI$;
+wout $simpleC$;
+
+exit 0;

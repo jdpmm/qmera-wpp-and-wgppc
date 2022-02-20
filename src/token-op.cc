@@ -40,16 +40,19 @@ void TOKEN_parser () {
         if ( cToken.at(0).type == TType::WOUT_FUNC ) {
             type = SC_wout_function(cToken);
             if ( type == 's' ) GEN_WOUT::wout_string(cToken, cTemp);
+            if ( type == 'i' ) GEN_WOUT::wout_variable(cToken, cTemp);
         }
 
         if ( cToken.at(0).type == TType::INT_RW ) {
             type = SC_int_defintion(cToken);
             if ( type == 'n' ) GEN_VARIABLES::INT_by_number(cToken, cTemp);
+            if ( type == 'i' ) GEN_VARIABLES::COPY_value_vTv(cToken, cTemp, TVar::INTEGER);
         }
 
         if ( cToken.at(0).type == TType::CHR_RW ) {
             type = SC_chr_defintion(cToken);
             if ( type == 'c' ) GEN_VARIABLES::CHR_by_char(cToken, cTemp);
+            if ( type == 'i' ) GEN_VARIABLES::COPY_value_vTv(cToken, cTemp, TVar::CHARACTER);
         }
 
 

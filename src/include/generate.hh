@@ -24,13 +24,15 @@ public:
 
 class GEN_WOUT {
 public:
-    static void wout_string (std::vector<TOKEN> list, TEMP* temp);
+    static void wout_string   (std::vector<TOKEN> list, TEMP* temp);
+    static void wout_variable (std::vector<TOKEN> list, TEMP* temp);
 };
 
 class GEN_VARIABLES {
 public:
-    static void INT_by_number (std::vector<TOKEN> list, TEMP *temp);
-    static void CHR_by_char   (std::vector<TOKEN> lits, TEMP *temp);
+    static void INT_by_number  (std::vector<TOKEN> list, TEMP *temp);
+    static void CHR_by_char    (std::vector<TOKEN> list, TEMP *temp);
+    static void COPY_value_vTv (std::vector<TOKEN> list, TEMP *temp, TVar type);
 };
 
 #endif
