@@ -3,6 +3,8 @@
 #define WGPP_PROGRAMMING_LANGUAGE_TEMP_HH
 
 #include "functions.hh"
+
+
 enum class TyTemp : unsigned int {
     FUNCTION
 };
@@ -22,6 +24,11 @@ struct TEMP {
     TVar         last_type;
 };
 extern std::vector<TEMP> templates;
+
+extern std::string ar_64b [5];
+extern std::string ar_32b [5];
+extern std::string ar_16b [5];
+extern std::string ar_8b  [5];
 
 std::size_t TEMP_make_function_temp (std::string fn, int np);
 TEMP* TEMP_get_template             (std::size_t idx);

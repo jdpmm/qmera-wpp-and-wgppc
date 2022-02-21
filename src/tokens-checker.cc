@@ -41,5 +41,11 @@ char SC_chr_defintion (std::vector<TOKEN> list) {
     if ( list.at(3).type == TType::ID )         return 'i';
 
     ERR_line_doesnt_make_sense();
-    exit(1);
+    return '-';
 }
+
+void SC_printf_function (std::vector<TOKEN> list) {
+    if ( list.size() <= 2 )                   ERR_tokens_expected("printf");
+    if ( list.at(1).type != TType::STRING_V ) ERR_line_doesnt_make_sense();
+}
+

@@ -6,12 +6,15 @@ void lexer (const std::string &contents, unsigned int intline) {
     std::size_t idx_s = 0;
     std::string stringHelp;
 
-    while ( contents[idx_s] != '\0' ) {
+    while ( idx_s <= contents.size() ) {
+        SKIP_WHITESPACES:
         while ( std::isspace(contents[idx_s]) ) idx_s++;
+
         if ( contents[idx_s] == '#' || comment_declared ) {
             skip_comment(contents, &idx_s);
             if ( comment_declared ) return;
             idx_s++;
+            goto SKIP_WHITESPACES;
         }
         if ( contents[idx_s] == '"' ) {
             stringHelp = UTL_get_until_delimiter(contents, idx_s, intline, '"');
@@ -19,14 +22,14 @@ void lexer (const std::string &contents, unsigned int intline) {
             idx_s += stringHelp.size();
         }
 
-
         cLine += contents[idx_s];
         idx_s++;
     }
 
 
-    if ( !cLine.empty() )
+    if ( cLine.size() != 1 ) {
         search_tokens(cLine, intline);
+    }
 }
 
 void skip_comment (std::string line, std::size_t *idx) {
@@ -92,6 +95,10 @@ void search_tokens (const std::string &line, unsigned int intline) {
         }
         if ( token == "chr" ) {
             TOKEN_push_token(idxVT, TType::CHR_RW, token, intline);
+            token = "";
+        }
+        if ( token == "printf" ) {
+            TOKEN_push_token(idxVT, TType::PRINTF_FUNC, token, intline);
             token = "";
         }
 

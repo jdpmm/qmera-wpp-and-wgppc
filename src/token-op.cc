@@ -26,37 +26,42 @@ void TOKEN_parser () {
     std::size_t idxTemp = TEMP_make_function_temp("main", 0);
     TEMP *cTemp = TEMP_get_template(idxTemp);
     char type = '-';
-    GEN_DATA::GEN_dataSegment();
+    GEN_DATA::DATA_dataSegment();
 
     for ( std::vector<TOKEN> cToken : tokens ) {
         TOKEN_print_tokens_found(cToken, "main");
 
         if ( cToken.at(0).type == TType::EXIT_FUNC ) {
             type = SC_exit_funtion(cToken);
-            if ( type == 's' ) GEN_EXIT::exit_by_simple_value(cToken, cTemp);
-            if ( type == 'i' ) GEN_EXIT::exit_by_variable_val(cToken, cTemp);
+            if ( type == 's' ) GEN_EXIT::EXIT_by_simple_value(cToken, cTemp);
+            if ( type == 'i' ) GEN_EXIT::EXIT_by_variable_val(cToken, cTemp);
         }
 
         if ( cToken.at(0).type == TType::WOUT_FUNC ) {
             type = SC_wout_function(cToken);
-            if ( type == 's' ) GEN_WOUT::wout_string(cToken, cTemp);
-            if ( type == 'i' ) GEN_WOUT::wout_variable(cToken, cTemp);
+            if ( type == 's' ) GEN_WOUT::WOUT_string(cToken, cTemp);
+            if ( type == 'i' ) GEN_WOUT::WOUT_variable(cToken, cTemp);
         }
 
         if ( cToken.at(0).type == TType::INT_RW ) {
             type = SC_int_defintion(cToken);
-            if ( type == 'n' ) GEN_VARIABLES::INT_by_number(cToken, cTemp);
-            if ( type == 'i' ) GEN_VARIABLES::COPY_value_vTv(cToken, cTemp, TVar::INTEGER);
+            if ( type == 'n' ) GEN_VARIABLES::VAR_int_by_number(cToken, cTemp);
+            if ( type == 'i' ) GEN_VARIABLES::VAR_copy_value_vTv(cToken, cTemp, TVar::INTEGER);
         }
 
         if ( cToken.at(0).type == TType::CHR_RW ) {
             type = SC_chr_defintion(cToken);
-            if ( type == 'c' ) GEN_VARIABLES::CHR_by_char(cToken, cTemp);
-            if ( type == 'i' ) GEN_VARIABLES::COPY_value_vTv(cToken, cTemp, TVar::CHARACTER);
+            if ( type == 'c' ) GEN_VARIABLES::VAR_chr_by_char(cToken, cTemp);
+            if ( type == 'i' ) GEN_VARIABLES::VAR_copy_value_vTv(cToken, cTemp, TVar::CHARACTER);
+        }
+
+        if ( cToken.at(0).type == TType::PRINTF_FUNC ) {
+            SC_printf_function(cToken);
+            GEN_PRINTF::PRINTF_call(cToken, cTemp);
         }
 
 
     }
 
-    GEN_DATA::GEN_write_templates();
+    GEN_DATA::DATA_write_templates();
 }

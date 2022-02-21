@@ -1,6 +1,10 @@
 #include "include/temp.hh"
 
 std::vector<TEMP> templates = {};
+std::string ar_64b [5] = { "%rsi", "%rdx", "%rcx", "%r8" , "%r9"  };
+std::string ar_32b [5] = { "%esi", "%edx", "%ecx", "%r8d", "%r9d" };
+std::string ar_16b [5] = { "%si" , "%dx" , "%cx" , "%r8w", "%r9w" };
+std::string ar_8b  [5] = { "%sil", "%dl" , "%cl" , "%r8b", "%r9b" };
 
 std::size_t TEMP_make_function_temp (std::string fn, int np) {
     TEMP newFT;

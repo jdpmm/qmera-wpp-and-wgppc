@@ -6,5 +6,7 @@ WGPP born when i knew the assembly programming language and i said "Tremendo, es
 The main idea of wgpp is that could be a programming language (Turing Complete) to make some data structures and have some of fun (To me, might be to someone else), on this moment (15-02-2022) i've been writing all files again since i had one problem (Bad C++ practices) and one mistake (i deleted all files, but i don't had one copy). Only for love and fun.
 
 ## Things to do
-* [ ] Ignore comments
+* [x] Ignore comments
+* [x] printf function (Still isn't complete, but already is working)
+* [ ] Check semicolon token at the end of every line
 * [ ] A lot of more stuffs

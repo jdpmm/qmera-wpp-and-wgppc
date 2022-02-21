@@ -1,0 +1,8 @@
+int $v1$ = 3;
+int $v2$ = 6;
+int $v3$ = 9;
+chr $v4$ = 'j';
+int $n$ = 16;
+
+printf "Patron: $v1$ $v2$ $v3$\n\t- $v4$dpmm\n$n$ | $n$";
+exit 0;

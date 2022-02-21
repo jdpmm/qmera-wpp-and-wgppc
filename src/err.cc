@@ -62,5 +62,12 @@ void ERR_overwrite_variable (const std::string &varname, const std::string &func
 
 void ERR_variable_doesnt_exist (const std::string &varname, const std::string &funcname) {
     printf("wgpp: '%s' was not declraed on this scope (%s function)\n", varname.c_str(), funcname.c_str());
-    exit(0);
+    exit(1);
+}
+
+void ERR_printf_overflow () {
+    // TODO
+    printf("wgpp: The printf function only support 5 arguments as maximum value\n");
+    printf("  * I'm gonna search how to make it without limitations (02-20-2022)\n");
+    exit(1);
 }
