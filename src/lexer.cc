@@ -22,12 +22,21 @@ void lexer (const std::string &contents, unsigned int intline) {
             idx_s += stringHelp.size();
         }
 
+        if ( contents[idx_s] == ';' && contents[idx_s + 1] != '\0' ) {
+            cLine += contents[idx_s];
+            search_tokens(cLine, intline);
+            cLine = "";
+            idx_s++;
+            goto SKIP_WHITESPACES;
+        }
+
         cLine += contents[idx_s];
         idx_s++;
     }
 
 
     if ( cLine.size() != 1 ) {
+        if ( cLine[cLine.size() - 2] != ';' ) ERR_semicolon_expected(intline);
         search_tokens(cLine, intline);
     }
 }
@@ -99,6 +108,10 @@ void search_tokens (const std::string &line, unsigned int intline) {
         }
         if ( token == "printf" ) {
             TOKEN_push_token(idxVT, TType::PRINTF_FUNC, token, intline);
+            token = "";
+        }
+        if ( token == "CHG" ) {
+            TOKEN_push_token(idxVT, TType::CHG_FUNC, token, intline);
             token = "";
         }
 

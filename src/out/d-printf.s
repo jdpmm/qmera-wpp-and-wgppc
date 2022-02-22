@@ -9,7 +9,7 @@
 		.string "%c\n"
 		.text
 	.labl0:
-		.string "Patron: %d %d %d\n\t- %cdpmm\n%d\n"
+		.string "Patron: %d %d %d\n\t- %cdpmm\n"
 		.text
 main:
 	pushq %rbp
@@ -22,13 +22,10 @@ main:
 	movl $9, -12(%rbp)
 	subq $4, %rsp
 	movb $'j', -13(%rbp)
-	subq $4, %rsp
-	movl $16, -8(%rbp)
 	movl -4(%rbp), %esi
 	movl -8(%rbp), %edx
 	movl -12(%rbp), %ecx
 	movsbl -13(%rbp), %r8d
-	movl -8(%rbp), %r9d
 	leaq .labl0(%rip), %rdi
 	movl $0, %eax
 	call printf@PLT

@@ -100,7 +100,7 @@ void GEN_WOUT::WOUT_variable (std::vector<TOKEN> list, TEMP* temp) {
  * These functions has been declared to set the necessary code to create variables in assembly programming language  |
  * (UNIX Assembly) _________________________________________________________________________________________________ |
  * **/
-void GEN_VARIABLES::VAR_int_by_number (std::vector<TOKEN> list, TEMP *temp) {
+void GEN_VARIABLES::VAR_int_by_constant_value (std::vector<TOKEN> list, TEMP *temp) {
     TEMP_setpoStack(temp, TVar::INTEGER);
     VAR_make_variable(list.at(1).value_as_token, temp->namefunc, temp->rbytes, TVar::INTEGER);
     temp->code += "\tsubq $4, %rsp\n"
@@ -109,7 +109,7 @@ void GEN_VARIABLES::VAR_int_by_number (std::vector<TOKEN> list, TEMP *temp) {
     temp->last_type = TVar::INTEGER;
 }
 
-void GEN_VARIABLES::VAR_chr_by_char (std::vector<TOKEN> list, TEMP *temp) {
+void GEN_VARIABLES::VAR_chr_by_constant_value (std::vector<TOKEN> list, TEMP *temp) {
     TEMP_setpoStack(temp, TVar::CHARACTER);
     VAR_make_variable(list.at(1).value_as_token, temp->namefunc, temp->rbytes, TVar::CHARACTER);
     temp->code += "\tsubq $4, %rsp\n"
@@ -156,7 +156,7 @@ void GEN_VARIABLES::VAR_copy_value_vTv (std::vector<TOKEN> list, TEMP *temp, TVa
 
 /** GEN PRINTF ----------------------------------------------------------------------------------------------------- |
  * The printf function works like printf function on C, since is the same code... But the maximum value to be        |
- * printed is 5 ____________________________________________________________________________________________________ |
+ * printed is 5 (for the moment)____________________________________________________________________________________ |
  * **/
 void GEN_PRINTF::PRINTF_call (std::vector<TOKEN> list, TEMP *temp) {
     std::string strs = list.at(1).value_as_token;
@@ -208,4 +208,41 @@ void GEN_PRINTF::PRINTF_setR_variable (VARIABLE v, TEMP *temp, int toprint_count
         temp->code += "\tmovl -" + std::to_string(v.poStack) + "(%rbp), " + ar_32b[toprint_count] + "\n";
     else
         temp->code += "\tmovsbl -" + std::to_string(v.poStack) + "(%rbp), " + ar_32b[toprint_count] + "\n";
+}
+
+/** GEN CHG ------------------------------------------------------------------------------------------------------- |
+ * CHG function is used to change the value of one variable________________________________________________________ |
+ * **/
+void GEN_CHG::CHG_varto_const (std::vector<TOKEN> list, TEMP* temp) {
+    VARIABLE thisV = VAR_get_variable(list.at(1).value_as_token, temp->namefunc);
+    if ( thisV.type == TVar::INTEGER )
+        temp->code += "\tmovl $" + list.at(2).value_as_token + ", -" + std::to_string(thisV.poStack) + "(%rbp)\n";
+    else
+        temp->code += "\tmovb $" + list.at(2).value_as_token + ", -" + std::to_string(thisV.poStack) + "(%rbp)\n";
+}
+
+void GEN_CHG::CHG_varto_var (std::vector<TOKEN> list, TEMP* temp) {
+    VARIABLE tochg = VAR_get_variable(list.at(1).value_as_token, temp->namefunc);
+    VARIABLE tocpy = VAR_get_variable(list.at(2).value_as_token, temp->namefunc);
+
+    if ( tochg.type == TVar::INTEGER ) {
+        if ( tocpy.type == TVar::INTEGER ) {
+            temp->code += "\tmovl -" + std::to_string(tocpy.poStack) + "(%rbp), %eax\n"
+                          "\tmovl %eax, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
+        }
+        else {
+            temp->code += "\tmovb -" + std::to_string(tocpy.poStack) + "(%rbp), %al\n"
+                          "\tmovl %eax, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
+        }
+    }
+    else {
+        if ( tocpy.type == TVar::INTEGER ) {
+            temp->code += "\tmovzbl -" + std::to_string(tocpy.poStack) + "(%rbp), %eax\n"
+                          "\tmovb %al, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
+        }
+        else {
+            temp->code += "\tmovb -" + std::to_string(tocpy.poStack) + "(%rbp), %al\n"
+                          "\tmovb %al, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
+        }
+    }
 }

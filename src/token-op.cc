@@ -30,6 +30,7 @@ void TOKEN_parser () {
 
     for ( std::vector<TOKEN> cToken : tokens ) {
         TOKEN_print_tokens_found(cToken, "main");
+        cTemp->code += "\t# < " + std::to_string(cToken.at(0).line_definition) + " > #\n";
 
         if ( cToken.at(0).type == TType::EXIT_FUNC ) {
             type = SC_exit_funtion(cToken);
@@ -45,19 +46,29 @@ void TOKEN_parser () {
 
         if ( cToken.at(0).type == TType::INT_RW ) {
             type = SC_int_defintion(cToken);
-            if ( type == 'n' ) GEN_VARIABLES::VAR_int_by_number(cToken, cTemp);
+            if ( type == 'c' ) GEN_VARIABLES::VAR_int_by_constant_value(cToken, cTemp);
             if ( type == 'i' ) GEN_VARIABLES::VAR_copy_value_vTv(cToken, cTemp, TVar::INTEGER);
         }
 
         if ( cToken.at(0).type == TType::CHR_RW ) {
             type = SC_chr_defintion(cToken);
-            if ( type == 'c' ) GEN_VARIABLES::VAR_chr_by_char(cToken, cTemp);
+            if ( type == 'c' ) GEN_VARIABLES::VAR_chr_by_constant_value(cToken, cTemp);
             if ( type == 'i' ) GEN_VARIABLES::VAR_copy_value_vTv(cToken, cTemp, TVar::CHARACTER);
         }
 
         if ( cToken.at(0).type == TType::PRINTF_FUNC ) {
             SC_printf_function(cToken);
             GEN_PRINTF::PRINTF_call(cToken, cTemp);
+        }
+
+        if ( cToken.at(0).type == TType::CHG_FUNC ) {
+            char typeChange;
+            type = SC_chg_fucntion(cToken, &typeChange);
+            if ( typeChange == 'v' ) {
+                if ( type == 'c' ) GEN_CHG::CHG_varto_const(cToken, cTemp);
+                if ( type == 'i' ) GEN_CHG::CHG_varto_var(cToken, cTemp);
+            }
+
         }
 
 

@@ -8,5 +8,7 @@ The main idea of wgpp is that could be a programming language (Turing Complete) 
 ## Things to do
 * [x] Ignore comments
 * [x] printf function (Still isn't complete, but already is working)
-* [ ] Check semicolon token at the end of every line
+* [x] Check semicolon token at the end of every line
+* [x] More than one instruction per line
+* [x] CHG function to variables
 * [ ] A lot of more stuffs

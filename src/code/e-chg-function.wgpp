@@ -1,0 +1,22 @@
+int $i1$ = 65;
+chr $c1$ = 'A';
+printf "First version: $i1$ $c1$";
+
+# Changing the value for a constant value #
+CHG $i1$ 66;
+CHG $c1$ 'B';
+printf "Second version: $i1$ $c1$";
+
+# Changing the value for another variable #
+int $another$ = 67;
+CHG $i1$ $another$;
+CHG $c1$ $another$;
+printf "Second version: $i1$ $c1$";
+
+# Changing the value for another variable 2 #
+chr $another2$ = 'D';
+CHG $i1$ $another2$;
+CHG $c1$ $another2$;
+printf "Second version: $i1$ $c1$";
+
+exit 0;

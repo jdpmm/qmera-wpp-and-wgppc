@@ -39,3 +39,7 @@ fi
 if [[ "$1" = "chr-definition" ]]; then
     echo "TODO"
 fi
+
+if [[ "$1" = "printf" ]]; then
+    echo "TODO"
+fi

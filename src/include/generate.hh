@@ -31,15 +31,21 @@ public:
 
 class GEN_VARIABLES {
 public:
-    static void VAR_int_by_number  (std::vector<TOKEN> list, TEMP *temp);
-    static void VAR_chr_by_char    (std::vector<TOKEN> list, TEMP *temp);
-    static void VAR_copy_value_vTv (std::vector<TOKEN> list, TEMP *temp, TVar type);
+    static void VAR_int_by_constant_value (std::vector<TOKEN> list, TEMP *temp);
+    static void VAR_chr_by_constant_value (std::vector<TOKEN> list, TEMP *temp);
+    static void VAR_copy_value_vTv        (std::vector<TOKEN> list, TEMP *temp, TVar type);
 };
 
 class GEN_PRINTF {
 public:
     static void PRINTF_call          (std::vector<TOKEN> list, TEMP *temp);
     static void PRINTF_setR_variable (VARIABLE v, TEMP *temp, int toprint_count);
+};
+
+class GEN_CHG {
+public:
+    static void CHG_varto_const (std::vector<TOKEN> list, TEMP* temp);
+    static void CHG_varto_var   (std::vector<TOKEN> list, TEMP* temp);
 };
 
 #endif

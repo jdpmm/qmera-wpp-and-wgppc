@@ -10,5 +10,6 @@ char SC_wout_function   (std::vector<TOKEN> list);
 char SC_int_defintion   (std::vector<TOKEN> list);
 char SC_chr_defintion   (std::vector<TOKEN> list);
 void SC_printf_function (std::vector<TOKEN> list);
+char SC_chg_fucntion (std::vector<TOKEN> list, char *ttchg);
 
 #endif
