@@ -16,7 +16,8 @@ enum class TType : unsigned int {
     ID,
     EQUALS_S,
     PRINTF_FUNC,
-    CHG_FUNC
+    CHG_FUNC,
+    INT_FUNC
 };
 
 struct TOKEN {

@@ -48,4 +48,11 @@ public:
     static void CHG_varto_var   (std::vector<TOKEN> list, TEMP* temp);
 };
 
+class GEN_INTF {
+public:
+    static void INTF_incvar (unsigned int postack, TEMP* temp);
+    static void INTF_decvar (unsigned int postack, TEMP* temp);
+    static void INTF_negvar (unsigned int postack, TEMP* temp);
+};
+
 #endif

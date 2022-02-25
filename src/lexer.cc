@@ -114,6 +114,10 @@ void search_tokens (const std::string &line, unsigned int intline) {
             TOKEN_push_token(idxVT, TType::CHG_FUNC, token, intline);
             token = "";
         }
+        if ( token == "INC" || token == "DEC" || token == "NEG" ) {
+            TOKEN_push_token(idxVT, TType::INT_FUNC, token, intline);
+            token = "";
+        }
 
         idx++;
     }

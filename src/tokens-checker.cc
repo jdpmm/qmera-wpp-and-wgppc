@@ -62,3 +62,15 @@ char SC_chg_fucntion (std::vector<TOKEN> list, char *ttchg) {
     ERR_line_doesnt_make_sense();
     return '-';
 }
+
+char SC_int_function (std::vector<TOKEN> list, char *tvintf) {
+    if ( list.size() <= 2 )             ERR_tokens_expected("INTF");
+    if ( list.at(1).type == TType::ID ) *tvintf = 'v';
+
+    if ( list.at(0).value_as_token == "INC" ) return 'i';
+    if ( list.at(0).value_as_token == "DEC" ) return 'd';
+    if ( list.at(0).value_as_token == "NEG" ) return 'n';
+
+    ERR_line_doesnt_make_sense();
+    return '-';
+}

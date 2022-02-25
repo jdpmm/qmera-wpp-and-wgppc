@@ -26,6 +26,7 @@ void TOKEN_parser () {
     std::size_t idxTemp = TEMP_make_function_temp("main", 0);
     TEMP *cTemp = TEMP_get_template(idxTemp);
     char type = '-';
+    char typeAux = '-';
     GEN_DATA::DATA_dataSegment();
 
     for ( std::vector<TOKEN> cToken : tokens ) {
@@ -62,15 +63,23 @@ void TOKEN_parser () {
         }
 
         if ( cToken.at(0).type == TType::CHG_FUNC ) {
-            char typeChange;
-            type = SC_chg_fucntion(cToken, &typeChange);
-            if ( typeChange == 'v' ) {
+            type = SC_chg_fucntion(cToken, &typeAux);
+            if ( typeAux == 'v' ) {
                 if ( type == 'c' ) GEN_CHG::CHG_varto_const(cToken, cTemp);
                 if ( type == 'i' ) GEN_CHG::CHG_varto_var(cToken, cTemp);
             }
-
         }
 
+        if ( cToken.at(0).type == TType::INT_FUNC ) {
+            type = SC_int_function(cToken, &typeAux);
+            if ( typeAux == 'v' ) {
+                VARIABLE thisV = VAR_get_variable(cToken.at(1).value_as_token, cTemp->namefunc);
+                if ( thisV.type != TVar::INTEGER ) ERR_type_requierd("INTEGER");
+                if ( type == 'i' ) GEN_INTF::INTF_incvar(thisV.poStack, cTemp);
+                if ( type == 'd' ) GEN_INTF::INTF_decvar(thisV.poStack, cTemp);
+                if ( type == 'n' ) GEN_INTF::INTF_negvar(thisV.poStack, cTemp);
+            }
+        }
 
     }
 

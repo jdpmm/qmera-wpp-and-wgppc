@@ -17,6 +17,7 @@ void ERR_ilegal_character_definition (unsigned int intline);
 
 void ERR_overwrite_variable    (const std::string &varname, const std::string &funcname);
 void ERR_variable_doesnt_exist (const std::string &varname, const std::string &funcname);
+void ERR_type_requierd         (const std::string &typerqd);
 
 void ERR_printf_overflow ();
 

@@ -1,0 +1,33 @@
+Created by jdpmm on 23-02-2022
+
+-- COMPILATION PROCESS --
+Given one file the lexer will start to read it removing all white spaces and comments found, for example:
+* any line on the file: "exit                45 ;" (Nobody writes code like that [i hope that] but is just an example)
+* after the lexer process: "exit45;"
+
+Once the line is cleaned a new function will be called, that function will search possible tokens in the line (The tokens has been
+definided ./src/include/token-types.hh), when the first token is found a new "head token" will be created, all others tokens found will be after
+of the "head token", the struct used to save the tokens looks like:
+
+tokens = < <HEAD_TOKEN>, <HEAD_TOKEN>, ..., <HEAD_TOKEN> >
+                |              |
+            <anytoken>         |
+                |               \
+                 \               Every head token is only a new vector to save a list of tokens
+                  Some token that united with another token make an instruction
+So, with the "exit45;" string the tokens will be:
+token = < <HEAD_TOKEN> >
+               |
+           EXIT_FUNC
+               |
+             NUMBER
+               |
+           SEMICOLON
+
+When all possible tokens has been saved, the parser function will be called, in that function the assembly files will be created, there will be
+a loop for to see all head tokens, every first token in the current head token means something but there are special tokens to make a specific
+task, for example EXIT_FUNC is a special token since it generate a fragment of assembly code (all tokens are important, but if the first token
+is a number? What does it mean???).
+
+When a special token is found the HEAD_TOKEN where it belongs will be analized to know if that make sense, if it does, the function to generate the nessesary assembly code will be called and
+the process will be done until haven't more HEAD_TOKENs.

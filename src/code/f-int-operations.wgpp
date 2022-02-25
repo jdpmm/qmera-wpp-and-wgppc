@@ -1,0 +1,14 @@
+int $unique$ = 0;
+printf "Initial value: $unique$";
+
+INC $unique$;
+INC $unique$;
+printf "INC fucntion called twice $unique$";
+
+DEC $unique$;
+printf "DEC fucntion called once $unique$";
+
+NEG $unique$;
+printf "NEG fucntion called $unique$";
+
+exit 0;

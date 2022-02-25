@@ -246,3 +246,19 @@ void GEN_CHG::CHG_varto_var (std::vector<TOKEN> list, TEMP* temp) {
         }
     }
 }
+
+/** GEN INTF ------------------------------------------------------------------------------------------------------ |
+ * The int functions are generated as a "--" (DEC) "++" (INC) and "n*=1" (NEG) in C++ or C (Probably in anothers) _ |
+ * **/
+
+void GEN_INTF::INTF_incvar (unsigned int postack, TEMP* temp) {
+    temp->code += "\tincl -" + std::to_string(postack) + "(%rbp)\n";
+}
+
+void GEN_INTF::INTF_decvar (unsigned int postack, TEMP* temp) {
+    temp->code += "\tdecl -" + std::to_string(postack) + "(%rbp)\n";
+}
+
+void GEN_INTF::INTF_negvar (unsigned int postack, TEMP* temp) {
+    temp->code += "\tnegl -" + std::to_string(postack) + "(%rbp)\n";
+}

@@ -65,9 +65,15 @@ void ERR_variable_doesnt_exist (const std::string &varname, const std::string &f
     exit(1);
 }
 
+void ERR_type_requierd (const std::string &typerqd) {
+    printf("wgpp: This instruction/function needs one %s as data type\n", typerqd.c_str());
+    exit(1);
+}
+
 void ERR_printf_overflow () {
     // TODO
     printf("wgpp: The printf function only support 5 arguments as maximum value\n");
     printf("  * I'm gonna search how to make it without limitations (02-20-2022)\n");
     exit(1);
 }
+

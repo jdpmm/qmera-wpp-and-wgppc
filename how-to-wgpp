@@ -43,3 +43,11 @@ fi
 if [[ "$1" = "printf" ]]; then
     echo "TODO"
 fi
+
+if [[ "$1" = "CHG" ]]; then
+    echo "TODO"
+fi
+
+if [[ "$1" = "INTF" ]]; then
+    echo "TODO"
+fi
