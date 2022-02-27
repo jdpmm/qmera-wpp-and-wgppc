@@ -19,6 +19,4 @@ void ERR_overwrite_variable    (const std::string &varname, const std::string &f
 void ERR_variable_doesnt_exist (const std::string &varname, const std::string &funcname);
 void ERR_type_requierd         (const std::string &typerqd);
 
-void ERR_printf_overflow ();
-
 #endif

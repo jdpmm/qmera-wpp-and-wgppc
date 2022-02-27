@@ -15,6 +15,7 @@ void init (std::ifstream *file) {
         INTline++;
     }
     TOKEN_parser();
+    file->close();
 }
 
 int main (int argc, char* argv[]) {

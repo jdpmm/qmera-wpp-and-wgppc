@@ -10,6 +10,12 @@ namespace v_dataSeg {
     std::string labelname           = ".labl";
 };
 
+namespace helpersCODE {
+    // To printf function
+    bool PFFagrs_gt_5          = false;
+    std::string PFFcodetempaux = "";
+};
+
 /** GEN DATA ------------------------------------------------------------------------------------------------- |
  * All these functions has been declared to make the necessary code in the data segment (assembly code) such   |
  * as: Strings to print or global variables __________________________________________________________________ |
@@ -57,12 +63,15 @@ void GEN_EXIT::EXIT_by_simple_value (std::vector<TOKEN> list, TEMP* temp) {
                   "\tsyscall\n";
 }
 
-void GEN_EXIT::EXIT_by_variable_val (std::vector<TOKEN> list, TEMP* temp) {
-    // TODO: Check: movs__
-    unsigned int poStack = VAR_get_variable(list.at(1).value_as_token, temp->namefunc).poStack;
-    temp->code += "\tmovq $60, %rax\n"
-                  "\tmovslq -" + std::to_string(poStack) + "(%rbp), %rdi\n"
-                  "\tsyscall\n";
+void GEN_EXIT::EXIT_by_var_val (std::vector<TOKEN> list, TEMP* temp) {
+    VARIABLE thisV = VAR_get_variable(list.at(1).value_as_token, temp->namefunc);
+    temp->code += "\tmovq $60, %rax\n";
+
+    if ( thisV.type == TVar::INTEGER )
+        temp->code += "\tmovslq -" + std::to_string(thisV.poStack) + "(%rbp), %rdi\n";
+    else
+        temp->code += "\tmovsbq -" + std::to_string(thisV.poStack) + "(%rbp), %rdi\n";
+    temp->code += "\tsyscall\n";
 }
 
 /** GEN WOUT FUNCTION -------------------------------------------------------------------- |
@@ -77,7 +86,7 @@ void GEN_WOUT::WOUT_string (std::vector<TOKEN> list, TEMP* temp) {
                   "\tmovl $0, %eax\n";
 }
 
-void GEN_WOUT::WOUT_variable (std::vector<TOKEN> list, TEMP* temp) {
+void GEN_WOUT::WOUT_var (std::vector<TOKEN> list, TEMP* temp) {
     VARIABLE variable = VAR_get_variable(list.at(1).value_as_token, temp->namefunc);
     if ( variable.type == TVar::INTEGER ) 
         temp->code += "\tmovl -" + std::to_string(variable.poStack) + "(%rbp), %eax\n";
@@ -159,55 +168,83 @@ void GEN_VARIABLES::VAR_copy_value_vTv (std::vector<TOKEN> list, TEMP *temp, TVa
  * printed is 5 (for the moment)____________________________________________________________________________________ |
  * **/
 void GEN_PRINTF::PRINTF_call (std::vector<TOKEN> list, TEMP *temp) {
-    std::string strs = list.at(1).value_as_token;
-    std::string strf;
+    /* strsc = String definided in the wgpp code
+     * strfl = String that will work as label to assembly code
+     * idxsx = Index to iter the strsc
+     * nametoprint = Name of the anything to print their value
+     * typetoprint = Type to print
+     * nPF_arguments = Count to know how many values will be printed */
+    std::string strsc = list.at(1).value_as_token;
+    std::string strfl;
+    std::size_t idxsc = 0;
+    std::string nametoprint;
+    char typetoprint;
+    int nPF_arguments = 0;
 
-    int toprint_count = 0;
-    std::size_t idx = 0;
-    std::string toprint_name;
-    char typeToPrint;
+    while ( idxsc < strsc.size() ) {
+        typetoprint = '-';
+        nametoprint = "";
 
-    while ( idx < strs.size() ) {
-        typeToPrint = '-';
-        toprint_name = "";
-
-        if ( strs[idx] == '$' ) {
-            toprint_name = UTL_get_until_delimiter(strs, idx, list.at(0).line_definition, '$');
-            idx += toprint_name.size();
-            typeToPrint = 'v';
+        // To variables
+        GET_VARNAME:
+        if ( strsc[idxsc] == '$'  ) {
+            nametoprint = UTL_get_until_delimiter(strsc, idxsc, list.at(0).line_definition, '$');
+            idxsc += nametoprint.size();
+            typetoprint = 'v';
         }
-        if ( typeToPrint == 'v' ) {
-            VARIABLE thisV = VAR_get_variable(toprint_name, temp->namefunc);
-            if ( thisV.type == TVar::INTEGER ) strf += "%d";
-            if ( thisV.type == TVar::CHARACTER ) strf += "%c";
 
-            GEN_PRINTF::PRINTF_setR_variable(thisV, temp, toprint_count);
-            toprint_count++;
-        }
-        if ( strs[idx] == '%' ) {
-            strf += "%%";
-            idx++;
-        }
-        if ( toprint_count == 6 ) ERR_printf_overflow();
+        if ( typetoprint == 'v' ) {
+            VARIABLE thisV = VAR_get_variable(nametoprint, temp->namefunc);
+            if ( thisV.type == TVar::INTEGER ) strfl += "%d";
+            if ( thisV.type == TVar::CHARACTER ) strfl += "%c";
 
-        strf += strs[idx];
-        idx++;
+            GEN_PRINTF::PRINTF_setR_var(thisV, &temp->code, nPF_arguments);
+            nPF_arguments++;
+
+            if ( strsc[idxsc] == '$' ) goto GET_VARNAME;
+        }
+
+        if ( strsc[idxsc] == '%' ) {
+            strfl += "%%";
+            idxsc++;
+        }
+
+        strfl += strsc[idxsc];
+        idxsc++;
     }
 
-    strf[strf.size() - 1] = '\\';
-    strf += "n\"";
-    std::size_t idxLabel = GEN_DATA::DATA_setLabel(strf);
+    temp->code += helpersCODE::PFFcodetempaux;
+    strfl[strfl.size() - 1] = '\\';
+    strfl += "n\"";
+    std::size_t idxLabel = GEN_DATA::DATA_setLabel(strfl);
     temp->code += "\tleaq " + v_dataSeg::labels.at(idxLabel) + "(%rip), %rdi\n"
                   "\tmovl $0, %eax\n"
                   "\tcall printf@PLT\n"
                   "\tmovl $0, %eax\n";
+
+    if ( helpersCODE::PFFagrs_gt_5 )
+        temp->code += "\taddq $8, %rsp\n";
+    helpersCODE::PFFagrs_gt_5 = false;
+    helpersCODE::PFFcodetempaux = "";
 }
 
-void GEN_PRINTF::PRINTF_setR_variable (VARIABLE v, TEMP *temp, int toprint_count) {
-    if ( v.type == TVar::INTEGER )
-        temp->code += "\tmovl -" + std::to_string(v.poStack) + "(%rbp), " + ar_32b[toprint_count] + "\n";
-    else
-        temp->code += "\tmovsbl -" + std::to_string(v.poStack) + "(%rbp), " + ar_32b[toprint_count] + "\n";
+void GEN_PRINTF::PRINTF_setR_var (VARIABLE v, std::string *temp, int nargs_count) {
+    if ( nargs_count <= 4 ) {
+        if ( v.type == TVar::INTEGER )
+            *temp += "\tmovl -" + std::to_string(v.poStack) + "(%rbp), " + ar_32b[nargs_count] + "\n";
+        else
+            *temp += "\tmovsbl -" + std::to_string(v.poStack) + "(%rbp), " + ar_32b[nargs_count] + "\n";
+    }
+    else {
+        if ( !((nargs_count+1) % 2) && !helpersCODE::PFFagrs_gt_5 ) *temp += "\tsubq $8, %rsp\n";
+        if ( v.type == TVar::INTEGER ) {
+            helpersCODE::PFFcodetempaux.insert(0, "\tmovl -" + std::to_string(v.poStack) + "(%rbp), %eax\n\tpushq %rax\n");
+        }
+        else {
+            helpersCODE::PFFcodetempaux.insert(0, "\tmovsbl -" + std::to_string(v.poStack) + "(%rbp), %eax\n\tpushq %rax\n");
+        }
+        helpersCODE::PFFagrs_gt_5 = true;
+    }
 }
 
 /** GEN CHG ------------------------------------------------------------------------------------------------------- |
@@ -250,7 +287,6 @@ void GEN_CHG::CHG_varto_var (std::vector<TOKEN> list, TEMP* temp) {
 /** GEN INTF ------------------------------------------------------------------------------------------------------ |
  * The int functions are generated as a "--" (DEC) "++" (INC) and "n*=1" (NEG) in C++ or C (Probably in anothers) _ |
  * **/
-
 void GEN_INTF::INTF_incvar (unsigned int postack, TEMP* temp) {
     temp->code += "\tincl -" + std::to_string(postack) + "(%rbp)\n";
 }

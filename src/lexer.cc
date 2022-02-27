@@ -34,7 +34,6 @@ void lexer (const std::string &contents, unsigned int intline) {
         idx_s++;
     }
 
-
     if ( cLine.size() != 1 ) {
         if ( cLine[cLine.size() - 2] != ';' ) ERR_semicolon_expected(intline);
         search_tokens(cLine, intline);

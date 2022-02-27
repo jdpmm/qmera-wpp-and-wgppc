@@ -36,7 +36,7 @@ void ERR_delimiter_expected (unsigned int intline) {
 }
 
 void ERR_line_doesnt_make_sense () {
-    printf("wgpp: This line does not make any sense, maybe there are tokens that are incompatible together\n");
+    printf("wgpp: This line does not make any sense, maybe there are tokens incompatible together\n");
     exit(1);
 }
 
@@ -69,11 +69,3 @@ void ERR_type_requierd (const std::string &typerqd) {
     printf("wgpp: This instruction/function needs one %s as data type\n", typerqd.c_str());
     exit(1);
 }
-
-void ERR_printf_overflow () {
-    // TODO
-    printf("wgpp: The printf function only support 5 arguments as maximum value\n");
-    printf("  * I'm gonna search how to make it without limitations (02-20-2022)\n");
-    exit(1);
-}
-

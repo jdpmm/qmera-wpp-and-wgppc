@@ -30,19 +30,20 @@ void TOKEN_parser () {
     GEN_DATA::DATA_dataSegment();
 
     for ( std::vector<TOKEN> cToken : tokens ) {
+        // TODO: Possible cToken empty
         TOKEN_print_tokens_found(cToken, "main");
         cTemp->code += "\t# < " + std::to_string(cToken.at(0).line_definition) + " > #\n";
 
         if ( cToken.at(0).type == TType::EXIT_FUNC ) {
             type = SC_exit_funtion(cToken);
             if ( type == 's' ) GEN_EXIT::EXIT_by_simple_value(cToken, cTemp);
-            if ( type == 'i' ) GEN_EXIT::EXIT_by_variable_val(cToken, cTemp);
+            if ( type == 'i' ) GEN_EXIT::EXIT_by_var_val(cToken, cTemp);
         }
 
         if ( cToken.at(0).type == TType::WOUT_FUNC ) {
             type = SC_wout_function(cToken);
             if ( type == 's' ) GEN_WOUT::WOUT_string(cToken, cTemp);
-            if ( type == 'i' ) GEN_WOUT::WOUT_variable(cToken, cTemp);
+            if ( type == 'i' ) GEN_WOUT::WOUT_var(cToken, cTemp);
         }
 
         if ( cToken.at(0).type == TType::INT_RW ) {

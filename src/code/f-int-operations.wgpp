@@ -9,6 +9,6 @@ DEC $unique$;
 printf "DEC fucntion called once $unique$";
 
 NEG $unique$;
-printf "NEG fucntion called $unique$";
+printf "NEG fucntion called once $unique$";
 
 exit 0;

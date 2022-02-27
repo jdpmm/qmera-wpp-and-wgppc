@@ -23,42 +23,42 @@
 main:
 	pushq %rbp
 	movq %rsp, %rbp
-	# < 1 > #
+# < 1 > #
 	subq $4, %rsp
 	movl $0, -4(%rbp)
-	# < 2 > #
+# < 2 > #
 	movl -4(%rbp), %esi
 	leaq .labl0(%rip), %rdi
 	movl $0, %eax
 	call printf@PLT
 	movl $0, %eax
-	# < 4 > #
+# < 4 > #
 	incl -4(%rbp)
-	# < 5 > #
+# < 5 > #
 	incl -4(%rbp)
-	# < 6 > #
+# < 6 > #
 	movl -4(%rbp), %esi
 	leaq .labl1(%rip), %rdi
 	movl $0, %eax
 	call printf@PLT
 	movl $0, %eax
-	# < 8 > #
+# < 8 > #
 	decl -4(%rbp)
-	# < 9 > #
+# < 9 > #
 	movl -4(%rbp), %esi
 	leaq .labl2(%rip), %rdi
 	movl $0, %eax
 	call printf@PLT
 	movl $0, %eax
-	# < 11 > #
+# < 11 > #
 	negl -4(%rbp)
-	# < 12 > #
+# < 12 > #
 	movl -4(%rbp), %esi
 	leaq .labl3(%rip), %rdi
 	movl $0, %eax
 	call printf@PLT
 	movl $0, %eax
-	# < 14 > #
+# < 14 > #
 	movq $60, %rax
 	movq $0, %rdi
 	syscall

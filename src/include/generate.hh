@@ -6,9 +6,11 @@
 #include "temp.hh"
 #include "variables.hh"
 #include "utils.hh"
+#include <algorithm>
 
-namespace asmfiles_ {};
-namespace v_dataSeg {};
+namespace asmfiles_   {};
+namespace v_dataSeg   {};
+namespace helpersCODE {};
 
 class GEN_DATA {
 public:
@@ -20,13 +22,13 @@ public:
 class GEN_EXIT {
 public:
     static void EXIT_by_simple_value (std::vector<TOKEN> list, TEMP* temp);
-    static void EXIT_by_variable_val (std::vector<TOKEN> list, TEMP* temp);
+    static void EXIT_by_var_val       (std::vector<TOKEN> list, TEMP* temp);
 };
 
 class GEN_WOUT {
 public:
-    static void WOUT_string   (std::vector<TOKEN> list, TEMP* temp);
-    static void WOUT_variable (std::vector<TOKEN> list, TEMP* temp);
+    static void WOUT_string (std::vector<TOKEN> list, TEMP* temp);
+    static void WOUT_var    (std::vector<TOKEN> list, TEMP* temp);
 };
 
 class GEN_VARIABLES {
@@ -38,8 +40,8 @@ public:
 
 class GEN_PRINTF {
 public:
-    static void PRINTF_call          (std::vector<TOKEN> list, TEMP *temp);
-    static void PRINTF_setR_variable (VARIABLE v, TEMP *temp, int toprint_count);
+    static void PRINTF_call     (std::vector<TOKEN> list, TEMP *temp);
+    static void PRINTF_setR_var (VARIABLE v, std::string *temp, int nargs_count);
 };
 
 class GEN_CHG {
