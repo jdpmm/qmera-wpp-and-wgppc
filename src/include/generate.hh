@@ -29,6 +29,7 @@ class GEN_WOUT {
 public:
     static void WOUT_string (std::vector<TOKEN> list, TEMP* temp);
     static void WOUT_var    (std::vector<TOKEN> list, TEMP* temp);
+    static void WOUT_arith  (std::vector<TOKEN> list, TEMP *temp);
 };
 
 class GEN_VARIABLES {
@@ -41,7 +42,7 @@ public:
 class GEN_PRINTF {
 public:
     static void PRINTF_call     (std::vector<TOKEN> list, TEMP *temp);
-    static void PRINTF_setR_var (VARIABLE v, std::string *temp, int nargs_count);
+    static void PRINTF_setR_var (VARIABLE v, std::string *temp, int nargs_count, char type);
 };
 
 class GEN_CHG {
@@ -55,6 +56,18 @@ public:
     static void INTF_incvar (unsigned int postack, TEMP* temp);
     static void INTF_decvar (unsigned int postack, TEMP* temp);
     static void INTF_negvar (unsigned int postack, TEMP* temp);
+};
+
+class GEN_ARITH {
+public:
+    static void ARITH_check_call     (std::vector<TOKEN> list, TEMP *temp);
+    static void ARITH_gen_operations (TOKEN v, TEMP* temp, char typeValue, char typeOperation);
+    static void ARITH_gen_opsort     (TOKEN v1, TOKEN v2, TOKEN operation, TEMP *temp);
+};
+
+class GEN_PTR {
+public:
+    static void PTR_to_address (std::vector<TOKEN> list, TEMP *temp);
 };
 
 #endif

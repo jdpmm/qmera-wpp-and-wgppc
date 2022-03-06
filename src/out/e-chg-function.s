@@ -15,10 +15,10 @@
 		.string "Second version: %d %c\n"
 		.text
 	.labl2:
-		.string "Second version: %d %c\n"
+		.string "Third version: %d %c\n"
 		.text
 	.labl3:
-		.string "Second version: %d %c\n"
+		.string "Four version: %d %c\n"
 		.text
 main:
 	pushq %rbp

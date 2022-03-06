@@ -23,24 +23,29 @@
 main:
 	pushq %rbp
 	movq %rsp, %rbp
+	# < 1 > #
 	leaq .labl0(%rip), %rax
 	movq %rax, %rdi
 	call puts@PLT
 	movl $0, %eax
+	# < 2 > #
 	leaq .labl1(%rip), %rax
 	movq %rax, %rdi
 	call puts@PLT
 	movl $0, %eax
+	# < 3 > #
 	leaq .labl2(%rip), %rax
 	movq %rax, %rdi
 	call puts@PLT
 	movl $0, %eax
+	# < 4 > #
 	leaq .labl3(%rip), %rax
 	movq %rax, %rdi
 	call puts@PLT
 	movl $0, %eax
+	# < 6 > #
 	movq $60, %rax
-	movq $'\n', %rdi
+	movq $0, %rdi
 	syscall
 	leave
 	ret

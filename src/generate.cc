@@ -14,6 +14,10 @@ namespace helpersCODE {
     // To printf function
     bool PFFagrs_gt_5          = false;
     std::string PFFcodetempaux = "";
+
+    // A variable struct helper, it'll be useful when we gotta
+    // generate code with a variable and the process is brief
+    VARIABLE variableHelp;
 };
 
 /** GEN DATA ------------------------------------------------------------------------------------------------- |
@@ -30,6 +34,9 @@ void GEN_DATA::DATA_dataSegment () {
     fprintf(asmfiles_::dataSegment, "\t\t.text\n");
     fprintf(asmfiles_::dataSegment, "\t.printchr:\n");
     fprintf(asmfiles_::dataSegment, "\t\t.string \"%%c\\n\"\n");
+    fprintf(asmfiles_::dataSegment, "\t\t.text\n");
+    fprintf(asmfiles_::dataSegment, "\t.printadrs:\n");
+    fprintf(asmfiles_::dataSegment, "\t\t.string \"%%p\\n\"\n");
     fprintf(asmfiles_::dataSegment, "\t\t.text\n");
 }
 
@@ -58,19 +65,19 @@ void GEN_DATA::DATA_write_templates () {
  * These functions has been declared to set a exit operation in assembly code ___ |
  * **/
 void GEN_EXIT::EXIT_by_simple_value (std::vector<TOKEN> list, TEMP* temp) {
-    temp->code += "\tmovq $60, %rax\n"
-                  "\tmovq $" + list.at(1).value_as_token + ", %rdi\n"
+    temp->code += "\tmovq    $60, %rax\n"
+                  "\tmovq    $" + list.at(1).value_as_token + ", %rdi\n"
                   "\tsyscall\n";
 }
 
 void GEN_EXIT::EXIT_by_var_val (std::vector<TOKEN> list, TEMP* temp) {
-    VARIABLE thisV = VAR_get_variable(list.at(1).value_as_token, temp->namefunc);
-    temp->code += "\tmovq $60, %rax\n";
+    helpersCODE::variableHelp = VAR_get_variable(list.at(1).value_as_token, temp->namefunc);
+    temp->code += "\tmovq    $60, %rax\n";
 
-    if ( thisV.type == TVar::INTEGER )
-        temp->code += "\tmovslq -" + std::to_string(thisV.poStack) + "(%rbp), %rdi\n";
+    if ( helpersCODE::variableHelp.type == TVar::INTEGER )
+        temp->code += "\tmovslq  -" + std::to_string(helpersCODE::variableHelp.poStack) + "(%rbp), %rdi\n";
     else
-        temp->code += "\tmovsbq -" + std::to_string(thisV.poStack) + "(%rbp), %rdi\n";
+        temp->code += "\tmovsbq  -" + std::to_string(helpersCODE::variableHelp.poStack) + "(%rbp), %rdi\n";
     temp->code += "\tsyscall\n";
 }
 
@@ -80,29 +87,40 @@ void GEN_EXIT::EXIT_by_var_val (std::vector<TOKEN> list, TEMP* temp) {
  * **/
 void GEN_WOUT::WOUT_string (std::vector<TOKEN> list, TEMP* temp) {
     std::size_t idxLabel = GEN_DATA::DATA_setLabel(list.at(1).value_as_token);
-    temp->code += "\tleaq " + v_dataSeg::labels.at(idxLabel) + "(%rip), %rax\n"
-                  "\tmovq %rax, %rdi\n"
-                  "\tcall puts@PLT\n"
-                  "\tmovl $0, %eax\n";
+    temp->code += "\tleaq    " + v_dataSeg::labels.at(idxLabel) + "(%rip), %rax\n"
+                  "\tmovq    %rax, %rdi\n"
+                  "\tcall    puts@PLT\n"
+                  "\tmovl    $0, %eax\n";
 }
 
 void GEN_WOUT::WOUT_var (std::vector<TOKEN> list, TEMP* temp) {
-    VARIABLE variable = VAR_get_variable(list.at(1).value_as_token, temp->namefunc);
-    if ( variable.type == TVar::INTEGER ) 
-        temp->code += "\tmovl -" + std::to_string(variable.poStack) + "(%rbp), %eax\n";
-    if ( variable.type == TVar::CHARACTER )
-        temp->code += "\tmovsbl -" + std::to_string(variable.poStack) + "(%rbp), %eax\n";
+    helpersCODE::variableHelp = VAR_get_variable(list.at(1).value_as_token, temp->namefunc);
+    if ( helpersCODE::variableHelp.type == TVar::INTEGER ) 
+        temp->code += "\tmovl    -" + std::to_string(helpersCODE::variableHelp.poStack) + "(%rbp), %eax\n";
+    if ( helpersCODE::variableHelp.type == TVar::CHARACTER )
+        temp->code += "\tmovsbl  -" + std::to_string(helpersCODE::variableHelp.poStack) + "(%rbp), %eax\n";
 
-    temp->code += "\tmovl %eax, %esi\n";
-    if ( variable.type == TVar::INTEGER )
-        temp->code += "\tleaq .printnum(%rip), %rax\n";
-    if ( variable.type == TVar::CHARACTER )
-        temp->code += "\tleaq .printchr(%rip), %rax\n";
+    temp->code += "\tmovl    %eax, %esi\n";
+    if ( helpersCODE::variableHelp.type == TVar::INTEGER )
+        temp->code += "\tleaq    .printnum(%rip), %rax\n";
+    if ( helpersCODE::variableHelp.type == TVar::CHARACTER )
+        temp->code += "\tleaq    .printchr(%rip), %rax\n";
 
-    temp->code += "\tmovq %rax, %rdi\n"
-                  "\tmovl $0, %eax\n"
-                  "\tcall printf@PLT\n"
-                  "\tmovl $0, %eax\n";
+    temp->code += "\tmovq    %rax, %rdi\n"
+                  "\tmovl    $0, %eax\n"
+                  "\tcall    printf@PLT\n"
+                  "\tmovl    $0, %eax\n";
+}
+
+void GEN_WOUT::WOUT_arith (std::vector<TOKEN> list, TEMP *temp) {
+    GEN_ARITH::ARITH_check_call(list, temp);
+    temp->code += "\tmovl    %r14d, %eax\n"
+                  "\tmovl    %eax, %esi\n"
+                  "\tleaq    .printnum(%rip), %rax\n"
+                  "\tmovq    %rax, %rdi\n"
+                  "\tmovl    $0, %eax\n"
+                  "\tcall    printf@PLT\n"
+                  "\tmovl    $0, %eax\n";
 }
 
 /** GEN VARIABLES -------------------------------------------------------------------------------------------------- |
@@ -112,8 +130,8 @@ void GEN_WOUT::WOUT_var (std::vector<TOKEN> list, TEMP* temp) {
 void GEN_VARIABLES::VAR_int_by_constant_value (std::vector<TOKEN> list, TEMP *temp) {
     TEMP_setpoStack(temp, TVar::INTEGER);
     VAR_make_variable(list.at(1).value_as_token, temp->namefunc, temp->rbytes, TVar::INTEGER);
-    temp->code += "\tsubq $4, %rsp\n"
-                  "\tmovl $" + list.at(3).value_as_token + ", -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+    temp->code += "\tsubq    $4, %rsp\n"
+                  "\tmovl    $" + list.at(3).value_as_token + ", -" + std::to_string(temp->rbytes) + "(%rbp)\n";
     temp->int_created++;
     temp->last_type = TVar::INTEGER;
 }
@@ -121,8 +139,8 @@ void GEN_VARIABLES::VAR_int_by_constant_value (std::vector<TOKEN> list, TEMP *te
 void GEN_VARIABLES::VAR_chr_by_constant_value (std::vector<TOKEN> list, TEMP *temp) {
     TEMP_setpoStack(temp, TVar::CHARACTER);
     VAR_make_variable(list.at(1).value_as_token, temp->namefunc, temp->rbytes, TVar::CHARACTER);
-    temp->code += "\tsubq $4, %rsp\n"
-                  "\tmovb $" + list.at(3).value_as_token + ", -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+    temp->code += "\tsubq    $4, %rsp\n"
+                  "\tmovb    $" + list.at(3).value_as_token + ", -" + std::to_string(temp->rbytes) + "(%rbp)\n";
     temp->char_created++;
     temp->last_type = TVar::CHARACTER;
 }
@@ -132,28 +150,28 @@ void GEN_VARIABLES::VAR_copy_value_vTv (std::vector<TOKEN> list, TEMP *temp, TVa
     else TEMP_setpoStack(temp, TVar::CHARACTER);
 
     VARIABLE toCopy = VAR_get_variable(list.at(3).value_as_token, temp->namefunc);
-    temp->code += "\tsubq $4, %rsp\n";
+    temp->code += "\tsubq    $4, %rsp\n";
 
     if ( type == TVar::INTEGER ) {
         if ( toCopy.type == TVar::INTEGER ) {
-            temp->code += "\tmovl - " + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
-                          "\tmovl %eax, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+            temp->code += "\tmovl    - " + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
+                          "\tmovl    %eax, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
         }
         else {
-            temp->code += "\tmovsbl -" + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
-                          "\tmovl %eax, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+            temp->code += "\tmovsbl  -" + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
+                          "\tmovl    %eax, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
         }
         temp->int_created++;
         temp->last_type = TVar::INTEGER;
     }
     else {
         if ( toCopy.type == TVar::INTEGER ) {
-            temp->code += "\tmovl -" + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
-                          "\tmovb %al, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+            temp->code += "\tmovl    -" + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
+                          "\tmovb    %al, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
         }
         else {
-            temp->code += "\tmovzbl -" + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
-                          "\tmovb %al, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
+            temp->code += "\tmovzbl  -" + std::to_string(toCopy.poStack) + "(%rbp), %eax\n"
+                          "\tmovb    %al, -" + std::to_string(temp->rbytes) + "(%rbp)\n";
         }
 
         temp->char_created++;
@@ -170,45 +188,61 @@ void GEN_VARIABLES::VAR_copy_value_vTv (std::vector<TOKEN> list, TEMP *temp, TVa
 void GEN_PRINTF::PRINTF_call (std::vector<TOKEN> list, TEMP *temp) {
     /* strsc = String definided in the wgpp code
      * strfl = String that will work as label to assembly code
-     * idxsx = Index to iter the strsc
+     * idxsc = Index to iter the strsc
      * nametoprint = Name of the anything to print their value
      * typetoprint = Type to print
-     * nPF_arguments = Count to know how many values will be printed */
+     * nPF_arguments = Count to know how many values will be printed
+     * */
     std::string strsc = list.at(1).value_as_token;
     std::string strfl;
     std::size_t idxsc = 0;
     std::string nametoprint;
     char typetoprint;
     int nPF_arguments = 0;
+    VARIABLE toprint;
 
     while ( idxsc < strsc.size() ) {
         typetoprint = '-';
         nametoprint = "";
 
-        // To variables
-        GET_VARNAME:
-        if ( strsc[idxsc] == '$'  ) {
-            nametoprint = UTL_get_until_delimiter(strsc, idxsc, list.at(0).line_definition, '$');
+        GET_NAME:
+        if ( strsc[idxsc] == '$' || strsc[idxsc] == '*' || strsc[idxsc] == '&' ) {
+            nametoprint = UTL_get_until_delimiter(strsc, idxsc, list.at(0).line_definition, strsc[idxsc]);
+            typetoprint = strsc[idxsc];
             idxsc += nametoprint.size();
-            typetoprint = 'v';
         }
 
-        if ( typetoprint == 'v' ) {
-            VARIABLE thisV = VAR_get_variable(nametoprint, temp->namefunc);
-            if ( thisV.type == TVar::INTEGER ) strfl += "%d";
-            if ( thisV.type == TVar::CHARACTER ) strfl += "%c";
+        if ( typetoprint == '$' ) {
+            toprint = VAR_get_variable(nametoprint, temp->namefunc);
+            if ( toprint.type == TVar::INTEGER ) strfl += "%d";
+            if ( toprint.type == TVar::CHARACTER ) strfl += "%c";
 
-            GEN_PRINTF::PRINTF_setR_var(thisV, &temp->code, nPF_arguments);
+            GEN_PRINTF::PRINTF_setR_var(toprint, &temp->code, nPF_arguments, '$');
             nPF_arguments++;
+            if ( strsc[idxsc] == '$' || strsc[idxsc] == '*' || strsc[idxsc] == '&' ) goto GET_NAME;
+        }
+        if ( typetoprint == '*' ) {
+            toprint = VAR_get_variable(nametoprint, temp->namefunc);
+            if ( toprint.type_varpointing == TVar::INTEGER ) strfl += "%d";
+            if ( toprint.type_varpointing == TVar::CHARACTER ) strfl += "%c";
 
-            if ( strsc[idxsc] == '$' ) goto GET_VARNAME;
+            GEN_PRINTF::PRINTF_setR_var(toprint, &temp->code, nPF_arguments, '*');
+            nPF_arguments++;
+            if ( strsc[idxsc] == '$' || strsc[idxsc] == '*' || strsc[idxsc] == '&' ) goto GET_NAME;
+        }
+        if ( typetoprint == '&' ) {
+            toprint = VAR_get_variable(nametoprint, temp->namefunc);
+            strfl += "%p";
+
+            GEN_PRINTF::PRINTF_setR_var(toprint, &temp->code, nPF_arguments, '&');
+            nPF_arguments++;
+            if ( strsc[idxsc] == '$' || strsc[idxsc] == '*' || strsc[idxsc] == '&' ) goto GET_NAME;
         }
 
         if ( strsc[idxsc] == '%' ) {
             strfl += "%%";
             idxsc++;
         }
-
         strfl += strsc[idxsc];
         idxsc++;
     }
@@ -217,32 +251,54 @@ void GEN_PRINTF::PRINTF_call (std::vector<TOKEN> list, TEMP *temp) {
     strfl[strfl.size() - 1] = '\\';
     strfl += "n\"";
     std::size_t idxLabel = GEN_DATA::DATA_setLabel(strfl);
-    temp->code += "\tleaq " + v_dataSeg::labels.at(idxLabel) + "(%rip), %rdi\n"
-                  "\tmovl $0, %eax\n"
-                  "\tcall printf@PLT\n"
-                  "\tmovl $0, %eax\n";
+    temp->code += "\tleaq    " + v_dataSeg::labels.at(idxLabel) + "(%rip), %rdi\n"
+                  "\tmovl    $0, %eax\n"
+                  "\tcall    printf@PLT\n"
+                  "\tmovl    $0, %eax\n";
 
     if ( helpersCODE::PFFagrs_gt_5 )
-        temp->code += "\taddq $8, %rsp\n";
+        temp->code += "\taddq    $8, %rsp\n";
     helpersCODE::PFFagrs_gt_5 = false;
     helpersCODE::PFFcodetempaux = "";
 }
 
-void GEN_PRINTF::PRINTF_setR_var (VARIABLE v, std::string *temp, int nargs_count) {
+void GEN_PRINTF::PRINTF_setR_var (VARIABLE v, std::string *temp, int nargs_count, char type) {
     if ( nargs_count <= 4 ) {
-        if ( v.type == TVar::INTEGER )
-            *temp += "\tmovl -" + std::to_string(v.poStack) + "(%rbp), " + ar_32b[nargs_count] + "\n";
-        else
-            *temp += "\tmovsbl -" + std::to_string(v.poStack) + "(%rbp), " + ar_32b[nargs_count] + "\n";
+        if ( type == '&' ) {
+            *temp += "\tleaq -" + std::to_string(v.poStack) + "(%rbp), %rax\n"
+                     "\tmovq %rax, " + ar_64b[nargs_count] + "\n";
+        }
+        else if ( v.type == TVar::INTEGER )
+            *temp += "\tmovl    -" + std::to_string(v.poStack) + "(%rbp), " + ar_32b[nargs_count] + "\n";
+        else if ( v.type == TVar::CHARACTER )
+            *temp += "\tmovsbl  -" + std::to_string(v.poStack) + "(%rbp), " + ar_32b[nargs_count] + "\n";
+        else if ( v.type == TVar::POINTER ) {
+            if ( v.type_varpointing == TVar::INTEGER || v.type_varpointing == TVar::CHARACTER ) {
+                *temp += "\tmovq    -" + std::to_string(v.poStack) + "(%rbp), %rax\n"
+                         "\tmovl    (%rax), " + ar_32b[nargs_count] + "\n";
+            }
+        }
     }
     else {
-        if ( !((nargs_count+1) % 2) && !helpersCODE::PFFagrs_gt_5 ) *temp += "\tsubq $8, %rsp\n";
-        if ( v.type == TVar::INTEGER ) {
-            helpersCODE::PFFcodetempaux.insert(0, "\tmovl -" + std::to_string(v.poStack) + "(%rbp), %eax\n\tpushq %rax\n");
+        if ( !((nargs_count+1) % 2) && !helpersCODE::PFFagrs_gt_5 )
+            *temp += "\tsubq    $8, %rsp\n";
+        if ( type == '&' ) {
+            helpersCODE::PFFcodetempaux.insert(0, "\tleaq   -" + std::to_string(v.poStack) + "(%rbp), %rax\n" +
+                                                  "\tpushq  %rax\n");
         }
-        else {
-            helpersCODE::PFFcodetempaux.insert(0, "\tmovsbl -" + std::to_string(v.poStack) + "(%rbp), %eax\n\tpushq %rax\n");
+        if ( v.type == TVar::INTEGER )
+            helpersCODE::PFFcodetempaux.insert(0, "\tmovl    -" + std::to_string(v.poStack) + "(%rbp), %eax\n" +
+                                                  "\tpushq   %rax\n");
+        else if ( v.type == TVar::CHARACTER )
+            helpersCODE::PFFcodetempaux.insert(0, "\tmovsbl  -" + std::to_string(v.poStack) + "(%rbp), %eax\n" +
+                                                  "\tpushq   %rax\n");
+        else if ( v.type == TVar::POINTER ) {
+            if ( v.type_varpointing == TVar::INTEGER || v.type_varpointing == TVar::CHARACTER ) {
+                helpersCODE::PFFcodetempaux.insert(0, "\tmovq    -" + std::to_string(v.poStack) + "(%rbp), %rax\n" +
+                                                      "\tpushq   (%rax)\n");
+            }
         }
+
         helpersCODE::PFFagrs_gt_5 = true;
     }
 }
@@ -251,11 +307,11 @@ void GEN_PRINTF::PRINTF_setR_var (VARIABLE v, std::string *temp, int nargs_count
  * CHG function is used to change the value of one variable________________________________________________________ |
  * **/
 void GEN_CHG::CHG_varto_const (std::vector<TOKEN> list, TEMP* temp) {
-    VARIABLE thisV = VAR_get_variable(list.at(1).value_as_token, temp->namefunc);
-    if ( thisV.type == TVar::INTEGER )
-        temp->code += "\tmovl $" + list.at(2).value_as_token + ", -" + std::to_string(thisV.poStack) + "(%rbp)\n";
+    helpersCODE::variableHelp = VAR_get_variable(list.at(1).value_as_token, temp->namefunc);
+    if ( helpersCODE::variableHelp.type == TVar::INTEGER )
+        temp->code += "\tmovl    $" + list.at(2).value_as_token + ", -" + std::to_string(helpersCODE::variableHelp.poStack) + "(%rbp)\n";
     else
-        temp->code += "\tmovb $" + list.at(2).value_as_token + ", -" + std::to_string(thisV.poStack) + "(%rbp)\n";
+        temp->code += "\tmovb    $" + list.at(2).value_as_token + ", -" + std::to_string(helpersCODE::variableHelp.poStack) + "(%rbp)\n";
 }
 
 void GEN_CHG::CHG_varto_var (std::vector<TOKEN> list, TEMP* temp) {
@@ -264,22 +320,22 @@ void GEN_CHG::CHG_varto_var (std::vector<TOKEN> list, TEMP* temp) {
 
     if ( tochg.type == TVar::INTEGER ) {
         if ( tocpy.type == TVar::INTEGER ) {
-            temp->code += "\tmovl -" + std::to_string(tocpy.poStack) + "(%rbp), %eax\n"
-                          "\tmovl %eax, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
+            temp->code += "\tmovl    -" + std::to_string(tocpy.poStack) + "(%rbp), %eax\n"
+                          "\tmovl    %eax, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
         }
         else {
-            temp->code += "\tmovb -" + std::to_string(tocpy.poStack) + "(%rbp), %al\n"
-                          "\tmovl %eax, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
+            temp->code += "\tmovb    -" + std::to_string(tocpy.poStack) + "(%rbp), %al\n"
+                          "\tmovl    %eax, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
         }
     }
     else {
         if ( tocpy.type == TVar::INTEGER ) {
-            temp->code += "\tmovzbl -" + std::to_string(tocpy.poStack) + "(%rbp), %eax\n"
-                          "\tmovb %al, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
+            temp->code += "\tmovzbl  -" + std::to_string(tocpy.poStack) + "(%rbp), %eax\n"
+                          "\tmovb    %al, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
         }
         else {
-            temp->code += "\tmovb -" + std::to_string(tocpy.poStack) + "(%rbp), %al\n"
-                          "\tmovb %al, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
+            temp->code += "\tmovb    -" + std::to_string(tocpy.poStack) + "(%rbp), %al\n"
+                          "\tmovb    %al, -" + std::to_string(tochg.poStack) + "(%rbp)\n";
         }
     }
 }
@@ -287,14 +343,101 @@ void GEN_CHG::CHG_varto_var (std::vector<TOKEN> list, TEMP* temp) {
 /** GEN INTF ------------------------------------------------------------------------------------------------------ |
  * The int functions are generated as a "--" (DEC) "++" (INC) and "n*=1" (NEG) in C++ or C (Probably in anothers) _ |
  * **/
+// TODO: Optimizate
 void GEN_INTF::INTF_incvar (unsigned int postack, TEMP* temp) {
-    temp->code += "\tincl -" + std::to_string(postack) + "(%rbp)\n";
+    temp->code += "\tincl    -" + std::to_string(postack) + "(%rbp)\n";
 }
 
 void GEN_INTF::INTF_decvar (unsigned int postack, TEMP* temp) {
-    temp->code += "\tdecl -" + std::to_string(postack) + "(%rbp)\n";
+    temp->code += "\tdecl    -" + std::to_string(postack) + "(%rbp)\n";
 }
 
 void GEN_INTF::INTF_negvar (unsigned int postack, TEMP* temp) {
-    temp->code += "\tnegl -" + std::to_string(postack) + "(%rbp)\n";
+    temp->code += "\tnegl    -" + std::to_string(postack) + "(%rbp)\n";
+}
+
+/** GEN ARITH ----------------------------------------------------------------------------------------------------- |
+ * To generate arithmetic operations ______________________________________________________________________________ |
+ * **/
+void GEN_ARITH::ARITH_check_call (std::vector<TOKEN> list, TEMP *temp) {
+    // Give a few seconds
+    std::size_t idxArithToken = -1;
+    int nparentheses = 0;
+
+    for ( std::size_t i = 0; (int) idxArithToken == -1; ++i )
+        if ( list.at(i).type == TType::ARITH_CALL )
+            idxArithToken = i + 1;
+    if ( list.at(idxArithToken).type != TType::L_PARENTHESES ) ERR_tokens_expected("LEFT PARENTHESES");
+    nparentheses++;
+    idxArithToken++;
+
+
+    int typetoken = 0;
+    char operationTODO = '+';
+    TOKEN currenToken;
+
+    while ( list.at(idxArithToken).type != TType::R_PARENTHESES ) {
+        currenToken = list.at(idxArithToken);
+
+        if ( !(typetoken % 2) ) {
+            if ( currenToken.type != TType::NUMBER_V &&
+                 currenToken.type != TType::CHARCTER_V &&
+                 currenToken.type != TType::ID_VARIABLE ) ERR_delimiter_expected(list.at(0).line_definition);
+        }
+        else {
+            if ( currenToken.type != TType::ARITH_OPERATOR ) ERR_delimiter_expected(list.at(0).line_definition);
+            if ( currenToken.value_as_token == "add" ) operationTODO = '+';
+            if ( currenToken.value_as_token == "sub" ) operationTODO = '-';
+            if ( currenToken.value_as_token == "mul" ) operationTODO = '*';
+            if ( currenToken.value_as_token == "div" ) operationTODO = '/';
+            if ( currenToken.value_as_token == "mod" ) operationTODO = '%';
+            if ( currenToken.value_as_token == "pow" ) operationTODO = '^';
+        }
+
+        if ( operationTODO == '+' || operationTODO == '-' ) {
+            if ( list.at(idxArithToken).type == TType::NUMBER_V ) GEN_ARITH::ARITH_gen_operations(list.at(idxArithToken), temp, 'n', operationTODO);
+        }
+
+        if ( idxArithToken >= list.size() ) ERR_tokens_expected("RIGHT PARENTHESES");
+        idxArithToken++;
+        typetoken++;
+    }
+}
+
+void GEN_ARITH::ARITH_gen_operations (TOKEN v, TEMP* temp, char typeValue, char typeOperation) {
+    if ( typeOperation == '+' ) {
+        if ( typeValue == 'n' ) temp->code += "\taddl    $" + v.value_as_token + ", %r14d\n";
+    }
+    if ( typeOperation == '-' ) {
+        if ( typeValue == 'n' ) temp->code += "\tsubl    $" + v.value_as_token + ", %r14d\n";
+    }
+}
+
+/** GEN PTR ------------------------------------------------------------------------------------------------------- |
+ * To generate pointer variables __________________________________________________________________________________ |
+ * **/
+void GEN_PTR::PTR_to_address (std::vector<TOKEN> list, TEMP *temp) {
+    VARIABLE *vtocpy = VAR_get_variable_ptr(list.at(3).value_as_token, temp->namefunc);
+    TEMP_setpoStack(temp, vtocpy->type);
+
+    unsigned int poStackp = vtocpy->poStack;
+    vtocpy->poStack = temp->rbytes;
+    if ( vtocpy->type == TVar::INTEGER ) {
+        temp->code += "\tsubq    $4, %rsp\n"
+                      "\tmovl    -" + std::to_string(poStackp) + "(%rbp), %r15d\n"
+                      "\tleaq    -" + std::to_string(temp->rbytes) + "(%rbp), %rax\n"
+                      "\tmovq    %rax, -" + std::to_string(poStackp) + "(%rbp)\n"
+                      "\tmovl    %r15d, -" + std::to_string(vtocpy->poStack) + "(%rbp)\n"
+                      "\tmovl    $0, %r15d\n";
+    }
+    else {
+        temp->code += "\tsubq    $4, %rsp\n"
+                      "\tmovb    -" + std::to_string(poStackp) + "(%rbp), %r15b\n"
+                      "\tleaq    -" + std::to_string(temp->rbytes) + "(%rbp), %rax\n"
+                      "\tmovq    %rax, -" + std::to_string(poStackp) + "(%rbp)\n"
+                      "\tmovl    %r15b, -" + std::to_string(vtocpy->poStack) + "(%rbp)\n"
+                      "\tmovl    $0, %r15b\n";
+    }
+
+    VAR_make_pointer(list.at(1).value_as_token, temp->namefunc, poStackp, vtocpy->poStack, vtocpy->type, 1);
 }

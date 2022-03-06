@@ -1,0 +1,17 @@
+# Types ------------------------
+ * Value of one variable   : $ |
+ * Address of one variable : & |
+ * Value of one pointer    : * |
+  ------------------------------ #
+int $variable$ = 16;
+ptr *pointer* = &variable&;
+
+printf "Value variable: $variable$";
+printf "Value variable from the pointer: *pointer*";
+printf "Variable's address: &variable&";
+printf "Pointer's address: &pointer&";
+
+printf "VALUE: *pointer* *pointer* *pointer* *pointer* *pointer* *pointer* *pointer* *pointer* *pointer*";
+printf "ADDRESS: &variable& &variable& &variable& &variable& &variable& &variable& &variable& &variable&";
+
+exit 0;

@@ -89,7 +89,7 @@ void search_tokens (const std::string &line, unsigned int intline) {
         }
         if ( token == "$" ) {
             token = UTL_get_until_delimiter(line, idx, intline, '$');
-            TOKEN_push_token(idxVT, TType::ID, token, intline);
+            TOKEN_push_token(idxVT, TType::ID_VARIABLE, token, intline);
             idx += token.size() - 1;
             token = "";
         }
@@ -115,6 +115,38 @@ void search_tokens (const std::string &line, unsigned int intline) {
         }
         if ( token == "INC" || token == "DEC" || token == "NEG" ) {
             TOKEN_push_token(idxVT, TType::INT_FUNC, token, intline);
+            token = "";
+        }
+        if ( token == "ARITH" ) {
+            TOKEN_push_token(idxVT, TType::ARITH_CALL, token, intline);
+            token = "";
+        }
+        if ( token == "add" || token == "sub" || token == "mul" || token == "div" || token == "mod" || token == "pot" ) {
+            TOKEN_push_token(idxVT, TType::ARITH_OPERATOR, token, intline);
+            token = "";
+        }
+        if ( token == "(" ) {
+            TOKEN_push_token(idxVT, TType::L_PARENTHESES, token, intline);
+            token = "";
+        }
+        if ( token == ")" ) {
+            TOKEN_push_token(idxVT, TType::R_PARENTHESES, token, intline);
+            token = "";
+        }
+        if ( token == "ptr" ) {
+            TOKEN_push_token(idxVT, TType::PTR_RW, token, intline);
+            token = "";
+        }
+        if ( token == "*" ) {
+            token = UTL_get_until_delimiter(line, idx, intline, '*');
+            TOKEN_push_token(idxVT, TType::ID_PTR, token, intline);
+            idx += token.size() - 1;
+            token = "";
+        }
+        if ( token == "&" ) {
+            token = UTL_get_until_delimiter(line, idx, intline, '&');
+            TOKEN_push_token(idxVT, TType::ID_ADDRESS, token, intline);
+            idx += token.size() - 1;
             token = "";
         }
 

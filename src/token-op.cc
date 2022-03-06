@@ -37,25 +37,26 @@ void TOKEN_parser () {
         if ( cToken.at(0).type == TType::EXIT_FUNC ) {
             type = SC_exit_funtion(cToken);
             if ( type == 's' ) GEN_EXIT::EXIT_by_simple_value(cToken, cTemp);
-            if ( type == 'i' ) GEN_EXIT::EXIT_by_var_val(cToken, cTemp);
+            if ( type == 'v' ) GEN_EXIT::EXIT_by_var_val(cToken, cTemp);
         }
 
         if ( cToken.at(0).type == TType::WOUT_FUNC ) {
             type = SC_wout_function(cToken);
             if ( type == 's' ) GEN_WOUT::WOUT_string(cToken, cTemp);
-            if ( type == 'i' ) GEN_WOUT::WOUT_var(cToken, cTemp);
+            if ( type == 'v' ) GEN_WOUT::WOUT_var(cToken, cTemp);
+            if ( type == 'a' ) GEN_WOUT::WOUT_arith(cToken, cTemp);
         }
 
         if ( cToken.at(0).type == TType::INT_RW ) {
             type = SC_int_defintion(cToken);
             if ( type == 'c' ) GEN_VARIABLES::VAR_int_by_constant_value(cToken, cTemp);
-            if ( type == 'i' ) GEN_VARIABLES::VAR_copy_value_vTv(cToken, cTemp, TVar::INTEGER);
+            if ( type == 'v' ) GEN_VARIABLES::VAR_copy_value_vTv(cToken, cTemp, TVar::INTEGER);
         }
 
         if ( cToken.at(0).type == TType::CHR_RW ) {
             type = SC_chr_defintion(cToken);
             if ( type == 'c' ) GEN_VARIABLES::VAR_chr_by_constant_value(cToken, cTemp);
-            if ( type == 'i' ) GEN_VARIABLES::VAR_copy_value_vTv(cToken, cTemp, TVar::CHARACTER);
+            if ( type == 'v' ) GEN_VARIABLES::VAR_copy_value_vTv(cToken, cTemp, TVar::CHARACTER);
         }
 
         if ( cToken.at(0).type == TType::PRINTF_FUNC ) {
@@ -67,7 +68,7 @@ void TOKEN_parser () {
             type = SC_chg_fucntion(cToken, &typeAux);
             if ( typeAux == 'v' ) {
                 if ( type == 'c' ) GEN_CHG::CHG_varto_const(cToken, cTemp);
-                if ( type == 'i' ) GEN_CHG::CHG_varto_var(cToken, cTemp);
+                if ( type == 'v' ) GEN_CHG::CHG_varto_var(cToken, cTemp);
             }
         }
 
@@ -81,6 +82,12 @@ void TOKEN_parser () {
                 if ( type == 'n' ) GEN_INTF::INTF_negvar(thisV.poStack, cTemp);
             }
         }
+
+        if ( cToken.at(0).type == TType::PTR_RW ) {
+            type = SC_ptr_defintion(cToken);
+            GEN_PTR::PTR_to_address(cToken, cTemp);
+        }
+
 
     }
 

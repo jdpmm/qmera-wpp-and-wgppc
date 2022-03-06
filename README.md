@@ -7,9 +7,11 @@ The main idea of wgpp is make a programming language (Turing Complete) to make s
 
 ## Things to do
 * [x] Ignore comments
-* [x] printf function (Still isn't complete, but already is working)
+* [x] printf function
 * [x] Check semicolon token at the end of every line
 * [x] More than one instruction per line
 * [x] CHG function to variables
 * [x] INC, DEC and NEG operations to integer variables
+* [ ] Pointers variables
+* [ ] ARITH function
 * [ ] A lot of more stuffs
