@@ -67,7 +67,7 @@ void search_tokens (const std::string &line, unsigned int intline) {
         }
         if ( std::isdigit(line[idx]) || ( token == "-" && std::isdigit(line[idx + 1]) ) ) {
             token = UTL_get_whole_number(line, idx, intline);
-            TOKEN_push_token(idxVT, TType::NUMBER_V, token, intline);
+            TOKEN_push_token(idxVT, TType::CONSTANT, token, intline);
             idx += token.size() - 1;
             token = "";
         }
@@ -77,13 +77,13 @@ void search_tokens (const std::string &line, unsigned int intline) {
         }
         if ( token == "\"" ) {
             token = UTL_get_until_delimiter(line, idx, intline, '"');
-            TOKEN_push_token(idxVT, TType::STRING_V, token, intline);
+            TOKEN_push_token(idxVT, TType::STRING, token, intline);
             idx += token.size() - 1;
             token = "";
         }
         if ( token == "'" ) {
             token = UTL_check_character(line, idx, intline);
-            TOKEN_push_token(idxVT, TType::CHARCTER_V, token, intline);
+            TOKEN_push_token(idxVT, TType::CONSTANT, token, intline);
             idx += token.size() - 1;
             token = "";
         }

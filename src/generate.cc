@@ -343,17 +343,17 @@ void GEN_CHG::CHG_varto_var (std::vector<TOKEN> list, TEMP* temp) {
 /** GEN INTF ------------------------------------------------------------------------------------------------------ |
  * The int functions are generated as a "--" (DEC) "++" (INC) and "n*=1" (NEG) in C++ or C (Probably in anothers) _ |
  * **/
-// TODO: Optimizate
-void GEN_INTF::INTF_incvar (unsigned int postack, TEMP* temp) {
-    temp->code += "\tincl    -" + std::to_string(postack) + "(%rbp)\n";
-}
-
-void GEN_INTF::INTF_decvar (unsigned int postack, TEMP* temp) {
-    temp->code += "\tdecl    -" + std::to_string(postack) + "(%rbp)\n";
-}
-
-void GEN_INTF::INTF_negvar (unsigned int postack, TEMP* temp) {
-    temp->code += "\tnegl    -" + std::to_string(postack) + "(%rbp)\n";
+void GEN_INTF::INTF_variable (VARIABLE var, TEMP* temp, char typeop) {
+    if ( var.type == TVar::INTEGER ) {
+        if ( typeop == 'i' ) temp->code += "\tincl    -" + std::to_string(var.poStack) + "(%rbp)\n";
+        if ( typeop == 'd' ) temp->code += "\tdecl    -" + std::to_string(var.poStack) + "(%rbp)\n";
+        if ( typeop == 'n' ) temp->code += "\tnegl    -" + std::to_string(var.poStack) + "(%rbp)\n";
+    }
+    else if ( var.type == TVar::CHARACTER ) {
+        if ( typeop == 'i' ) temp->code += "\tincb    -" + std::to_string(var.poStack) + "(%rbp)\n";
+        if ( typeop == 'd' ) temp->code += "\tdecb    -" + std::to_string(var.poStack) + "(%rbp)\n";
+        if ( typeop == 'n' ) temp->code += "\tnegb    -" + std::to_string(var.poStack) + "(%rbp)\n";
+    }
 }
 
 /** GEN ARITH ----------------------------------------------------------------------------------------------------- |
@@ -380,8 +380,7 @@ void GEN_ARITH::ARITH_check_call (std::vector<TOKEN> list, TEMP *temp) {
         currenToken = list.at(idxArithToken);
 
         if ( !(typetoken % 2) ) {
-            if ( currenToken.type != TType::NUMBER_V &&
-                 currenToken.type != TType::CHARCTER_V &&
+            if ( currenToken.type != TType::CONSTANT &&
                  currenToken.type != TType::ID_VARIABLE ) ERR_delimiter_expected(list.at(0).line_definition);
         }
         else {
@@ -395,7 +394,7 @@ void GEN_ARITH::ARITH_check_call (std::vector<TOKEN> list, TEMP *temp) {
         }
 
         if ( operationTODO == '+' || operationTODO == '-' ) {
-            if ( list.at(idxArithToken).type == TType::NUMBER_V ) GEN_ARITH::ARITH_gen_operations(list.at(idxArithToken), temp, 'n', operationTODO);
+            if ( list.at(idxArithToken).type == TType::CONSTANT ) GEN_ARITH::ARITH_gen_operations(list.at(idxArithToken), temp, 'n', operationTODO);
         }
 
         if ( idxArithToken >= list.size() ) ERR_tokens_expected("RIGHT PARENTHESES");

@@ -76,10 +76,7 @@ void TOKEN_parser () {
             type = SC_int_function(cToken, &typeAux);
             if ( typeAux == 'v' ) {
                 VARIABLE thisV = VAR_get_variable(cToken.at(1).value_as_token, cTemp->namefunc);
-                if ( thisV.type != TVar::INTEGER ) ERR_type_requierd("INTEGER");
-                if ( type == 'i' ) GEN_INTF::INTF_incvar(thisV.poStack, cTemp);
-                if ( type == 'd' ) GEN_INTF::INTF_decvar(thisV.poStack, cTemp);
-                if ( type == 'n' ) GEN_INTF::INTF_negvar(thisV.poStack, cTemp);
+                GEN_INTF::INTF_variable(thisV, cTemp, type);
             }
         }
 

@@ -2,8 +2,7 @@
 
 char SC_exit_funtion (std::vector<TOKEN> list) {
     if ( list.size() <= 2 )                      ERR_tokens_expected("exit");;
-    if ( list.at(1).type == TType::NUMBER_V )    return 's';
-    if ( list.at(1).type == TType::CHARCTER_V )  return 's';
+    if ( list.at(1).type == TType::CONSTANT )    return 's';
     if ( list.at(1).type == TType::ID_VARIABLE ) return 'v' ;
 
     ERR_line_doesnt_make_sense();
@@ -12,7 +11,7 @@ char SC_exit_funtion (std::vector<TOKEN> list) {
 
 char SC_wout_function (std::vector<TOKEN> list) {
     if ( list.size() <= 2 )                      ERR_tokens_expected("wout");
-    if ( list.at(1).type == TType::STRING_V )    return 's';
+    if ( list.at(1).type == TType::STRING )      return 's';
     if ( list.at(1).type == TType::ID_VARIABLE ) return 'v';
     if ( list.at(1).type == TType::ARITH_CALL )  return 'a';
 
@@ -25,8 +24,7 @@ char SC_int_defintion (std::vector<TOKEN> list) {
     if ( list.at(1).type != TType::ID_VARIABLE ) ERR_tokens_expected("int-definition");
     if ( list.at(2).type != TType::EQUALS_S )    ERR_tokens_expected("int-definition");
 
-    if ( list.at(3).type == TType::NUMBER_V )    return 'c';
-    if ( list.at(3).type == TType::CHARCTER_V )  return 'c';
+    if ( list.at(3).type == TType::CONSTANT )    return 'c';
     if ( list.at(3).type == TType::ID_VARIABLE ) return 'v';
 
     ERR_line_doesnt_make_sense();
@@ -38,8 +36,7 @@ char SC_chr_defintion (std::vector<TOKEN> list) {
     if ( list.at(1).type != TType::ID_VARIABLE ) ERR_tokens_expected("chr-definition");
     if ( list.at(2).type != TType::EQUALS_S )    ERR_tokens_expected("chr-definition");
 
-    if ( list.at(3).type == TType::CHARCTER_V )  return 'c';
-    if ( list.at(3).type == TType::NUMBER_V )    return 'c';
+    if ( list.at(3).type == TType::CONSTANT )    return 'c';
     if ( list.at(3).type == TType::ID_VARIABLE ) return 'v';
 
     ERR_line_doesnt_make_sense();
@@ -60,7 +57,7 @@ char SC_ptr_defintion (std::vector<TOKEN> list) {
 
 void SC_printf_function (std::vector<TOKEN> list) {
     if ( list.size() <= 2 )                   ERR_tokens_expected("printf");
-    if ( list.at(1).type != TType::STRING_V ) ERR_line_doesnt_make_sense();
+    if ( list.at(1).type != TType::STRING )   ERR_line_doesnt_make_sense();
 }
 
 char SC_chg_fucntion (std::vector<TOKEN> list, char *ttchg) {
@@ -69,8 +66,7 @@ char SC_chg_fucntion (std::vector<TOKEN> list, char *ttchg) {
     else                                         ERR_tokens_expected("CHG");
 
     if ( list.at(2).type == TType::ID_VARIABLE ) return 'v';
-    if ( list.at(2).type == TType::NUMBER_V )    return 'c';
-    if ( list.at(2).type == TType::CHARCTER_V )  return 'c';
+    if ( list.at(2).type == TType::CONSTANT )    return 'c';
 
     ERR_line_doesnt_make_sense();
     return '-';

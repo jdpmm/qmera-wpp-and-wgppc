@@ -53,9 +53,7 @@ public:
 
 class GEN_INTF {
 public:
-    static void INTF_incvar (unsigned int postack, TEMP* temp);
-    static void INTF_decvar (unsigned int postack, TEMP* temp);
-    static void INTF_negvar (unsigned int postack, TEMP* temp);
+    static void INTF_variable (VARIABLE var, TEMP* temp, char typeop);
 };
 
 class GEN_ARITH {
